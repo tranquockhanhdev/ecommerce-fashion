@@ -74,7 +74,7 @@
                                     stroke-linejoin="round" />
                             </svg>
                         </button>
-                        <a href="home-05.html">
+                        <a href="{{ route('client.homepage') }}">
                             <img src="{{ asset('client/images/logo.png') }}" alt="brand-logo" />
                         </a>
                     </div>
@@ -147,154 +147,159 @@
             <div class="container">
                 <div class="header__bottom-content">
                     <div class="header__bottom-left">
-                        <ul class="header__category-content">
-                            <li class="header__category-content-item">
-                                <a href="#">
-                                    <span class="bar"></span>
-                                    Danh Mục
-                                    <span class="toggle-icon">
-                                        <svg width="12" height="8" viewBox="0 0 12 8" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M0.75 1.375L6 6.625L11.25 1.375" stroke="white"
-                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-                                    </span>
-                                </a>
-                                <ul class="header__category-content-dropdown">
-                                    <!-- Áo Quần -->
-                                    <li>
-                                        <a href="#">
-                                            <span class="icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none">
-                                                    <path d="M12 2L9 5H6L2 9V20H10V15H14V20H22V9L18 5H15L12 2Z"
-                                                        fill="#FF6F61" />
-                                                    <circle cx="12" cy="7" r="2" fill="#FFF" />
-                                                </svg>
-                                            </span>
-                                            Áo Quần
-                                        </a>
-                                    </li>
+                        @if (Route::currentRouteName() == 'client.homepage')
+                            <ul class="header__category-content">
+                                <li class="header__category-content-item">
+                                    <a href="#">
+                                        <span class="bar"></span>
+                                        Danh Mục
+                                        <span class="toggle-icon">
+                                            <svg width="12" height="8" viewBox="0 0 12 8" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M0.75 1.375L6 6.625L11.25 1.375" stroke="white"
+                                                    stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </svg>
+                                        </span>
+                                    </a>
+                                    <ul class="header__category-content-dropdown">
+                                        <!-- Áo Quần -->
+                                        <li>
+                                            <a href="#">
+                                                <span class="icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" viewBox="0 0 24 24" fill="none">
+                                                        <path d="M12 2L9 5H6L2 9V20H10V15H14V20H22V9L18 5H15L12 2Z"
+                                                            fill="#FF6F61" />
+                                                        <circle cx="12" cy="7" r="2" fill="#FFF" />
+                                                    </svg>
+                                                </span>
+                                                Áo Quần
+                                            </a>
+                                        </li>
 
-                                    <!-- Giày Dép -->
-                                    <li>
-                                        <a href="#">
-                                            <span class="icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none">
-                                                    <path d="M2 18H22L18 9H6L2 18Z" fill="#FFB84D" />
-                                                    <path d="M16 9L14 4H10L8 9H16Z" fill="#FFF" />
-                                                </svg>
-                                            </span>
-                                            Giày Dép
-                                        </a>
-                                    </li>
+                                        <!-- Giày Dép -->
+                                        <li>
+                                            <a href="#">
+                                                <span class="icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" viewBox="0 0 24 24" fill="none">
+                                                        <path d="M2 18H22L18 9H6L2 18Z" fill="#FFB84D" />
+                                                        <path d="M16 9L14 4H10L8 9H16Z" fill="#FFF" />
+                                                    </svg>
+                                                </span>
+                                                Giày Dép
+                                            </a>
+                                        </li>
 
-                                    <!-- Phụ Kiện -->
-                                    <li>
-                                        <a href="#">
-                                            <span class="icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none">
-                                                    <path d="M12 2C10 2 8 4 8 4L4 8V20H20V8L16 4C16 4 14 2 12 2Z"
-                                                        fill="#6ECFF6" />
-                                                    <circle cx="12" cy="8" r="2" fill="#FFF" />
-                                                </svg>
-                                            </span>
-                                            Phụ Kiện
-                                        </a>
-                                    </li>
+                                        <!-- Phụ Kiện -->
+                                        <li>
+                                            <a href="#">
+                                                <span class="icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" viewBox="0 0 24 24" fill="none">
+                                                        <path d="M12 2C10 2 8 4 8 4L4 8V20H20V8L16 4C16 4 14 2 12 2Z"
+                                                            fill="#6ECFF6" />
+                                                        <circle cx="12" cy="8" r="2" fill="#FFF" />
+                                                    </svg>
+                                                </span>
+                                                Phụ Kiện
+                                            </a>
+                                        </li>
 
-                                    <!-- Đồng Hồ -->
-                                    <li>
-                                        <a href="#">
-                                            <span class="icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none">
-                                                    <circle cx="12" cy="12" r="10" stroke="#FF6F61"
-                                                        stroke-width="2" />
-                                                    <path d="M12 6V12L16 14" stroke="#FF6F61" stroke-width="2"
-                                                        stroke-linecap="round" />
-                                                </svg>
-                                            </span>
-                                            Đồng Hồ
-                                        </a>
-                                    </li>
+                                        <!-- Đồng Hồ -->
+                                        <li>
+                                            <a href="#">
+                                                <span class="icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" viewBox="0 0 24 24" fill="none">
+                                                        <circle cx="12" cy="12" r="10" stroke="#FF6F61"
+                                                            stroke-width="2" />
+                                                        <path d="M12 6V12L16 14" stroke="#FF6F61" stroke-width="2"
+                                                            stroke-linecap="round" />
+                                                    </svg>
+                                                </span>
+                                                Đồng Hồ
+                                            </a>
+                                        </li>
 
-                                    <!-- Túi Xách -->
-                                    <li>
-                                        <a href="#">
-                                            <span class="icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none">
-                                                    <path d="M4 8L6 20H18L20 8H4Z" fill="#FFB84D" />
-                                                    <path d="M8 8V6C8 4.9 8.9 4 10 4H14C15.1 4 16 4.9 16 6V8"
-                                                        stroke="#FFF" stroke-width="2" />
-                                                </svg>
-                                            </span>
-                                            Túi Xách
-                                        </a>
-                                    </li>
+                                        <!-- Túi Xách -->
+                                        <li>
+                                            <a href="#">
+                                                <span class="icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" viewBox="0 0 24 24" fill="none">
+                                                        <path d="M4 8L6 20H18L20 8H4Z" fill="#FFB84D" />
+                                                        <path d="M8 8V6C8 4.9 8.9 4 10 4H14C15.1 4 16 4.9 16 6V8"
+                                                            stroke="#FFF" stroke-width="2" />
+                                                    </svg>
+                                                </span>
+                                                Túi Xách
+                                            </a>
+                                        </li>
 
-                                    <!-- Kính Mắt -->
-                                    <li>
-                                        <a href="#">
-                                            <span class="icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none">
-                                                    <path
-                                                        d="M6 12C7.1 12 8 12.9 8 14C8 15.1 7.1 16 6 16C4.9 16 4 15.1 4 14C4 12.9 4.9 12 6 12Z"
-                                                        fill="#6ECFF6" />
-                                                    <path
-                                                        d="M18 12C19.1 12 20 12.9 20 14C20 15.1 19.1 16 18 16C16.9 16 16 15.1 16 14C16 12.9 16.9 12 18 12Z"
-                                                        fill="#6ECFF6" />
-                                                    <path d="M8 14H16" stroke="#6ECFF6" stroke-width="2"
-                                                        stroke-linecap="round" />
-                                                </svg>
-                                            </span>
-                                            Kính Mắt
-                                        </a>
-                                    </li>
+                                        <!-- Kính Mắt -->
+                                        <li>
+                                            <a href="#">
+                                                <span class="icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" viewBox="0 0 24 24" fill="none">
+                                                        <path
+                                                            d="M6 12C7.1 12 8 12.9 8 14C8 15.1 7.1 16 6 16C4.9 16 4 15.1 4 14C4 12.9 4.9 12 6 12Z"
+                                                            fill="#6ECFF6" />
+                                                        <path
+                                                            d="M18 12C19.1 12 20 12.9 20 14C20 15.1 19.1 16 18 16C16.9 16 16 15.1 16 14C16 12.9 16.9 12 18 12Z"
+                                                            fill="#6ECFF6" />
+                                                        <path d="M8 14H16" stroke="#6ECFF6" stroke-width="2"
+                                                            stroke-linecap="round" />
+                                                    </svg>
+                                                </span>
+                                                Kính Mắt
+                                            </a>
+                                        </li>
 
-                                    <!-- Mũ Nón -->
-                                    <li>
-                                        <a href="#">
-                                            <span class="icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none">
-                                                    <path d="M4 10L12 4L20 10H4Z" fill="#FF6F61" />
-                                                    <path d="M4 10H20V14C20 16 18 18 12 18C6 18 4 16 4 14V10Z"
-                                                        fill="#FFB84D" />
-                                                </svg>
-                                            </span>
-                                            Mũ Nón
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
+                                        <!-- Mũ Nón -->
+                                        <li>
+                                            <a href="#">
+                                                <span class="icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" viewBox="0 0 24 24" fill="none">
+                                                        <path d="M4 10L12 4L20 10H4Z" fill="#FF6F61" />
+                                                        <path d="M4 10H20V14C20 16 18 18 12 18C6 18 4 16 4 14V10Z"
+                                                            fill="#FFB84D" />
+                                                    </svg>
+                                                </span>
+                                                Mũ Nón
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        @endif
+
                         <ul class="header__navigation-menu">
-                            <li class="header__navigation-menu-link active">
-                                <a href="home-05.html"> Trang Chủ</a>
+                            <li
+                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.homepage' ? 'active' : '' }}">
+                                <a href="{{ route('client.homepage') }}">Trang Chủ</a>
                             </li>
-                            <li class="header__navigation-menu-link">
-                                <a href="shop-01.html">
-                                    Cửa Hàng
-                                </a>
+                            <li
+                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.shop' ? 'active' : '' }}">
+                                <a href="{{ route('client.shop') }}">Cửa Hàng</a>
                             </li>
-
-                            <li class="header__navigation-menu-link">
-                                <a href="blog-list.html">
-                                    Bài Viết
-                                </a>
+                            <li
+                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.blog-list' ? 'active' : '' }}">
+                                <a href="{{ route('client.blog-list') }}">Bài Viết</a>
                             </li>
-                            <li class="header__navigation-menu-link">
-                                <a href="about.html">Giới Thiệu</a>
+                            <li
+                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.about' ? 'active' : '' }}">
+                                <a href="{{ route('client.about') }}">Giới Thiệu</a>
                             </li>
-                            <li class="header__navigation-menu-link">
-                                <a href="contact.html">Liên Hệ</a>
+                            <li
+                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.contact' ? 'active' : '' }}">
+                                <a href="{{ route('client.contact') }}">Liên Hệ</a>
                             </li>
                         </ul>
+
                     </div>
                     <a href="#" class="header__telephone-number">
                         <span>
@@ -378,6 +383,72 @@
         </div>
     </header>
     <!-- Header  Section start -->
+    @if (in_array(Route::currentRouteName(), [
+            'client.shop',
+            'client.blog-list',
+            'client.single-blog',
+            'client.about',
+            'client.contact',
+            'client.sign-up',
+        ]))
+        <!-- breedcrumb section start -->
+        <div class="section breedcrumb">
+            <div class="breedcrumb__img-wrapper">
+                <img src="{{ asset('client/images/banner/breedcrumb.jpg') }}" alt="breedcrumb" />
+                <div class="container">
+                    <ul class="breedcrumb__content">
+                        <li>
+                            <a href="{{ route('client.homepage') }}">
+                                <svg width="18" height="19" viewBox="0 0 18 19" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M1 8L9 1L17 8V18H12V14C12 13.2044 11.6839 12.4413 11.1213 11.8787C10.5587 11.3161 9.79565 11 9 11C8.20435 11 7.44129 11.3161 6.87868 11.8787C6.31607 12.4413 6 13.2044 6 14V18H1V8Z"
+                                        stroke="#808080" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                <span> > </span>
+                            </a>
+                        </li>
+
+                        @if (Route::currentRouteName() == 'client.single-blog')
+                            <!-- Breadcrumb for single blog post -->
+                            <li>
+                                <a href="{{ route('client.blog-list') }}">Bài Viết
+                                    <span> > </span>
+                                </a>
+
+                            </li>
+
+                            <li class="active">
+                                <a href="#">Chi Tiết Bài Viết</a>
+                            </li>
+                        @else
+                            <!-- Breadcrumb for other pages -->
+                            <li class="active">
+                                <a href="#">
+                                    @php
+                                        $breadcrumbTitles = [
+                                            'client.shop' => 'Cửa Hàng',
+                                            'client.blog-list' => 'Bài Viết',
+                                            'client.about' => 'Giới Thiệu',
+                                            'client.contact' => 'Liên Hệ',
+                                            'client.sign-up' => 'Đăng Ký',
+                                        ];
+
+                                        $routeName = Route::currentRouteName();
+                                    @endphp
+
+                                    {{ $breadcrumbTitles[$routeName] ?? 'Trang Khác' }}
+                                </a>
+                            </li>
+                        @endif
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- breedcrumb section end -->
+    @endif
+
 
     @yield('content')
     <!-- Đoạn HTML cho popup -->
@@ -433,10 +504,11 @@
                     <div class="col-xl-4">
                         <div class="footer__brand-info">
                             <div class="footer__brand-info-logo">
-                                <img src="{{ asset('') }}client/images/logo-nl-white.png" alt="logo" />
+                                <img src="{{ asset('client/images/logo-nl-white.png') }}" alt="logo" />
                             </div>
                             <p class="font-body--md-400">
-                                Sứ mệnh của chúng tôi là mang đến những sản phẩm thời trang chất lượng và hiện đại cho
+                                Sứ mệnh của chúng tôi là mang đến những sản phẩm thời trang chất lượng và hiện đại
+                                cho
                                 khách hàng.
                             </p>
                             <p class="font-body--md-400">

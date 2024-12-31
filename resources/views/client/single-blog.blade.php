@@ -147,11 +147,6 @@
                             suscipit. ur ridiculus mus.
                         </p>
                     </div>
-
-
-
-
-
                 </div>
                 <div class="col-lg-4">
                     <div class="sidebar">

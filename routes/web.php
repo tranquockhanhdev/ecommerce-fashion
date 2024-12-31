@@ -52,3 +52,9 @@ Route::get('/blog-list', function () {
 Route::get('/single-blog', function () {
     return view('client.single-blog');
 })->name('client.single-blog');
+Route::get('/about', function () {
+    return view('client.about');
+})->name('client.about');
+Route::get('/contact', function () {
+    return view('client.contact');
+})->name('client.contact');

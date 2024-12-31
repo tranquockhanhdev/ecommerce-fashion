@@ -53,7 +53,7 @@
                         <div class="header__in">
                             <a href="#" onclick="openLoginPopup(event)">Đăng Nhập</a>
                             <span>/</span>
-                            <a href="create-account.html">Đăng Ký</a>
+                            <a href="{{ route('client.sign-up') }}">Đăng Ký</a>
                         </div>
                     </div>
                 </div>
@@ -378,6 +378,8 @@
         </div>
     </header>
     <!-- Header  Section start -->
+
+    @yield('content')
     <!-- Đoạn HTML cho popup -->
     <div id="loginPopup" class="popup-overlay">
         <div class="popup-container">

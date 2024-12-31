@@ -40,3 +40,15 @@ Route::get('/admin/qlbinhluan', function () {
 Route::get('/signup', function () {
     return view('client.sign-up');
 })->name('client.sign-up');
+Route::get('/home', function () {
+    return view('client.homepage');
+})->name('client.homepage');
+Route::get('/shop', function () {
+    return view('client.shop');
+})->name('client.shop');
+Route::get('/blog-list', function () {
+    return view('client.blog-list');
+})->name('client.blog-list');
+Route::get('/single-blog', function () {
+    return view('client.single-blog');
+})->name('client.single-blog');

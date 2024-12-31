@@ -38,5 +38,5 @@ Route::get('/admin/qlbinhluan', function () {
     return view('admin.qlbinhluan.index');
 })->name('admin.qlbinhluan.index');
 Route::get('/signup', function () {
-    return view('client.sign-up');
+    return view('client.auth.sign-up');
 })->name('client.sign-up');

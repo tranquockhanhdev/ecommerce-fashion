@@ -145,7 +145,7 @@
                     </div>
                 </div>
                 <div class="form-button">
-                    <button class="button button--md w-100">Đăng Ký</button>
+                    <button class="button button--md w-100">Đăng Ký.</button>
                 </div>
                 <div class="form-register">
                     Đã có tài khoản ? <a href="#" onclick="openLoginPopup(event)">Đăng Nhập</a>

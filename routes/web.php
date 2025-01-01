@@ -43,5 +43,6 @@ Route::get('/signup', function () {
 })->name('client.sign-up');
 
 Auth::routes();
+Route::get('/secretkey', [App\Http\Controllers\SecretController::class, 'showSecret'])->name('secretkey')->middleware('auth');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

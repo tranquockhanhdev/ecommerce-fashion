@@ -30,7 +30,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';  // Điều hướng sau khi đăng ký thành công
+    protected $redirectTo = '/secretkey';  // Điều hướng sau khi đăng ký thành công
 
     /**
      * Create a new controller instance.
@@ -122,5 +122,8 @@ class RegisterController extends Controller
             'status' => 1, // Trạng thái mặc định là active
             'created_at' => now(),
         ]);
+        Auth::login($account);
+
+        return redirect()->route('secretkey');
     }
 }

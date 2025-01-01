@@ -51,9 +51,17 @@
                             </select>
                         </div>
                         <div class="header__in">
+                            @guest
                             <a href="#" onclick="openLoginPopup(event)">Đăng Nhập</a>
                             <span>/</span>
-                            <a href="{{ route('client.sign-up') }}">Đăng Ký</a>
+                            <a href="{{ route('register') }}">Đăng Ký</a>
+                            @else
+                            <form id="logout" action="{{ route('logout') }}"
+                                method="POST">
+                                <a role="button" class="nav-link active" onclick="document.getElementById('logout').submit();">Logout</a>
+                                @csrf
+                            </form>
+                            @endguest
                         </div>
                     </div>
                 </div>

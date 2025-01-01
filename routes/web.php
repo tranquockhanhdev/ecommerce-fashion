@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
-    return view('layouts.client');
+    return view('layouts.app');
 });
 
 Route::get('/admin', function () {
@@ -40,3 +41,7 @@ Route::get('/admin/qlbinhluan', function () {
 Route::get('/signup', function () {
     return view('client.auth.sign-up');
 })->name('client.sign-up');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -1,4 +1,6 @@
 @extends('layouts.client')
+@section('title', 'Danh Sách Bài Viết | Synergy 4.0')
+
 @section('content')
     <!-- Filter  -->
     <div class="filter--search">

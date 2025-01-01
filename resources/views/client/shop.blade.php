@@ -1,5 +1,10 @@
 @extends('layouts.client')
+@section('title', 'Cửa Hàng | Synergy 4.0')
+@section('css')
 
+    <link rel="stylesheet" href="{{ asset('client/lib/css/nouislider.min.css') }}" />
+
+@endsection
 @section('content')
     <!-- Banner Section Start  -->
     <section class="banner-sales">
@@ -1892,4 +1897,11 @@
         </div>
     </section>
     <!-- Shop list Section End   -->
+@endsection
+@section('js')
+
+    <script src="{{ asset('client/lib/js/nouislider.min.js') }}"></script>
+   
+ 
+
 @endsection

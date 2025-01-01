@@ -1,4 +1,5 @@
 @extends('layouts.client')
+@section('title', 'Chi Tiết Bài Viết | Synergy 4.0')
 @section('content')
     <!-- Single blog section start  -->
     <section class="single-blog section">

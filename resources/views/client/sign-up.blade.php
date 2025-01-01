@@ -1,4 +1,5 @@
 @extends('layouts.client')
+@section('title', 'Đăng Ký | Synergy 4.0')
 @section('content')
     <!-- create account-in Section Start  -->
     <section class="create-account section section--xl">

@@ -1,4 +1,5 @@
 @extends('layouts.client')
+@section('title', 'Liên Hệ | Synergy 4.0')
 @section('content')
     <!-- Contact section start  -->
     <section class="contact-form section section--xl">

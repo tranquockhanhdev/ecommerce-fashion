@@ -58,3 +58,27 @@ Route::get('/about', function () {
 Route::get('/contact', function () {
     return view('client.contact');
 })->name('client.contact');
+Route::get('/user-dashboard', function () {
+    return view('client.user-dashboard');
+})->name('client.user-dashboard');
+Route::get('/order-history', function () {
+    return view('client.order-history');
+})->name('client.order-history');
+Route::get('/wishlist', function () {
+    return view('client.wishlist');
+})->name('client.wishlist');
+Route::get('/shopping-cart', function () {
+    return view('client.shopping-cart');
+})->name('client.shopping-cart');
+Route::get('/account-setting', function () {
+    return view('client.account-setting');
+})->name('client.account-setting');
+Route::get('/product-details', function () {
+    return view('client.product-details');
+})->name('client.product-details');
+Route::get('/order-details', function () {
+    return view('client.order-details');
+})->name('client.order-details');
+Route::get('/checkout', function () {
+    return view('client.checkout');
+})->name('client.checkout');

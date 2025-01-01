@@ -1,4 +1,6 @@
 @extends('layouts.client')
+@section('title', 'Giới Thiệu | Synergy 4.0')
+
 @section('content')
     <!-- Hero Section start  -->
     <section class="hero section--xl section">
@@ -1002,109 +1004,4 @@
         </div>
     </section>
     <!--  Testimonial end  -->
-
-    <!-- brand-name Section Start -->
-    <div class="brand-name section section--xl">
-        <div class="container">
-            <div class="brand-name-slide--one swiper-container">
-                <div class="swiper-wrapper">
-                    <!-- Louis Vuitton -->
-                    <div class="swiper-slide">
-                        <span class="brand-name__icon">
-                            <svg width="82" height="32" viewBox="0 0 82 32" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <text x="10" y="22" font-family="Georgia, serif" font-size="18" fill="gold"
-                                    font-weight="bold">LV</text>
-                            </svg>
-                            Louis Vuitton
-                        </span>
-                    </div>
-                    <!-- Gucci -->
-                    <div class="swiper-slide">
-                        <span class="brand-name__icon">
-                            <svg width="82" height="32" viewBox="0 0 82 32" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <rect x="10" y="5" width="60" height="22" rx="5" fill="green" />
-                                <text x="15" y="22" font-family="Verdana, sans-serif" font-size="14"
-                                    fill="white">GUCCI</text>
-                            </svg>
-                            Gucci
-                        </span>
-                    </div>
-                    <!-- Chanel -->
-                    <div class="swiper-slide">
-                        <span class="brand-name__icon">
-                            <svg width="82" height="32" viewBox="0 0 82 32" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="16" cy="16" r="10" fill="black" />
-                                <circle cx="16" cy="16" r="8" fill="white" />
-                                <text x="10" y="20" font-family="Georgia, serif" font-size="10" fill="black"
-                                    font-weight="bold">CHANEL</text>
-                            </svg>
-                            Chanel
-                        </span>
-                    </div>
-                    <!-- Dior -->
-                    <div class="swiper-slide">
-                        <span class="brand-name__icon">
-                            <svg width="82" height="32" viewBox="0 0 82 32" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <text x="10" y="22" font-family="Times New Roman, serif" font-size="16" fill="darkblue"
-                                    font-weight="bold">DIOR</text>
-                            </svg>
-                            Dior
-                        </span>
-                    </div>
-                    <!-- Hermès -->
-                    <div class="swiper-slide">
-                        <span class="brand-name__icon">
-                            <svg width="82" height="32" viewBox="0 0 82 32" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <rect x="5" y="5" width="70" height="22" rx="5" fill="orange" />
-                                <text x="15" y="22" font-family="Georgia, serif" font-size="14"
-                                    fill="white">HERMÈS</text>
-                            </svg>
-                            Hermès
-                        </span>
-                    </div>
-                    <!-- Fendi -->
-                    <div class="swiper-slide">
-                        <span class="brand-name__icon">
-                            <svg width="82" height="32" viewBox="0 0 82 32" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <rect x="5" y="5" width="70" height="22" rx="3" fill="yellow" />
-                                <text x="20" y="22" font-family="Arial, sans-serif" font-size="14"
-                                    fill="black">FENDI</text>
-                            </svg>
-                            Fendi
-                        </span>
-                    </div>
-                    <!-- Prada -->
-                    <div class="swiper-slide">
-                        <span class="brand-name__icon">
-                            <svg width="82" height="32" viewBox="0 0 82 32" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <text x="10" y="22" font-family="Courier New, monospace" font-size="16" fill="darkred"
-                                    font-weight="bold">PRADA</text>
-                            </svg>
-                            Prada
-                        </span>
-                    </div>
-                    <!-- Synergy -->
-                    <div class="swiper-slide">
-                        <span class="brand-name__icon">
-                            <svg width="82" height="32" viewBox="0 0 82 32" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <rect x="10" y="5" width="60" height="22" rx="5" fill="purple" />
-                                <text x="15" y="22" font-family="Verdana, sans-serif" font-size="14"
-                                    fill="white">SYNERGY</text>
-                            </svg>
-                            Synergy
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- brand-name Section End -->
 @endsection

@@ -24,16 +24,21 @@ class Product extends Model
     ];
     public $timestamps = true;
     protected $dates = ['deleted_at'];
-    // Mối quan hệ với bảng ImageProduct
+
     public function images()
     {
         return $this->hasMany(ImageProduct::class);
     }
 
-    // Mối quan hệ với bảng ProductDetail
+
 
     public function details() //+
     {
         return $this->hasMany(ProductDetail::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id'); // Mỗi sản phẩm thuộc về một danh mục
     }
 }

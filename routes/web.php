@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -82,3 +83,7 @@ Route::get('/order-details', function () {
 Route::get('/checkout', function () {
     return view('client.checkout');
 })->name('client.checkout');
+
+
+
+Route::get('/admin/qlsanpham', [ProductController::class, 'index'])->name('admin.qlsanpham.index');

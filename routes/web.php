@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DanhmucController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -26,9 +27,7 @@ Route::get('/admin/qlsanpham', function () {
     return view('admin.qlsanpham.index');
 })->name('admin.qlsanpham.index');
 
-Route::get('/admin/qldanhmuc', function () {
-    return view('admin.qldanhmuc.index');
-})->name('admin.qldanhmuc.index');
+Route::resource('qldanhmuc', DanhmucController::class);
 
 Route::get('/admin/qllienhe', function () {
     return view('admin.qllienhe.index');

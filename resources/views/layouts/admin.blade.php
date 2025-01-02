@@ -73,7 +73,7 @@
             </div>
             <!-- Nav Item - Quản lí danh mục -->
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.qldanhmuc.index') }}">
+                <a class="nav-link" href="{{ route('qldanhmuc.index') }}">
                     <i class="fas fa-list"></i>
                     <span>Quản lí danh mục</span></a>
             </li>

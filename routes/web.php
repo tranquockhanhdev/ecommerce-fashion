@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('layouts.app');
 });
-
 Route::get('/admin', function () {
     return view('admin.home.index');
 })->name('admin.home.index');

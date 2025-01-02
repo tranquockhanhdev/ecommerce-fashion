@@ -51,17 +51,70 @@
                             </select>
                         </div>
                         <div class="header__in">
-                            @guest
+
+                            @if (Auth::check())
+                            @if (Auth::user()->role === 'admin')
+                            <div class="dropdown">
+                                <button class="btn btn-Body text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Xin chào, {{ Auth::user()->firstname }}
+                                </button>
+                                <ul class="dropdown-menu text-uppercase" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <form id="" action="/admin">
+                                            <button type="submit" class="dropdown-item">Trang Quản Trị Website</button>
+                                        </form>
+                                    </li> <!-- fs-4 to make it larger -->
+                                    <li>
+                                        <form id="logout" action="{{ route('logout') }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="dropdown-item">Logout</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                            @elseif (Auth::user()->role === 'staff')
+                            <div class="dropdown">
+                                <button class="btn btn-Body text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Xin chào, {{ Auth::user()->firstname }}
+                                </button>
+                                <ul class="dropdown-menu text-uppercase" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <form id="" action="/nhanvien">
+                                            <button type="submit" class="dropdown-item">Trang Quản Trị Nhân Viên</button>
+                                        </form>
+                                    </li> <!-- fs-4 to make it larger -->
+                                    <li>
+                                        <form id="logout" action="{{ route('logout') }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="dropdown-item">Logout</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                            @elseif (Auth::user()->role === 'customer')
+                            <div class="dropdown">
+                                <button class="btn btn-Body text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Xin chào, {{ Auth::user()->firstname }}
+                                </button>
+                                <ul class="dropdown-menu text-uppercase" aria-labelledby="dropdownMenuButton">
+
+                                    <li>
+                                        <form id="logout" action="{{ route('logout') }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="dropdown-item">Logout</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                            @endif
+                            @else
                             <a href="#" onclick="openLoginPopup(event)">Đăng Nhập</a>
                             <span>/</span>
                             <a href="{{ route('register') }}">Đăng Ký</a>
-                            @else
-                            <form id="logout" action="{{ route('logout') }}"
-                                method="POST">
-                                <a role="button" class="nav-link active" onclick="document.getElementById('logout').submit();">Logout</a>
-                                @csrf
-                            </form>
-                            @endguest
+                            @endif
+
+
+
                         </div>
                     </div>
                 </div>
@@ -389,48 +442,7 @@
 
     @yield('content')
     <!-- Đoạn HTML cho popup -->
-    <div id="loginPopup" class="popup-overlay">
-        <div class="popup-container">
-            <button class="popup-close" onclick="closeLoginPopup()">&times;</button>
-
-            <div class="popup-content">
-                <h2 class="popup-title">Đăng nhập</h2>
-                <form action="#">
-                    <div class="form-input">
-                        <input type="email" placeholder="Email" required />
-                    </div>
-                    <div class="form-input">
-                        <input type="password" placeholder="Password" id="password" />
-                        <button type="button" class="icon icon-eye" onclick="togglePassword()">
-                            <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
-                                xmlns="http://www.w3.org/2000/svg" class="eye-icon">
-                                <path
-                                    d="M1.66663 10.5003C1.66663 10.5003 4.69663 4.66699 9.99996 4.66699C15.3033 4.66699 18.3333 10.5003 18.3333 10.5003C18.3333 10.5003 15.3033 16.3337 9.99996 16.3337C4.69663 16.3337 1.66663 10.5003 1.66663 10.5003Z"
-                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M10 13C10.663 13 11.2989 12.7366 11.7678 12.2678C12.2366 11.7989 12.5 11.163 12.5 10.5C12.5 9.83696 12.2366 9.20107 11.7678 8.73223C11.2989 8.26339 10.663 8 10 8C9.33696 8 8.70107 8.26339 8.23223 8.73223C7.76339 9.20107 7.5 9.83696 7.5 10.5C7.5 11.163 7.76339 11.7989 8.23223 12.2678C8.70107 12.7366 9.33696 13 10 13V13Z"
-                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div class="form-options">
-                        <label class="remember-me">
-                            <input type="checkbox" id="remember" />
-                            Nhớ mật khẩu
-                        </label>
-                        <a href="#">Quên mật khẩu?</a>
-                    </div>
-                    <div class="form-action">
-                        <button class="btn-login">Đăng nhập</button>
-                    </div>
-                </form>
-                <p class="register-info">Chưa có tài khoản? <a href="create-account.html">Đăng ký</a></p>
-            </div>
-        </div>
-    </div>
+    @include('auth.login')
     <!-- Popup đăng  nhập end  -->
     <!--Footer Section Start  -->
     <footer class="footer footer--five">

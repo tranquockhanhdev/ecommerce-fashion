@@ -30,9 +30,19 @@ Route::get('/admin/qldanhmuc', function () {
     return view('admin.qldanhmuc.index');
 })->name('admin.qldanhmuc.index');
 
-Route::get('/admin/qllienhe', function () {
-    return view('admin.qllienhe.index');
-})->name('admin.qllienhe.index');
+use App\Http\Controllers\ContactController;
+
+Route::prefix('admin')->name('admin.')->group(function() {
+    // Route cho danh sách liên hệ
+    Route::get('qllienhe', [ContactController::class, 'index'])->name('qllienhe.index');
+
+    // Route cho thêm, sửa, xóa liên hệ
+    Route::get('qllienhe/create', [ContactController::class, 'create'])->name('qllienhe.create');
+    Route::post('qllienhe', [ContactController::class, 'store'])->name('qllienhe.store');
+    Route::get('qllienhe/{id}/edit', [ContactController::class, 'edit'])->name('qllienhe.edit');
+    Route::put('qllienhe/{id}', [ContactController::class, 'update'])->name('qllienhe.update');
+    Route::delete('qllienhe/{id}', [ContactController::class, 'destroy'])->name('qllienhe.destroy');
+});
 
 Route::get('/admin/qlbinhluan', function () {
     return view('admin.qlbinhluan.index');

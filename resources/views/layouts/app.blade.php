@@ -79,7 +79,7 @@
                                 </button>
                                 <ul class="dropdown-menu text-uppercase" aria-labelledby="dropdownMenuButton">
                                     <li>
-                                        <form id="" action="/nhanvien">
+                                        <form id="" action="/staff">
                                             <button type="submit" class="dropdown-item">Trang Quản Trị Nhân Viên</button>
                                         </form>
                                     </li> <!-- fs-4 to make it larger -->

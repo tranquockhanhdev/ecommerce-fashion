@@ -1,65 +1,47 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+<section class="create-account section section--xl">
+    <div class="container">
+        <div class="form-wrapper">
+            <h6 class="font-title--sm">Quên Mật Khẩu</h6>
+            <p>Vui Lòng Nhập Email Để Tiếp Tục:</p>
+            <form method="POST" action="{{ route('auth.checkInfo') }}">
+                @csrf
+                <div>
+                    <div class="mb-3">
+                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="email" required autocomplete="email">
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('password.update') }}">
-                        @csrf
-
-                        <input type="hidden" name="token" value="{{ $token }}">
-
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Reset Password') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                        @error('email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <input id="text" type="text" class="form-control @error('content') is-invalid @enderror" name="content" value="{{ old('content') }}" placeholder="Mã Bí Mật" required autocomplete="content">
+                        @error('content')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
                 </div>
-            </div>
+                <div class="form-wrapper__content">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="remember" required />
+                        <label class="form-check-label" for="remember">
+                            Chấp nhận tất cả các điều khoản và điều kiện
+                        </label>
+                    </div>
+                </div>
+                <div class="form-button">
+                    <button type="submit" class="button button--md w-100">Tiếp Tục</button>
+                </div>
+            </form>
+
+            <a class="justify-center" href="/">Quay Lại Trang Chủ</a>
         </div>
     </div>
-</div>
+</section>
 @endsection

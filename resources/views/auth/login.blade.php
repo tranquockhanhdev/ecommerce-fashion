@@ -30,7 +30,7 @@
                         <input type="checkbox" id="remember" required />
                         Nhớ mật khẩu
                     </label>
-                    <a href="#">Quên mật khẩu?</a>
+                    <a href="{{ route('auth.forgotpassword') }}">Quên mật khẩu?</a>
                 </div>
                 <div class="form-action">
                     <button type="submit" class="btn-login">Đăng nhập</button>

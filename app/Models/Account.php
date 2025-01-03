@@ -29,10 +29,6 @@ class Account extends Authenticatable
         'password',
         'remember_token',
     ];
-    public function secret()
-    {
-        return $this->belongsTo(Secret::class, 'secret_id');  // liên kết tới bảng secrets thông qua trường secret_id
-    }
 
     public function getSecretId()
     {

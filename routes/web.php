@@ -5,7 +5,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Auth\SecretController;
 
-Auth::routes();
+Auth::routes([
+    'reset' => false,     // Tắt route reset mật khẩu
+    'verify' => false,     // Tắt route xác minh email
+    'confirm' => false     // Tắt route xác minh email
+]);
 Route::fallback(function () {
     return response()->view('errors.404', [], 404);
 });
@@ -59,4 +63,17 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/', function () {
     return view('layouts.app');
 });
+
+Route::prefix('auth')->name('auth.')->group(function () {
+    // Route để nhập email (GET)
+    Route::get('/forgotpassword', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'nhapEmail'])->name('forgotpassword');
+    // Route để kiểm tra email va secret (POST)
+    Route::post('/forgotpassword', [App\Http\Controllers\Auth\ResetPasswordController::class, 'checkInfo'])->name('checkInfo');
+    // Route hiển thị form xác nhận mật khẩu (GET)
+    Route::get('/confirmpassword', [App\Http\Controllers\Auth\ConfirmPasswordController::class, 'confirmPassword'])->name('confirmpassword');
+    // Route xử lý việc thay đổi mật khẩu (POST)
+    Route::post('/confirmpassword', [App\Http\Controllers\Auth\ResetPasswordController::class, 'updatePassword'])->name('updatePassword');
+});
+
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -61,7 +61,7 @@ Route::middleware(['auth'])->group(function () {
 });
 // Các route khác không cần đăng nhập
 Route::get('/', function () {
-    return view('layouts.app');
+    return view('layouts.client');
 });
 
 Route::prefix('auth')->name('auth.')->group(function () {

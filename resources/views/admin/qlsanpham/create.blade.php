@@ -16,17 +16,28 @@
                         <select name="category_id" id="category_id" class="form-select form-select-lg shadow-sm" required>
                             <option value="">-- Chọn danh mục --</option>
                             @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                <option value="{{ $category->id }}"
+                                    {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
                             @endforeach
                         </select>
+                        @error('category_id')
+                            <div class="text-danger mt-2">{{ $message }}</div>
+                        @enderror
                     </div>
+
 
                     <!-- Tên sản phẩm -->
                     <div class="col-md-6">
                         <label for="name" class="form-label fw-bold text-dark">Tên sản phẩm:</label>
                         <input type="text" name="name" id="name" class="form-control form-control-lg shadow-sm"
-                            placeholder="Nhập tên sản phẩm" required>
+                            placeholder="Nhập tên sản phẩm" value="{{ old('name') }}" required>
+                        @error('name')
+                            <div class="text-danger mt-2">{{ $message }}</div>
+                        @enderror
                     </div>
+
                 </div>
 
                 <div class="row g-4">
@@ -34,23 +45,33 @@
                     <div class="col-md-6">
                         <label for="price" class="form-label fw-bold text-dark">Giá:</label>
                         <input type="number" name="price" id="price" class="form-control form-control-lg shadow-sm"
-                            placeholder="Nhập giá sản phẩm" required>
+                            placeholder="Nhập giá sản phẩm" value="{{ old('price') }}" required>
+                        @error('price')
+                            <div class="text-danger mt-2">{{ $message }}</div>
+                        @enderror
                     </div>
 
-                    <!-- Số lượng -->
                     <div class="col-md-6">
                         <label for="quantity" class="form-label fw-bold text-dark">Số lượng:</label>
                         <input type="number" name="quantity" id="quantity" class="form-control form-control-lg shadow-sm"
-                            placeholder="Nhập số lượng" required>
+                            placeholder="Nhập số lượng" value="{{ old('quantity') }}" required>
+                        @error('quantity')
+                            <div class="text-danger mt-2">{{ $message }}</div>
+                        @enderror
                     </div>
+
                 </div>
 
                 <!-- Mô tả -->
                 <div class="mb-4">
                     <label for="description" class="form-label fw-bold text-dark">Mô tả:</label>
                     <textarea name="description" id="description" class="form-control form-control-lg shadow-sm" rows="4"
-                        placeholder="Nhập mô tả sản phẩm" required></textarea>
+                        placeholder="Nhập mô tả sản phẩm" required>{{ old('description') }}</textarea>
+                    @error('description')
+                        <div class="text-danger mt-2">{{ $message }}</div>
+                    @enderror
                 </div>
+
 
                 <div class="row g-4">
                     <!-- Trạng thái -->
@@ -68,10 +89,14 @@
                         <input type="file" name="images[]" id="images" class="form-control form-control-lg shadow-sm"
                             multiple>
                         <small class="text-muted">Bạn có thể chọn nhiều ảnh</small>
-
-                        <!-- Khu vực hiển thị ảnh preview -->
-                        <div id="preview-images" class="mt-3 d-flex justify-content-start flex-wrap"></div>
+                        @error('images')
+                            <div class="text-danger mt-2">{{ $message }}</div>
+                        @enderror
+                        @error('images.*')
+                            <div class="text-danger mt-2">{{ $message }}</div>
+                        @enderror
                     </div>
+
                 </div>
 
                 <div class="row g-4">

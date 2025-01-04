@@ -90,13 +90,16 @@
                                             </span>
                                         </a>
 
-                                        <a href="#" class="btn btn-danger btn-icon-split ">
+                                        <button class="btn btn-danger btn-icon-split toggle-status"
+                                            data-id="{{ $product->id }}" data-status="{{ $product->status }}">
                                             <span class="icon text-white-50">
-                                                <i class="fas fa-trash"></i> Xoá
+                                                <i class="fas fa-trash"></i>
+                                                {{ $product->status == 1 ? 'Xóa' : 'Hiển thị' }}
                                             </span>
-                                        </a>
+                                        </button>
                                     </div>
                                 </td>
+
                             </tr>
                         @endforeach
                     </tbody>
@@ -111,4 +114,35 @@
     <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
     <!-- Page level custom scripts -->
     <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
+    <script>
+        $(document).on('click', '.toggle-status', function() {
+            var productId = $(this).data('id');
+            var status = $(this).data('status');
+            var button = $(this);
+
+            if (confirm('Bạn có chắc chắn muốn thay đổi trạng thái sản phẩm này không?')) {
+                $.ajax({
+                    url: '/products/' + productId + '/toggle-status',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                    },
+                    success: function(response) {
+                        // Cập nhật trạng thái nút và ẩn/hiện sản phẩm trong giao diện
+                        button.text(response.status == 1 ? 'Ẩn' : 'Hiển thị');
+                        button.toggleClass('btn-warning btn-success');
+                        if (response.status == 0) {
+                            button.closest('tr').fadeOut();
+                        } else {
+                            button.closest('tr').fadeIn();
+                        }
+                        alert(response.message);
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Đã xảy ra lỗi. Vui lòng thử lại.');
+                    }
+                });
+            }
+        });
+    </script>
 @endsection

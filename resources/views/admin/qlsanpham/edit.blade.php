@@ -178,5 +178,41 @@
                 reader.readAsDataURL(file);
             }
         }
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const name = document.getElementById('name').value.trim();
+            const category = document.getElementById('category_id').value;
+            const price = document.getElementById('price').value.trim();
+            const quantity = document.getElementById('quantity').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const images = document.getElementById('images').files;
+
+            if (!name || !category || !price || !quantity || !description) {
+                alert('Vui lòng điền đầy đủ thông tin các trường bắt buộc!');
+                e.preventDefault(); // Prevent form submission
+                return;
+            }
+
+            if (price <= 0) {
+                alert('Giá sản phẩm phải lớn hơn 0!');
+                e.preventDefault();
+                return;
+            }
+
+            if (quantity < 0) {
+                alert('Số lượng không được nhỏ hơn 0!');
+                e.preventDefault();
+                return;
+            }
+
+            if (images.length > 0) {
+                for (let i = 0; i < images.length; i++) {
+                    if (!['image/jpeg', 'image/png', 'image/jpg', 'image/gif'].includes(images[i].type)) {
+                        alert('Chỉ hỗ trợ các định dạng hình ảnh: jpeg, png, jpg, gif.');
+                        e.preventDefault();
+                        return;
+                    }
+                }
+            }
+        });
     </script>
 @endsection

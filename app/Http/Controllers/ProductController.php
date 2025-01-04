@@ -55,6 +55,21 @@ class ProductController extends Controller
             'color_ids.*' => 'exists:color_product,id',
             'size_ids' => 'nullable|array',
             'size_ids.*' => 'exists:size_product,id',
+        ], [
+            'category_id.required' => 'Vui lòng chọn danh mục.',
+            'category_id.exists' => 'Danh mục không hợp lệ.',
+            'name.required' => 'Tên sản phẩm không được để trống.',
+            'price.required' => 'Giá sản phẩm không được để trống.',
+            'quantity.required' => 'Số lượng không được để trống.',
+            'description.required' => 'Mô tả không được để trống.',
+            'status.required' => 'Vui lòng chọn trạng thái.',
+            'images.*.image' => 'Tệp phải là hình ảnh.',
+            'images.*.mimes' => 'Chỉ chấp nhận ảnh có định dạng jpeg, png, jpg, gif.',
+            'images.*.max' => 'Kích thước ảnh không vượt quá 2MB.',
+            'color_ids.required' => 'Vui lòng chọn ít nhất một màu sắc.',
+            'color_ids.*.exists' => 'Màu sắc không hợp lệ.',
+            'size_ids.required' => 'Vui lòng chọn ít nhất một kích thước.',
+            'size_ids.*.exists' => 'Kích thước không hợp lệ.',
         ]);
 
         // Create new product
@@ -230,8 +245,17 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function toggleStatus($id)
     {
-        //
+        $product = Product::findOrFail($id);
+
+        // Đổi trạng thái sản phẩm từ 1 sang 0 hoặc ngược lại
+        $product->status = $product->status == 1 ? 0 : 1;
+        $product->save();
+
+        return response()->json([
+            'status' => $product->status,
+            'message' => 'Trạng thái sản phẩm đã được cập nhật!'
+        ]);
     }
 }

@@ -72,44 +72,39 @@
                     <div id="preview-images" class="mt-3"></div>
                 </div>
             </div>
-
             <div class="row">
                 <!-- Chọn màu -->
                 <div class="mb-3 col-md-6">
-                    <label class="form-label">Màu sắc:</label>
-                    <div class="row">
+                    <label for="color_ids" class="form-label">Màu sắc:</label>
+                    <div>
                         @foreach ($colors as $color)
-                            <div class="col-md-4 col-sm-6 mb-2">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="color_ids[]"
-                                        value="{{ $color->id }}" id="color{{ $color->id }}">
-                                    <label class="form-check-label"
-                                        for="color{{ $color->id }}">{{ $color->color_name }}</label>
-                                </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="color_ids[]"
+                                    value="{{ $color->id }}" id="color_{{ $color->id }}">
+                                <label class="form-check-label"
+                                    for="color_{{ $color->id }}">{{ $color->color_name }}</label>
                             </div>
                         @endforeach
                     </div>
+                    <a href="" class="btn btn-link">Thêm mới màu sắc</a>
                 </div>
 
                 <!-- Chọn kích thước -->
                 <div class="mb-3 col-md-6">
-                    <label class="form-label">Kích thước:</label>
-                    <div class="row">
+                    <label for="size_ids" class="form-label">Kích thước:</label>
+                    <div>
                         @foreach ($sizes as $size)
-                            <div class="col-md-4 col-sm-6 mb-2">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="size_ids[]"
-                                        value="{{ $size->id }}" id="size{{ $size->id }}">
-                                    <label class="form-check-label"
-                                        for="size{{ $size->id }}">{{ $size->size_name }}</label>
-                                </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="size_ids[]"
+                                    value="{{ $size->id }}" id="size_{{ $size->id }}">
+                                <label class="form-check-label"
+                                    for="size_{{ $size->id }}">{{ $size->size_name }}</label>
                             </div>
                         @endforeach
                     </div>
-                    <a href="#" class="btn btn-link mt-2">Thêm mới kích thước</a>
+                    <a href="" class="btn btn-link">Thêm mới kích thước</a>
                 </div>
             </div>
-
 
 
             <!-- Nút thêm -->

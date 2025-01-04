@@ -103,10 +103,8 @@ class ProductController extends Controller
             }
         }
 
-
         return redirect()->route('products.index')->with('success', 'Sản phẩm đã được thêm thành công!');
     }
-
 
 
 
@@ -143,6 +141,21 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    public function deleteImage($imageId)
+    {
+        // Find the image by its ID
+        $image = ImageProduct::findOrFail($imageId);
+
+        // Delete the image file from storage
+        Storage::disk('public')->delete(str_replace('storage/', '', $image->link));
+
+        // Delete the image record from the database
+        $image->delete();
+
+        // Return a response indicating success
+        return response()->json(['message' => 'Image deleted successfully.']);
+    }
+
     public function update(Request $request, string $id)
     {
         // Validate input data
@@ -168,15 +181,6 @@ class ProductController extends Controller
 
         // Cập nhật hình ảnh
         if ($files = $request->file('images')) {
-            // Xóa hình ảnh cũ
-            foreach ($product->images as $image) {
-                // Xóa file hình ảnh cũ từ storage
-                Storage::disk('public')->delete(str_replace('storage/', '', $image->link));
-
-                // Xóa bản ghi trong database
-                $image->delete();
-            }
-
             // Thêm hình ảnh mới
             $imageData = [];
             foreach ($files as $file) {
@@ -191,7 +195,11 @@ class ProductController extends Controller
                     'updated_at' => now(),
                 ];
             }
-            ImageProduct::insert($imageData);
+
+            // Chỉ chèn hình ảnh mới vào database nếu có ảnh mới
+            if (!empty($imageData)) {
+                ImageProduct::insert($imageData);
+            }
         }
 
         // Cập nhật các kết hợp màu sắc và kích thước

@@ -83,11 +83,13 @@
                                 <td>{{ $product->status }}</td>
                                 <td>
                                     <div class="d-flex">
-                                        <a href=" #" class="btn btn-primary btn-icon-split mr-2 ">
+                                        <a href="{{ route('products.edit', $product->id) }}"
+                                            class="btn btn-primary btn-icon-split mr-2">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-edit"></i> Sửa
                                             </span>
                                         </a>
+
                                         <a href="#" class="btn btn-danger btn-icon-split ">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-trash"></i> Xoá

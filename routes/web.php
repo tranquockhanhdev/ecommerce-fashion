@@ -92,9 +92,9 @@ Route::get('/admin/qlsanpham', [ProductController::class, 'index'])->name('admin
 // Resource routes cho Product
 Route::resource('products', ProductController::class);
 
-Route::post('/get-colors-by-sizes', [ProductController::class, 'getColorsBySizes']);
 // Routes cho Color
 Route::resource('colors', ColorController::class);
-
 // Routes cho Size
 Route::resource('sizes', SizeController::class);
+// Route để xóa hình ảnh
+Route::delete('/delete-image/{imageId}', [ProductController::class, 'deleteImage'])->name('deleteImage');

@@ -29,14 +29,13 @@ class ProductController extends Controller
      */
     public function create()
     {
-        // Lấy tất cả danh mục, màu và kích thước hiện có
+        // Lấy tất cả danh mục, màu sắc và kích thước
         $categories = Category::all();
         $colors = ColorProduct::all();
         $sizes = SizeProduct::all();
 
-        return view('admin.products.create', compact('categories', 'colors', 'sizes'));
+        return view('admin.qlsanpham.create', compact('categories', 'colors', 'sizes'));
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -45,42 +44,38 @@ class ProductController extends Controller
         // Xác thực dữ liệu đầu vào
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'required|exists:category,id',
             'price' => 'required|numeric|min:0',
             'quantity' => 'required|integer|min:0',
             'description' => 'required|string',
             'status' => 'required|boolean',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Xác thực nhiều ảnh
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'color_id' => 'required|exists:color_product,id',
+            'size_id' => 'required|exists:size_product,id',
         ]);
 
         // Thêm sản phẩm mới
-        $product = Product::create([
-            'name' => $request->name,
-            'category_id' => $request->category_id,
-            'price' => $request->price,
-            'quantity' => $request->quantity,
-            'description' => $request->description,
-            'status' => $request->status,
-        ]);
+        $product = Product::create($validatedData);
 
         // Thêm hình ảnh sản phẩm
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                // Lưu ảnh vào thư mục public
                 $path = $image->store('products', 'public');
-
-                // Tạo bản ghi hình ảnh cho sản phẩm
-                ImageProduct::create([
-                    'product_id' => $product->id,
+                $product->images()->create([
                     'link' => $path,
                 ]);
             }
         }
 
-        // Thêm màu và kích thước mới nếu có
+        // Thêm chi tiết sản phẩm (màu và kích thước)
+        $product->details()->create([
+            'colorproduct_id' => $request->color_id,
+            'sizeproduct_id' => $request->size_id,
+        ]);
 
-        return redirect()->route('products.index')->with('success', 'Thêm sản phẩm thành công!');
+        return redirect()->route('products.index')->with('success', 'Sản phẩm đã được thêm thành công!');
     }
+
 
 
     /**

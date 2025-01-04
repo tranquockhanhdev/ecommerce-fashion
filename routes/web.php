@@ -87,3 +87,6 @@ Route::get('/checkout', function () {
 
 
 Route::get('/admin/qlsanpham', [ProductController::class, 'index'])->name('admin.qlsanpham.index');
+// Resource routes cho Product
+Route::resource('products', ProductController::class);
+

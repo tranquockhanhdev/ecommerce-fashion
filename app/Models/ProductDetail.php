@@ -19,7 +19,7 @@ class ProductDetail extends Model
         'sizeproduct_id',
     ];
 
-
+    public $timestamps = false;
     public function product()
     {
         return $this->belongsTo(Product::class);

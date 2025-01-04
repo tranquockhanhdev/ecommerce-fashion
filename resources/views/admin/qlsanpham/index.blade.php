@@ -3,12 +3,13 @@
     <h1 class="h3 mb-0 text-gray-800">Quản lí sản phẩm</h1>
     <hr>
     <div class="d-flex justify-content-between">
-        <a href="#" class="btn btn-success btn-icon-split mb-3">
+        <a href="{{ route('products.create') }}" class="btn btn-success btn-icon-split mb-3">
             <span class="icon text-white-50">
                 <i class="fas fa-plus"></i>
             </span>
             <span class="text">Thêm sản phẩm</span>
         </a>
+
         <a href="#" class="btn btn-success btn-icon-split mb-3 ">
             <span class="icon text-white-50">
                 <i class="fas fa-print"></i>
@@ -33,7 +34,7 @@
                             <th>Giá</th>
                             <th>Ảnh</th>
                             <th>Màu sắc</th>
-                            <th>Kích thước</th>
+                            <th>Size</th>
                             <th>Số lượng</th>
                             <th>Trạng Thái </th>
                             <th>Thao tác</th>
@@ -48,7 +49,7 @@
                             <th>Giá</th>
                             <th>Ảnh</th>
                             <th>Màu sắc</th>
-                            <th>Kích thước</th>
+                            <th>Size</th>
                             <th>Số lượng</th>
                             <th>Trạng Thái </th>
                             <th>Thao tác</th>
@@ -75,7 +76,7 @@
                                 </td>
                                 <td>
                                     @foreach ($product->details as $detail)
-                                        {{ $detail->size->sizename ?? 'Không có kích thước' }},
+                                        {{ $detail->size->size_name ?? 'Không có kích thước' }},
                                     @endforeach
                                 </td>
                                 <td>{{ $product->quantity }}</td>

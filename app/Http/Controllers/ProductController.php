@@ -41,7 +41,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // Xác thực dữ liệu đầu vào
+        // Xác thực dữ liệu
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:category,id',
@@ -50,31 +50,38 @@ class ProductController extends Controller
             'description' => 'required|string',
             'status' => 'required|boolean',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'color_id' => 'required|exists:color_product,id',
-            'size_id' => 'required|exists:size_product,id',
+            'color_ids' => 'required|array',
+            'color_ids.*' => 'exists:color_product,id',
+            'size_ids' => 'required|array',
+            'size_ids.*' => 'exists:size_product,id',
         ]);
 
-        // Thêm sản phẩm mới
+        // Tạo sản phẩm mới
         $product = Product::create($validatedData);
 
         // Thêm hình ảnh sản phẩm
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('products', 'public');
-                $product->images()->create([
-                    'link' => $path,
+        if ($files = $request->file('images')) {
+            foreach ($files as $file) {
+                $filePath = $file->storeAs('products', time() . '.' . $file->getClientOriginalExtension(), 'public');
+                $product->images()->create(['link' => 'storage/' . $filePath]);
+            }
+        }
+
+        // Thêm chi tiết sản phẩm cho từng màu và kích thước
+        foreach ($request->color_ids as $colorId) {
+            foreach ($request->size_ids as $sizeId) {
+                $product->details()->create([
+                    'colorproduct_id' => $colorId,
+                    'sizeproduct_id' => $sizeId,  // Lưu mỗi size cho từng màu
                 ]);
             }
         }
 
-        // Thêm chi tiết sản phẩm (màu và kích thước)
-        $product->details()->create([
-            'colorproduct_id' => $request->color_id,
-            'sizeproduct_id' => $request->size_id,
-        ]);
-
         return redirect()->route('products.index')->with('success', 'Sản phẩm đã được thêm thành công!');
     }
+
+
+
 
 
 
@@ -93,6 +100,7 @@ class ProductController extends Controller
     {
         //
     }
+
 
     /**
      * Update the specified resource in storage.

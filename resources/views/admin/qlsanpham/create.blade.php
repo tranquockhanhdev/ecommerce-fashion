@@ -61,42 +61,109 @@
                     </select>
                 </div>
 
+
                 <!-- Hình ảnh -->
-                <div class="mb-3 col-md-6">
+                <div class="mb-3">
                     <label for="images" class="form-label">Hình ảnh:</label>
-                    <input type="file" name="images[]" id="images" class="form-control" multiple required>
+                    <input type="file" name="images[]" id="images" class="form-control" multiple>
                     <small class="text-muted">Bạn có thể chọn nhiều ảnh</small>
+
+                    <!-- Khu vực hiển thị ảnh preview -->
+                    <div id="preview-images" class="mt-3"></div>
                 </div>
             </div>
 
             <div class="row">
                 <!-- Chọn màu -->
                 <div class="mb-3 col-md-6">
-                    <label for="color_id" class="form-label">Màu sắc:</label>
-                    <select name="color_id" id="color_id" class="form-select" required>
-                        <option value="">-- Chọn màu sắc --</option>
+                    <label class="form-label">Màu sắc:</label>
+                    <div class="row">
                         @foreach ($colors as $color)
-                            <option value="{{ $color->id }}">{{ $color->color_name }}</option>
+                            <div class="col-md-4 col-sm-6 mb-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="color_ids[]"
+                                        value="{{ $color->id }}" id="color{{ $color->id }}">
+                                    <label class="form-check-label"
+                                        for="color{{ $color->id }}">{{ $color->color_name }}</label>
+                                </div>
+                            </div>
                         @endforeach
-                    </select>
-                    <a href="" class="btn btn-link">Thêm mới màu sắc</a>
+                    </div>
                 </div>
 
                 <!-- Chọn kích thước -->
                 <div class="mb-3 col-md-6">
-                    <label for="size_id" class="form-label">Kích thước:</label>
-                    <select name="size_id" id="size_id" class="form-select" required>
-                        <option value="">-- Chọn kích thước --</option>
+                    <label class="form-label">Kích thước:</label>
+                    <div class="row">
                         @foreach ($sizes as $size)
-                            <option value="{{ $size->id }}">{{ $size->size_name }}</option>
+                            <div class="col-md-4 col-sm-6 mb-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="size_ids[]"
+                                        value="{{ $size->id }}" id="size{{ $size->id }}">
+                                    <label class="form-check-label"
+                                        for="size{{ $size->id }}">{{ $size->size_name }}</label>
+                                </div>
+                            </div>
                         @endforeach
-                    </select>
-                    <a href="" class="btn btn-link">Thêm mới kích thước</a>
+                    </div>
+                    <a href="#" class="btn btn-link mt-2">Thêm mới kích thước</a>
                 </div>
             </div>
+
+
 
             <!-- Nút thêm -->
             <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
         </form>
     </div>
+@endsection
+@section('script')
+    <script>
+        document.getElementById('images').addEventListener('change', function(event) {
+            const files = event.target.files;
+            const previewContainer = document.getElementById('preview-images');
+            previewContainer.innerHTML = ''; // Xoá nội dung cũ
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Tạo container cho mỗi ảnh
+                    const imgWrapper = document.createElement('div');
+                    imgWrapper.style.position = 'relative';
+                    imgWrapper.style.display = 'inline-block';
+                    imgWrapper.style.marginRight = '10px';
+
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.width = 100; // Set kích thước preview
+
+                    // Tạo nút "X" để xóa ảnh
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.innerText = 'X';
+                    deleteBtn.style.position = 'absolute';
+                    deleteBtn.style.top = '5px';
+                    deleteBtn.style.right = '5px';
+                    deleteBtn.style.backgroundColor = 'rgba(255, 0, 0, 0.7)';
+                    deleteBtn.style.color = 'white';
+                    deleteBtn.style.border = 'none';
+                    deleteBtn.style.borderRadius = '50%';
+                    deleteBtn.style.width = '20px';
+                    deleteBtn.style.height = '20px';
+                    deleteBtn.style.fontSize = '12px';
+                    deleteBtn.style.cursor = 'pointer';
+
+                    // Xử lý sự kiện xóa ảnh
+                    deleteBtn.addEventListener('click', function() {
+                        imgWrapper.remove();
+                    });
+
+                    // Gắn các phần tử vào nhau
+                    imgWrapper.appendChild(img);
+                    imgWrapper.appendChild(deleteBtn);
+                    previewContainer.appendChild(imgWrapper);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+    </script>
 @endsection

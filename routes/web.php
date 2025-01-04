@@ -58,6 +58,27 @@ Route::middleware(['auth'])->group(function () {
 
     // Các route khác dành cho người đăng nhập
     Route::get('/secretkey', [App\Http\Controllers\SecretController::class, 'showSecret'])->name('secretkey');
+    Route::get('/checkout', function () {
+        return view('client.checkout');
+    })->name('client.checkout');
+    Route::get('/wishlist', function () {
+        return view('client.wishlist');
+    })->name('client.wishlist');
+    Route::get('/shopping-cart', function () {
+        return view('client.shopping-cart');
+    })->name('client.shopping-cart');
+    Route::get('/account-setting', function () {
+        return view('client.account-setting');
+    })->name('client.account-setting');
+    Route::get('/order-details', function () {
+        return view('client.order-details');
+    })->name('client.order-details');
+    Route::get('/user-dashboard', function () {
+        return view('client.user-dashboard');
+    })->name('client.user-dashboard');
+    Route::get('/order-history', function () {
+        return view('client.order-history');
+    })->name('client.order-history');
 });
 // Các route khác không cần đăng nhập
 Route::get('/', function () {
@@ -74,6 +95,25 @@ Route::prefix('auth')->name('auth.')->group(function () {
     // Route xử lý việc thay đổi mật khẩu (POST)
     Route::post('/confirmpassword', [App\Http\Controllers\Auth\ResetPasswordController::class, 'updatePassword'])->name('updatePassword');
 });
-
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', function () {
+    return view('client.homepage');
+})->name('client.homepage');
+Route::get('/shop', function () {
+    return view('client.shop');
+})->name('client.shop');
+Route::get('/blog-list', function () {
+    return view('client.blog-list');
+})->name('client.blog-list');
+Route::get('/single-blog', function () {
+    return view('client.single-blog');
+})->name('client.single-blog');
+Route::get('/about', function () {
+    return view('client.about');
+})->name('client.about');
+Route::get('/contact', function () {
+    return view('client.contact');
+})->name('client.contact');
+Route::get('/product-details', function () {
+    return view('client.product-details');
+})->name('client.product-details');

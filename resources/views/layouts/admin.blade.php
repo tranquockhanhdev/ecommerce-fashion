@@ -104,7 +104,7 @@
 
             <!-- Nav Item - Quản lí bình luận) -->
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.qlbinhluan.index') }}">
+                <a class="nav-link" href="{{ route('qlbinhluan.index') }}">
                     <i class="fas fa-comments"></i>
                     <span>Quản lí bình luận</span></a>
             </li>

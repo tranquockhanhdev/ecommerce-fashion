@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BinhluanController;
 use App\Http\Controllers\DanhmucController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,4 @@ Route::get('/admin/qllienhe', function () {
     return view('admin.qllienhe.index');
 })->name('admin.qllienhe.index');
 
-Route::get('/admin/qlbinhluan', function () {
-    return view('admin.qlbinhluan.index');
-})->name('admin.qlbinhluan.index');
+Route::resource('/admin/qlbinhluan', BinhluanController::class);

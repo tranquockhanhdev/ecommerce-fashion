@@ -119,7 +119,7 @@ class ProductController extends Controller
             }
         }
 
-        return redirect()->route('products.index')->with('success', 'Sản phẩm đã được thêm thành công!');
+        return redirect()->route('admin.qlsanpham.index')->with('success', 'Sản phẩm đã được thêm thành công!');
     }
 
 
@@ -133,8 +133,13 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // Get the product along with its related data (category, images, colors, sizes, etc.)
+        $product = Product::with(['category', 'images', 'details.color', 'details.size'])->findOrFail($id);
+
+        // Return a view to show the product details
+        return view('admin.qlsanpham.show', compact('product'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -169,7 +174,7 @@ class ProductController extends Controller
         $image->delete();
 
         // Return a response indicating success
-        return response()->json(['message' => 'Image deleted successfully.']);
+        return response()->json(['message' => 'Xóa hình ảnh thành công.']);
     }
 
     public function update(Request $request, string $id)
@@ -180,6 +185,7 @@ class ProductController extends Controller
             'category_id' => 'required|exists:category,id',
             'price' => 'required|numeric|min:0',
             'quantity' => 'required|integer|min:0',
+            'slug' => 'required|string|unique:product,slug|max:255',
             'description' => 'required|string',
             'status' => 'required|boolean',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -239,7 +245,7 @@ class ProductController extends Controller
         }
 
         // Trả về trang danh sách sản phẩm với thông báo thành công
-        return redirect()->route('products.index')->with('success', 'Sản phẩm đã được cập nhật thành công!');
+        return redirect()->route('admin.qlsanpham.index')->with('success', 'Sản phẩm đã được cập nhật thành công!');
     }
 
 

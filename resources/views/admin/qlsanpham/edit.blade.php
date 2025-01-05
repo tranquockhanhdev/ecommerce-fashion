@@ -12,8 +12,14 @@
                 <!-- Tên sản phẩm -->
                 <div class="mb-4">
                     <label for="name" class="form-label fw-bold text-dark">Tên sản phẩm</label>
-                    <input type="text" name="name" id="name" class="form-control form-control-lg shadow-sm"
-                        value="{{ $product->name }}" required>
+                    <input type="text" name="name" id="slug" onkeyup="ChangeToSlug()"
+                        class="form-control form-control-lg shadow-sm" value="{{ $product->name }}" required>
+                </div>
+                <!-- Slug -->
+                <div class="mb-4">
+                    <label for="name" class="form-label fw-bold text-dark">Slug</label>
+                    <input type="text" name="slug" id="convert_slug" class="form-control form-control-lg shadow-sm"
+                        value="{{ $product->slug }}" required>
                 </div>
 
                 <!-- Danh mục -->
@@ -133,7 +139,7 @@
         function removeImage(button) {
             const imageId = button.getAttribute('data-image-id'); // Get image ID (add it in the button)
 
-            if (confirm('Are you sure you want to delete this image?')) {
+            if (confirm('Bạn có chắc chắn muốn xóa hình ảnh này?')) {
                 // Get the CSRF token from the page
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -147,10 +153,10 @@
                     success: function(response) {
                         // If successful, remove the image from the DOM
                         button.closest('.col-md-3').remove();
-                        alert('Image deleted successfully.');
+                        alert('Xóa hình ảnh thành công!.');
                     },
                     error: function() {
-                        alert('Failed to delete the image.');
+                        alert('Xóa hình ảnh thất bại!.');
                     }
                 });
             }

@@ -98,8 +98,5 @@ Route::resource('colors', ColorController::class);
 Route::resource('sizes', SizeController::class);
 // Route để xóa hình ảnh
 Route::delete('/delete-image/{imageId}', [ProductController::class, 'deleteImage'])->name('deleteImage');
-// web.php
-
-// web.php
 
 Route::post('/products/{id}/toggle-status', [ProductController::class, 'toggleStatus'])->name('products.toggleStatus');

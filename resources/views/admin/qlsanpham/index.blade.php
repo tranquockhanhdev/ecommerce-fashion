@@ -10,13 +10,18 @@
             <span class="text">Thêm sản phẩm</span>
         </a>
 
-        <a href="#" class="btn btn-success btn-icon-split mb-3 ">
+        <a href="#" class="btn btn-success btn-icon-split mb-3" onclick="generatePDF()">
             <span class="icon text-white-50">
                 <i class="fas fa-print"></i>
             </span>
             <span class="text">In Danh Sách</span>
         </a>
     </div>
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
@@ -32,7 +37,6 @@
                             <th>Danh mục</th>
                             <th>Mô tả</th>
                             <th>Giá</th>
-                            <th>Ảnh</th>
                             <th>Màu sắc</th>
                             <th>Size</th>
                             <th>Số lượng</th>
@@ -47,7 +51,6 @@
                             <th>Danh mục</th>
                             <th>Mô tả</th>
                             <th>Giá</th>
-                            <th>Ảnh</th>
                             <th>Màu sắc</th>
                             <th>Size</th>
                             <th>Số lượng</th>
@@ -63,12 +66,6 @@
                                 <td>{{ $product->category->name ?? 'Không có danh mục' }}</td>
                                 <td>{{ $product->description }}</td>
                                 <td>{{ $product->price }}</td>
-                                <td>
-                                    @foreach ($product->images as $image)
-                                        <img src="{{ asset($image->link) }}" alt="Ảnh sản phẩm"
-                                            style="width: 50px; height: 50px;">
-                                    @endforeach
-                                </td>
                                 <td>
                                     @foreach ($product->details as $detail)
                                         {{ $detail->color->color_name ?? 'Không có màu' }},
@@ -90,6 +87,13 @@
                                             </span>
                                         </a>
 
+                                        <a href="{{ route('products.show', $product->id) }}"
+                                            class="btn btn-info btn-icon-split mr-2">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-eye"></i> Xem
+                                            </span>
+                                        </a>
+
                                         <button class="btn btn-danger btn-icon-split toggle-status"
                                             data-id="{{ $product->id }}" data-status="{{ $product->status }}">
                                             <span class="icon text-white-50">
@@ -98,6 +102,7 @@
                                             </span>
                                         </button>
                                     </div>
+
                                 </td>
 
                             </tr>

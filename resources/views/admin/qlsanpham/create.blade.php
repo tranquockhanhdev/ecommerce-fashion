@@ -8,7 +8,11 @@
             <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" class="needs-validation"
                 novalidate>
                 @csrf
-
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
                 <div class="row g-4">
                     <!-- Danh mục -->
                     <div class="col-md-6">
@@ -38,6 +42,7 @@
                             <div class="text-danger mt-2">{{ $message }}</div>
                         @enderror
                     </div>
+
 
                 </div>
 
@@ -88,28 +93,24 @@
 
                 <div class="row g-4">
                     <!-- Trạng thái -->
-                    <div class="col-md-6">
+                    <div class="mb-3 col-md-6">
                         <label for="status" class="form-label fw-bold text-dark">Trạng thái:</label>
                         <select name="status" id="status" class="form-select form-select-lg shadow-sm" required>
-                            <option value="1">Còn hàng</option>
-                            <option value="0">Hết hàng</option>
+                            <option value="1">Hiển Thị</option>
+                            <option value="0">Ẩn</option>
                         </select>
                     </div>
 
-                    <!-- Hình ảnh -->
-                    <div class="col-md-6">
-                        <label for="images" class="form-label fw-bold text-dark">Hình ảnh:</label>
-                        <input type="file" name="images[]" id="images" class="form-control form-control-lg shadow-sm"
-                            multiple>
-                        <small class="text-muted">Bạn có thể chọn nhiều ảnh</small>
-                        @error('images')
-                            <div class="text-danger mt-2">{{ $message }}</div>
-                        @enderror
-                        @error('images.*')
-                            <div class="text-danger mt-2">{{ $message }}</div>
-                        @enderror
-                    </div>
 
+                    <!-- Hình ảnh -->
+                    <div class="mb-3 col-md-4">
+                        <label for="images" class="form-label">Hình ảnh:</label>
+                        <input type="file" name="images[]" id="images" class="form-control" multiple>
+                        <small class="text-muted">Bạn có thể chọn nhiều ảnh</small>
+
+                        <!-- Khu vực hiển thị ảnh preview -->
+                        <div id="preview-images" class="mt-3"></div>
+                    </div>
                 </div>
 
                 <div class="row g-4">
@@ -126,7 +127,8 @@
                                 </div>
                             @endforeach
                         </div>
-                        <a href="#" class="btn btn-link text-primary mt-2">Thêm mới màu sắc</a>
+                        <a href="{{ route('colors.create') }}" class="btn btn-link text-primary mt-2">Thêm mới màu
+                            sắc</a>
                     </div>
 
                     <!-- Chọn kích thước -->
@@ -160,7 +162,7 @@
         document.getElementById('images').addEventListener('change', function(event) {
             const files = event.target.files;
             const previewContainer = document.getElementById('preview-images');
-            previewContainer.innerHTML = ''; // Xoá nội dung cũ
+            previewContainer.innerHTML = ''; // Xóa nội dung cũ
 
             Array.from(files).forEach(file => {
                 const reader = new FileReader();
@@ -168,15 +170,19 @@
                     // Tạo container cho mỗi ảnh
                     const imgWrapper = document.createElement('div');
                     imgWrapper.style.position = 'relative';
-                    imgWrapper.style.marginRight = '10px';
-                    imgWrapper.style.marginBottom = '10px';
+                    imgWrapper.style.display = 'inline-block';
+                    imgWrapper.style.margin = '10px';
                     imgWrapper.style.border = '1px solid #ddd';
                     imgWrapper.style.borderRadius = '8px';
-                    imgWrapper.style.padding = '5px';
+                    imgWrapper.style.width = '120px';
+                    imgWrapper.style.height = '120px';
+                    imgWrapper.style.overflow = 'hidden';
 
                     const img = document.createElement('img');
                     img.src = e.target.result;
-                    img.width = 100; // Set kích thước preview
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover'; // Giữ tỉ lệ ảnh đúng mà không bị méo
                     img.style.borderRadius = '4px';
 
                     // Tạo nút "X" để xóa ảnh
@@ -193,6 +199,9 @@
                     deleteBtn.style.height = '20px';
                     deleteBtn.style.fontSize = '12px';
                     deleteBtn.style.cursor = 'pointer';
+                    deleteBtn.style.display = 'flex';
+                    deleteBtn.style.justifyContent = 'center';
+                    deleteBtn.style.alignItems = 'center';
 
                     // Xử lý sự kiện xóa ảnh
                     deleteBtn.addEventListener('click', function() {
@@ -207,37 +216,5 @@
                 reader.readAsDataURL(file);
             });
         });
-    </script>
-    <script type="text/javascript">
-        function ChangeToSlug() {
-            var slug;
-
-            //Lấy text từ thẻ input title 
-            slug = document.getElementById("slug").value;
-            slug = slug.toLowerCase();
-            //Đổi ký tự có dấu thành không dấu
-            slug = slug.replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, 'a');
-            slug = slug.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, 'e');
-            slug = slug.replace(/i|í|ì|ỉ|ĩ|ị/gi, 'i');
-            slug = slug.replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, 'o');
-            slug = slug.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, 'u');
-            slug = slug.replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y');
-            slug = slug.replace(/đ/gi, 'd');
-            //Xóa các ký tự đặt biệt
-            slug = slug.replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi, '');
-            //Đổi khoảng trắng thành ký tự gạch ngang
-            slug = slug.replace(/ /gi, "-");
-            //Đổi nhiều ký tự gạch ngang liên tiếp thành 1 ký tự gạch ngang
-            //Phòng trường hợp người nhập vào quá nhiều ký tự trắng
-            slug = slug.replace(/\-\-\-\-\-/gi, '-');
-            slug = slug.replace(/\-\-\-\-/gi, '-');
-            slug = slug.replace(/\-\-\-/gi, '-');
-            slug = slug.replace(/\-\-/gi, '-');
-            //Xóa các ký tự gạch ngang ở đầu và cuối
-            slug = '@' + slug + '@';
-            slug = slug.replace(/\@\-|\-\@|\@/gi, '');
-            //In slug ra textbox có id “slug”
-            document.getElementById('convert_slug').value = slug;
-        }
     </script>
 @endsection

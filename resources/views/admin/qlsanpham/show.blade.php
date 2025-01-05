@@ -3,7 +3,7 @@
 @extends('layouts.admin')
 
 @section('content')
-    <h1>Chi tiết sản phẩm</h1>
+    <h1 class=" mb-4 text-primary font-weight-bold">Chi tiết sản phẩm</h1>
 
     <div class="card">
         <div class="card-body">

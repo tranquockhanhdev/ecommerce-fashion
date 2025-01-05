@@ -152,6 +152,7 @@
                 <!-- Nút thêm -->
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-success btn-lg shadow-lg">Thêm sản phẩm</button>
+                    <a href="{{ route('products.index') }}" class="btn btn-secondary btn-lg  shadow-lg">Quay lại</a>
                 </div>
             </form>
         </div>

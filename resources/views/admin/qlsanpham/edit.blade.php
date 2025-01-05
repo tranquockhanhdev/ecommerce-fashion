@@ -129,15 +129,25 @@
                     </div>
                 </div>
 
-                <!-- Nút lưu -->
                 <div class="text-center">
                     <button type="submit" class="btn btn-success btn-lg px-5 py-3 shadow-sm">Lưu thay đổi</button>
+                    <a href="{{ route('products.index') }}"
+                        class="btn btn-secondary btn-lg px-5 py-3 shadow-sm ml-3">Quay lại</a>
                 </div>
             </form>
         </div>
     </div>
 @endsection
 @section('script')
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+    <script>
+        // Khởi tạo CKEditor cho textarea
+        CKEDITOR.replace('description', {
+            language: 'vi', // Ngôn ngữ tiếng Việt
+            filebrowserBrowseUrl: '/browser/browse.php',
+            filebrowserUploadUrl: '/uploader/upload.php',
+        });
+    </script>
     <script>
         function removeImage(button) {
             const imageId = button.getAttribute('data-image-id'); // Get image ID (add it in the button)

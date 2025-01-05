@@ -9,14 +9,17 @@
     <!-- Form sửa danh mục -->
     <div class="card shadow mb-4">
         <div class="card-body">
-            <form action="{{ route('qldanhmuc.update', $category->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.qldanhmuc.update', $category->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
                 <!-- Tên danh mục -->
                 <div class="form-group">
                     <label for="name">Tên danh mục</label>
-                    <input type="text" id="name" name="name" class="form-control" value="{{ old('name', $category->name) }}" required>
+                    <input type="text" id="name" name="name" class="form-control" value="{{ old('name', $category->name) }}">
+                    @error('name')
+                        <p class="text-danger">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Slug -->

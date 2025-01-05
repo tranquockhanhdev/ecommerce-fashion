@@ -4,16 +4,18 @@
 <div class="container-fluid">
 
     <h1 class="h3 mb-4 text-gray-800">Thêm danh mục</h1>
-
     <!-- Form thêm danh mục -->
     <div class="card shadow mb-4">
         <div class="card-body">
-            <form action="{{ route('qldanhmuc.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.qldanhmuc.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="form-group">
                     <label for="name">Tên danh mục</label>
                     <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}" required>
+                    @error('name')
+                        <p class="text-danger">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="form-group">

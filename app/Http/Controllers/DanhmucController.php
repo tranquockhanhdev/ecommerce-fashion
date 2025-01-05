@@ -30,9 +30,14 @@ class DanhmucController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'unique:category',
+            'slug' => 'unique:category',
+        ]);
+
         Category::create($request->all());
 
-        return redirect()->route('qldanhmuc.index')->with('success', 'Category created successfully.');
+        return redirect()->route('admin.qldanhmuc.index')->with('success');
     }
 
     /**
@@ -61,15 +66,25 @@ class DanhmucController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $category = Category::findOrFail($id); 
+        $request->validate([
+            'name' => [
+                function ($attribute, $value, $fail) use ($id) {
+                    if (Category::where('name', $value)->where('id', '!=', $id)->exists()) {
+                        $fail('đã tồn tại.');
+                    }
+                }
+            ],
+            'slug' => 'unique:category,slug,',
+        ]);
+        $category = Category::findOrFail($id);         
         $category->update([
             'name' => $request->name,
             'image' => $request->image,
             'parent_id' => $request->parent_id,
-            'status' => $request->status == 'Kích hoạt' ? 1 : 0, 
+            'status' => $request->status == 'Hiện' ? 1 : 0, 
         ]);
 
-        return redirect()->route('qldanhmuc.index')->with('success', 'Category updated successfully');
+        return redirect()->route('admin.qldanhmuc.index');
     }
 
     /**
@@ -80,6 +95,6 @@ class DanhmucController extends Controller
         $category = Category::findOrFail($id); 
         $category->delete(); 
 
-        return redirect()->route('qldanhmuc.index')->with('success', 'Category deleted successfully');
+        return redirect()->route('admin.qldanhmuc.index');
     }
 }

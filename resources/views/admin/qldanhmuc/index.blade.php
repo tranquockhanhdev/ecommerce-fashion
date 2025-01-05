@@ -3,7 +3,7 @@
 <h1 class="h3 mb-0 text-gray-800">Quản lí danh mục</h1>
 <hr>
 <div class="d-flex justify-content-between">
-    <a href="{{ route('qldanhmuc.create') }}" class="btn btn-success btn-icon-split mb-3">
+    <a href="{{ route('admin.qldanhmuc.create') }}" class="btn btn-success btn-icon-split mb-3">
         <span class="icon text-white-50">
             <i class="fas fa-plus"></i>
         </span>
@@ -41,13 +41,13 @@
                         
                             <td>
                                 <div class="d-flex">
-                                    <a href="{{ route('qldanhmuc.edit', $category->id) }}"
+                                    <a href="{{ route('admin.qldanhmuc.edit', $category->id) }}"
                                         class="btn btn-primary btn-icon-split mr-2">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-edit"></i> Sửa
                                         </span>
                                     </a>
-                                    <form action="{{ route('qldanhmuc.destroy', $category->id) }}" method="POST"
+                                    <form action="{{ route('admin.qldanhmuc.destroy', $category->id) }}" method="POST"
                                         style="display:inline;">
                                         @csrf
                                         @method('DELETE')

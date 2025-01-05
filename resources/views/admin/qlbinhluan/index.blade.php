@@ -38,7 +38,7 @@
                             <td>{{ $comment->created_at }}</td>
                             <td>
                                 <div class="d-flex">
-                                    <form action="{{ route('qlbinhluan.destroy', $comment->id) }}" method="POST"
+                                    <form action="{{ route('admin.qlbinhluan.destroy', $comment->id) }}" method="POST"
                                         style="display:inline;">
                                         @csrf
                                         @method('DELETE')

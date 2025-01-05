@@ -28,10 +28,14 @@ Route::get('/admin/qlsanpham', function () {
     return view('admin.qlsanpham.index');
 })->name('admin.qlsanpham.index');
 
-Route::resource('qldanhmuc', DanhmucController::class);
+Route::prefix('admin')->name('admin.')->group(function() {
+    Route::resource('qldanhmuc', DanhmucController::class);
+});
 
 Route::get('/admin/qllienhe', function () {
     return view('admin.qllienhe.index');
 })->name('admin.qllienhe.index');
 
-Route::resource('/admin/qlbinhluan', BinhluanController::class);
+Route::prefix('admin')->name('admin.')->group(function() {
+    Route::resource('qlbinhluan', BinhluanController::class);
+});

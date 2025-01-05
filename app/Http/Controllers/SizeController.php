@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\SizeProduct;
+use App\Models\Category;
+use App\Models\ColorProduct;
 use Illuminate\Http\Request;
 
 class SizeController extends Controller
@@ -10,14 +12,17 @@ class SizeController extends Controller
     // Hiển thị danh sách kích thước
     public function index()
     {
-        $sizes = SizeProduct::all();
-        return view('admin.sizes.index', compact('sizes'));
+        $categories = Category::all(); // Lấy danh mục sản phẩm
+        $colors = ColorProduct::all(); // Lấy danh sách màu sắc (nếu cần)
+        $sizes = SizeProduct::all(); // Lấy danh sách kích thước (nếu cần)
+        return view('admin.qlsanpham.create', compact('categories', 'colors', 'sizes'));
     }
 
     // Hiển thị form thêm kích thước mới
     public function create()
     {
-        return view('admin.sizes.create');
+        $sizes = SizeProduct::all(); // Lấy danh sách màu sắc (nếu cần)
+        return view('admin.qlsize.create', compact('sizes'));
     }
 
     // Lưu kích thước mới
@@ -31,7 +36,7 @@ class SizeController extends Controller
             'size_name' => $request->size_name,
         ]);
 
-        return redirect()->route('sizes.index')->with('success', 'Kích thước đã được thêm thành công!');
+        return redirect()->route('products.index')->with('success', 'Kích thước đã được thêm thành công!');
     }
 
     // Hiển thị form sửa kích thước

@@ -144,7 +144,8 @@
                                 </div>
                             @endforeach
                         </div>
-                        <a href="#" class="btn btn-link text-primary mt-2">Thêm mới kích thước</a>
+                        <a href="{{ route('sizes.create') }}" class="btn btn-link text-primary mt-2">Thêm mới kích
+                            thước</a>
                     </div>
                 </div>
 

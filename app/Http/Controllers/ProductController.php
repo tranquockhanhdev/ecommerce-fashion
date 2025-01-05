@@ -185,7 +185,7 @@ class ProductController extends Controller
             'category_id' => 'required|exists:category,id',
             'price' => 'required|numeric|min:0',
             'quantity' => 'required|integer|min:0',
-            'slug' => 'required|string|unique:product,slug|max:255',
+            'slug' => 'required|string|max:255|unique:product,slug,' . $id,
             'description' => 'required|string',
             'status' => 'required|boolean',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',

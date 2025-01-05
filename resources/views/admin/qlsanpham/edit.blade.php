@@ -84,9 +84,11 @@
                 <!-- Thêm hoặc thay đổi hình ảnh -->
                 <div class="mb-4">
                     <label for="images" class="form-label fw-bold text-dark">Thêm mới hình ảnh</label>
-                    <input type="file" name="images[]" id="images" class="form-control shadow-sm" multiple
-                        onchange="previewImages()">
-                    <div id="image-preview" class="row mt-3"></div> <!-- Preview images will be shown here -->
+                    <input type="file" name="images[]" id="images" class="form-control" multiple>
+                    <small class="text-muted">Bạn có thể chọn nhiều ảnh</small>
+
+                    <!-- Khu vực hiển thị ảnh preview -->
+                    <div id="preview-images" class="mt-3"></div>
                 </div>
 
                 <div class="row">
@@ -134,7 +136,8 @@
             </form>
         </div>
     </div>
-
+@endsection
+@section('script')
     <script>
         function removeImage(button) {
             const imageId = button.getAttribute('data-image-id'); // Get image ID (add it in the button)
@@ -162,28 +165,60 @@
             }
         }
 
-        function previewImages() {
-            const previewContainer = document.getElementById('image-preview');
-            previewContainer.innerHTML = ''; // Clear previous previews
+        // Script preview hình ảnh
+        document.getElementById('images').addEventListener('change', function(event) {
+            const files = event.target.files;
+            const previewContainer = document.getElementById('preview-images');
+            previewContainer.innerHTML = ''; // Xóa nội dung cũ
 
-            const files = document.getElementById('images').files;
-
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
+            Array.from(files).forEach(file => {
                 const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgWrapper = document.createElement('div');
+                    imgWrapper.style.position = 'relative';
+                    imgWrapper.style.display = 'inline-block';
+                    imgWrapper.style.margin = '10px';
+                    imgWrapper.style.border = '1px solid #ddd';
+                    imgWrapper.style.borderRadius = '8px';
+                    imgWrapper.style.width = '120px';
+                    imgWrapper.style.height = '120px';
+                    imgWrapper.style.overflow = 'hidden';
 
-                reader.onload = function(event) {
-                    const imgElement = document.createElement('img');
-                    imgElement.src = event.target.result;
-                    imgElement.classList.add('img-fluid', 'rounded', 'shadow-sm');
-                    imgElement.style.width = '100px';
-                    imgElement.style.marginRight = '10px';
-                    previewContainer.appendChild(imgElement);
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover'; // Giữ tỉ lệ ảnh đúng mà không bị méo
+                    img.style.borderRadius = '4px';
+
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.innerText = 'X';
+                    deleteBtn.style.position = 'absolute';
+                    deleteBtn.style.top = '5px';
+                    deleteBtn.style.right = '5px';
+                    deleteBtn.style.backgroundColor = 'rgba(255, 0, 0, 0.7)';
+                    deleteBtn.style.color = 'white';
+                    deleteBtn.style.border = 'none';
+                    deleteBtn.style.borderRadius = '50%';
+                    deleteBtn.style.width = '20px';
+                    deleteBtn.style.height = '20px';
+                    deleteBtn.style.fontSize = '12px';
+                    deleteBtn.style.cursor = 'pointer';
+                    deleteBtn.style.display = 'flex';
+                    deleteBtn.style.justifyContent = 'center';
+                    deleteBtn.style.alignItems = 'center';
+
+                    deleteBtn.addEventListener('click', function() {
+                        imgWrapper.remove();
+                    });
+
+                    imgWrapper.appendChild(img);
+                    imgWrapper.appendChild(deleteBtn);
+                    previewContainer.appendChild(imgWrapper);
                 };
-
                 reader.readAsDataURL(file);
-            }
-        }
+            });
+        });
         document.querySelector('form').addEventListener('submit', function(e) {
             const name = document.getElementById('name').value.trim();
             const category = document.getElementById('category_id').value;

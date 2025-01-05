@@ -35,7 +35,6 @@
                             <th>ID</th>
                             <th>Tên sản phẩm</th>
                             <th>Danh mục</th>
-                            <th>Mô tả</th>
                             <th>Giá</th>
                             <th>Màu sắc</th>
                             <th>Size</th>
@@ -49,7 +48,6 @@
                             <th>ID</th>
                             <th>Tên sản phẩm</th>
                             <th>Danh mục</th>
-                            <th>Mô tả</th>
                             <th>Giá</th>
                             <th>Màu sắc</th>
                             <th>Size</th>
@@ -66,7 +64,6 @@
                                     <td>{{ $product->id }}</td>
                                     <td>{{ $product->name }}</td>
                                     <td>{{ $product->category->name ?? 'Không có danh mục' }}</td>
-                                    <td>{{ $product->description }}</td>
                                     <td>{{ $product->price }}</td>
                                     <td>
                                         @foreach ($product->details as $detail)
@@ -79,7 +76,13 @@
                                         @endforeach
                                     </td>
                                     <td>{{ $product->quantity }}</td>
-                                    <td>{{ $product->status == 1 ? 'Hiển thị' : 'Ẩn' }}</td>
+                                    <td>
+                                        @if ($product->status == 1)
+                                            <span class="badge badge-success">Hiển thị</span>
+                                        @else
+                                            <span class="badge badge-danger">Ẩn</span>
+                                        @endif
+                                    </td>
                                     <td>
                                         <div class="d-flex">
                                             <a href="{{ route('products.edit', $product->id) }}"

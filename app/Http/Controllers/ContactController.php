@@ -67,16 +67,17 @@ class ContactController extends Controller
             'email' => 'required|email',
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'status' => 'required|in:chờ duyệt,đã duyệt', // Kiểm tra trạng thái hợp lệ
+            'status' => 'required|in:chưa xử lý,đã xử lý', // Kiểm tra trạng thái dưới dạng số
         ]);
 
         $contact = Contact::findOrFail($id); // Lấy liên hệ cần sửa
+
         $contact->update([
             'user_name' => $request->user_name,
             'email' => $request->email,
             'title' => $request->title,
             'content' => $request->content,
-            'status' => $request->status == 'đã duyệt' ? 1 : 0, // Chuyển đổi trạng thái
+            'status' => $request->status, 
         ]);
 
         return redirect()->route('admin.qllienhe.index')->with('success', 'Contact updated successfully');

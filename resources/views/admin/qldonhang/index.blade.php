@@ -41,45 +41,45 @@
                 </thead>
                 <tbody>
                     @foreach($order as $order)
-                        <tr>
-                            <td>{{ $order->id }}</td>
-                            <td>{{ $order->account->lastname }}</td>
-                            <td>{{ $order->status == 0 ? 'Đang xử lý' : ($order->status == 1 ? 'Đã giao' : 'Đã hủy') }}</td>
-                            <td>{{ $order->status_payment == 0 ? 'Thanh toán thành công' : 'Thanh toán thất bại' }}</td>
-                            <td>{{ number_format($order->shipping_fee, 2) }}</td>
-                            <td>{{ number_format($order->total, 2) }}</td>
-                            <td>{{ $order->created_at }}</td>
-                            <td>{{ $order->delivery_at }}</td>
-                            <td>{{ $order->completed_at }}</td>
-                            <td>{{ $order->canceled_at }}</td>
-                            <td>
-                                <div class="d-flex">
-                                    <a href="{{ route('admin.qldonhang.edit', $order->id) }}"
-                                        class="btn btn-primary btn-icon-split mr-2">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-edit"></i> Sửa
-                                        </span>
-                                    </a>
-                                    <form action="{{ route('admin.qldonhang.destroy', $order->id) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-icon-split mr-2"
-                                            onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-trash"></i> Xóa
-                                            </span>
-                                        </button>
-                                    </form>
-                                    <a href="{{ route('admin.qldonhang.show', $order->id) }}"
-                                        class="btn btn-info btn-icon-split mr-2">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-info-circle"></i> ChiTiết
-                                        </span>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
+                                    <tr>
+                                        <td>{{ $order->id }}</td>
+                                        <td>{{ $order->account->lastname }}</td>
+                                        <td>{{ $order->status == 0 ? 'Đang xử lý' : ($order->status == 1 ? 'Đã giao' : 'Đã hủy') }}</td>
+                                        <td>{{ $order->status_payment == 0 ? 'Thanh toán thành công' : 'Thanh toán thất bại' }}</td>
+                                        <td>{{ number_format($order->shipping_fee, 0,',', '.') }} VNĐ</td>
+                                        <td>{{ number_format($order->orderItems->sum(function ($item) { return $item->quantity * $item->price; }) + $order->shipping_fee, 0, ',', '.') }} VNĐ</td>
+                                        <td>{{ $order->created_at }}</td>
+                                        <td>{{ $order->delivery_at }}</td>
+                                        <td>{{ $order->completed_at }}</td>
+                                        <td>{{ $order->canceled_at }}</td>
+                                        <td>
+                                            <div class="d-flex">
+                                                <a href="{{ route('admin.qldonhang.edit', $order->id) }}"
+                                                    class="btn btn-primary btn-icon-split mr-2">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-edit"></i> Sửa
+                                                    </span>
+                                                </a>
+                                                <form action="{{ route('admin.qldonhang.destroy', $order->id) }}" method="POST"
+                                                    style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-icon-split mr-2"
+                                                        onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">
+                                                        <span class="icon text-white-50">
+                                                            <i class="fas fa-trash"></i> Xóa
+                                                        </span>
+                                                    </button>
+                                                </form>
+                                                <a href="{{ route('admin.qldonhang.show', $order->id) }}"
+                                                    class="btn btn-info btn-icon-split mr-2">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-info-circle"></i> ChiTiết
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
                     @endforeach
                 </tbody>
             </table>

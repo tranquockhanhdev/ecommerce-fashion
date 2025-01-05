@@ -2,72 +2,70 @@
 
 @section('content')
 <div class="container mt-4">
-    <h1 class="mb-4">Chi Tiết Đơn Hàng</h1>
+    <h2 class="mb-4">Chi Tiết Đơn Hàng</h2>
 
     <!-- Thông tin đơn hàng -->
     <div class="card mb-4">
-        <div class="card-header bg-primary text-white">
-            Thông Tin Đơn Hàng
+        <div class="card-header">
+            <h5>Thông Tin Đơn Hàng</h5>
         </div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Mã đơn hàng:</strong> {{ $order->id }}</p>
-                    <p><strong>Tên khách hàng:</strong> {{ $order->account->lastname }} {{ $order->account->firstname }}</p>
-                    <p><strong>Trạng thái:</strong>
-                        @if ($order->status == 0) Đang xử lý
-                        @elseif ($order->status == 1) Đã giao
-                        @elseif ($order->status == 2) Đã hủy
-                        @endif
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Phí vận chuyển:</strong> {{ number_format($order->shipping_fee, 0, ',', '.') }} VND</p>
-                    <p><strong>Tổng cộng:</strong> {{ number_format($order->total, 0, ',', '.') }} VND</p>
-                    <p><strong>Ngày tạo:</strong> {{ $order->created_at }}</p>
-                </div>
-            </div>
+            <p><strong>ID Đơn Hàng:</strong> {{ $order->id }}</p>
+            <p><strong>Khách Hàng:</strong> {{ $order->account->lastname }} {{ $order->account->firstname }}</p>
+            <p><strong>Ngày Tạo:</strong> {{ $order->created_at }}</p>
+            <p><strong>Trạng Thái:</strong>
+                @if ($order->status == 0)
+                    Đang xử lý
+                @elseif ($order->status == 1)
+                    Đã giao
+                @else
+                    Đã hủy
+                @endif
+            </p>
+            <p><strong>Trạng Thái Thanh Toán:</strong>
+                @if ($order->status_payment == 0)
+                    Thanh toán thành công
+                @else
+                    Thanh toán thất bại
+                @endif
+            </p>
+            <p><strong>Phí Vận Chuyển:</strong> {{ number_format($order->shipping_fee, 0, ',', '.') }} VNĐ</p>
         </div>
     </div>
 
     <!-- Chi tiết sản phẩm -->
     <div class="card">
-        <div class="card-header bg-success text-white">
-            Chi Tiết Sản Phẩm
+        <div class="card-header">
+            <h5>Danh Sách Sản Phẩm</h5>
         </div>
         <div class="card-body">
             <table class="table table-bordered">
-                <thead class="thead-dark">
+                <thead>
                     <tr>
                         <th>#</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Số lượng</th>
-                        <th>Đơn giá (VND)</th>
-                        <th>Thành tiền (VND)</th>
+                        <th>Tên Sản Phẩm</th>
+                        <th>Số Lượng</th>
+                        <th>Giá</th>
+                        <th>Tổng Sản Phẩm</th>
+                        <th>Tổng Cộng</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($order->orderItems as $item)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $item->name }}</td>
-                        <td>{{ $item->quantity }}</td>
-                        <td>{{ number_format($item->price, 0, ',', '.') }}</td>
-                        <td>{{ number_format($item->quantity * $item->price, 0, ',', '.') }}</td>
-                    </tr>
+                    @foreach ($order->orderItems as $key => $item)
+                                    <tr>
+                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{ $item->name }}</td>
+                                        <td>{{ $item->quantity }}</td>
+                                        <td>{{ number_format($item->price, 0, ',', '.') }} VNĐ</td>
+                                        <td>{{ number_format($item->quantity * $item->price, 0, ',', '.') }} VNĐ</td>
+                                        <td>{{ number_format($order->orderItems->sum(function ($item) {
+                        return $item->quantity * $item->price; }) + $order->shipping_fee, 0, ',', '.') }} VNĐ</td>
+                                    </tr>
                     @endforeach
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="4" class="text-right"><strong>Tổng cộng:</strong></td>
-                        <td>{{ number_format($order->total, 0, ',', '.') }}</td>
-                    </tr>
-                </tfoot>
             </table>
         </div>
     </div>
-
-    <!-- Nút quay lại -->
     <div class="mt-3">
         <a href="{{ route('admin.qldonhang.index') }}" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Quay Lại

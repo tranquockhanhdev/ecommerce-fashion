@@ -18,10 +18,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        // Lấy danh sách sản phẩm kèm danh mục, ảnh, màu sắc và kích thước
+
         $products = Product::with(['category', 'images', 'details.color', 'details.size'])->get();
 
-        // Trả về view kèm dữ liệu
+
         return view('admin.qlsanpham.index', compact('products'));
     }
 
@@ -30,7 +30,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        // Lấy tất cả danh mục, màu sắc và kích thước
+
         $categories = Category::all();
         $colors = ColorProduct::all();
         $sizes = SizeProduct::all();
@@ -42,7 +42,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate input data
+
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:category,id',
@@ -73,10 +73,10 @@ class ProductController extends Controller
             'size_ids.*.exists' => 'Kích thước không hợp lệ.',
         ]);
 
-        // Create new product
+
         $newProduct = Product::create($validatedData);
 
-        // Handle images
+
         if ($files = $request->file('images')) {
             $imageData = [];
             foreach ($files as $file) {
@@ -94,20 +94,20 @@ class ProductController extends Controller
             ImageProduct::insert($imageData);
         }
 
-        // Add color and size combinations to product details
+
         if ($request->has('color_ids') || $request->has('size_ids')) {
             $colorIds = $request->has('color_ids') ? array_unique($request->color_ids) : [null];
             $sizeIds = $request->has('size_ids') ? array_unique($request->size_ids) : [null];
 
             foreach ($colorIds as $colorId) {
                 foreach ($sizeIds as $sizeId) {
-                    // Check if the combination already exists
+
                     $existingDetail = ProductDetail::where('product_id', $newProduct->id)
                         ->where('colorproduct_id', $colorId)
                         ->where('sizeproduct_id', $sizeId)
                         ->first();
 
-                    // If it doesn't exist, insert the combination
+
                     if (!$existingDetail) {
                         ProductDetail::create([
                             'product_id' => $newProduct->id,
@@ -149,13 +149,13 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        // Lấy sản phẩm cần chỉnh sửa cùng với danh mục, màu sắc, kích thước và hình ảnh
+
         $product = Product::with(['category', 'details.color', 'details.size', 'images'])->findOrFail($id);
         $categories = Category::all();
         $colors = ColorProduct::all();
         $sizes = SizeProduct::all();
 
-        // Trả về view chỉnh sửa sản phẩm
+
         return view('admin.qlsanpham.edit', compact('product', 'categories', 'colors', 'sizes'));
     }
 
@@ -164,16 +164,16 @@ class ProductController extends Controller
      */
     public function deleteImage($imageId)
     {
-        // Find the image by its ID
+
         $image = ImageProduct::findOrFail($imageId);
 
-        // Delete the image file from storage
+
         Storage::disk('public')->delete(str_replace('storage/', '', $image->link));
 
-        // Delete the image record from the database
+
         $image->delete();
 
-        // Return a response indicating success
+
         return response()->json(['message' => 'Xóa hình ảnh thành công.']);
     }
 
@@ -254,15 +254,21 @@ class ProductController extends Controller
      */
     public function toggleStatus($id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::find($id);
 
-        // Đổi trạng thái sản phẩm từ 1 sang 0 hoặc ngược lại
-        $product->status = $product->status == 1 ? 0 : 1;
-        $product->save();
+        if ($product) {
+            // Chuyển trạng thái của sản phẩm từ hiển thị (1) sang ẩn (0) hoặc ngược lại
+            $product->status = $product->status == 1 ? 0 : 1;
+            $product->save();
+
+            return response()->json([
+                'status' => $product->status,
+                'message' => 'Trạng thái sản phẩm đã thay đổi thành công!',
+            ]);
+        }
 
         return response()->json([
-            'status' => $product->status,
-            'message' => 'Trạng thái sản phẩm đã được cập nhật!'
-        ]);
+            'message' => 'Sản phẩm không tồn tại.',
+        ], 404);
     }
 }

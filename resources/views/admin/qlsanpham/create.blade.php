@@ -159,7 +159,18 @@
 @endsection
 
 @section('script')
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+
+
     <script>
+        // Khởi tạo CKEditor cho textarea
+        CKEDITOR.replace('description', {
+            language: 'vi', // Ngôn ngữ tiếng Việt
+            filebrowserBrowseUrl: '/browser/browse.php',
+            filebrowserUploadUrl: '/uploader/upload.php',
+        });
+
+        // Script preview hình ảnh
         document.getElementById('images').addEventListener('change', function(event) {
             const files = event.target.files;
             const previewContainer = document.getElementById('preview-images');
@@ -168,7 +179,6 @@
             Array.from(files).forEach(file => {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    // Tạo container cho mỗi ảnh
                     const imgWrapper = document.createElement('div');
                     imgWrapper.style.position = 'relative';
                     imgWrapper.style.display = 'inline-block';
@@ -186,7 +196,6 @@
                     img.style.objectFit = 'cover'; // Giữ tỉ lệ ảnh đúng mà không bị méo
                     img.style.borderRadius = '4px';
 
-                    // Tạo nút "X" để xóa ảnh
                     const deleteBtn = document.createElement('button');
                     deleteBtn.innerText = 'X';
                     deleteBtn.style.position = 'absolute';
@@ -204,12 +213,10 @@
                     deleteBtn.style.justifyContent = 'center';
                     deleteBtn.style.alignItems = 'center';
 
-                    // Xử lý sự kiện xóa ảnh
                     deleteBtn.addEventListener('click', function() {
                         imgWrapper.remove();
                     });
 
-                    // Gắn các phần tử vào nhau
                     imgWrapper.appendChild(img);
                     imgWrapper.appendChild(deleteBtn);
                     previewContainer.appendChild(imgWrapper);

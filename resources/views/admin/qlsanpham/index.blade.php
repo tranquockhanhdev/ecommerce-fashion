@@ -60,53 +60,53 @@
                     </tfoot>
                     <tbody>
                         @foreach ($products as $product)
-                            <tr>
-                                <td>{{ $product->id }}</td>
-                                <td>{{ $product->name }}</td>
-                                <td>{{ $product->category->name ?? 'Không có danh mục' }}</td>
-                                <td>{{ $product->description }}</td>
-                                <td>{{ $product->price }}</td>
-                                <td>
-                                    @foreach ($product->details as $detail)
-                                        {{ $detail->color->color_name ?? 'Không có màu' }},
-                                    @endforeach
-                                </td>
-                                <td>
-                                    @foreach ($product->details as $detail)
-                                        {{ $detail->size->size_name ?? 'Không có kích thước' }},
-                                    @endforeach
-                                </td>
-                                <td>{{ $product->quantity }}</td>
-                                <td>{{ $product->status }}</td>
-                                <td>
-                                    <div class="d-flex">
-                                        <a href="{{ route('products.edit', $product->id) }}"
-                                            class="btn btn-primary btn-icon-split mr-2">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-edit"></i> Sửa
-                                            </span>
-                                        </a>
-
-                                        <a href="{{ route('products.show', $product->id) }}"
-                                            class="btn btn-info btn-icon-split mr-2">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-eye"></i> Xem
-                                            </span>
-                                        </a>
-
-                                        <button class="btn btn-danger btn-icon-split toggle-status"
-                                            data-id="{{ $product->id }}" data-status="{{ $product->status }}">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-trash"></i>
-                                                {{ $product->status == 1 ? 'Xóa' : 'Hiển thị' }}
-                                            </span>
-                                        </button>
-                                    </div>
-
-                                </td>
-
-                            </tr>
+                            @if ($product->status == 1)
+                                <!-- Chỉ hiển thị sản phẩm có trạng thái "Hiển thị" -->
+                                <tr>
+                                    <td>{{ $product->id }}</td>
+                                    <td>{{ $product->name }}</td>
+                                    <td>{{ $product->category->name ?? 'Không có danh mục' }}</td>
+                                    <td>{{ $product->description }}</td>
+                                    <td>{{ $product->price }}</td>
+                                    <td>
+                                        @foreach ($product->details as $detail)
+                                            {{ $detail->color->color_name ?? 'Không có màu' }},
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        @foreach ($product->details as $detail)
+                                            {{ $detail->size->size_name ?? 'Không có kích thước' }},
+                                        @endforeach
+                                    </td>
+                                    <td>{{ $product->quantity }}</td>
+                                    <td>{{ $product->status == 1 ? 'Hiển thị' : 'Ẩn' }}</td>
+                                    <td>
+                                        <div class="d-flex">
+                                            <a href="{{ route('products.edit', $product->id) }}"
+                                                class="btn btn-primary btn-icon-split mr-2">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-edit"></i> Sửa
+                                                </span>
+                                            </a>
+                                            <a href="{{ route('products.show', $product->id) }}"
+                                                class="btn btn-info btn-icon-split mr-2">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-eye"></i> Xem
+                                                </span>
+                                            </a>
+                                            <button class="btn btn-danger btn-icon-split toggle-status"
+                                                data-id="{{ $product->id }}" data-status="{{ $product->status }}">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-trash"></i>
+                                                    {{ $product->status == 1 ? 'Xóa' : 'Hiển thị' }}
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endif
                         @endforeach
+
                     </tbody>
                 </table>
             </div>

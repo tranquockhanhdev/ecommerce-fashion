@@ -24,8 +24,8 @@
         <div class="form-group">
             <label for="status">Trạng Thái</label>
             <select class="form-control" id="status" name="status" required>
-                <option value="active">Chờ Duyệt</option>
-                <option value="inactive">Đã Duyệt</option>
+                <option value="active">Chưa Xử Lý</option>
+                <option value="inactive">Đã Xử Lý</option>
             </select>
         </div>
         <button type="submit" class="btn btn-success">Lưu</button>

@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 @section('content')
+@include('admin.home.WebsiteInfo')
+
 <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
 <hr>
 <!-- Content Row -->
@@ -272,4 +274,28 @@
 <!-- Page level custom scripts -->
 <script src="{{ asset('js/demo/chart-area-demo.js')}}"></script>
 <script src="{{ asset('js/demo/chart-pie-demo.js')}}"></script>
+<script>
+    setTimeout(() => {
+        const alert = document.querySelector('.alert');
+        if (alert) {
+            alert.classList.remove('show');
+            alert.classList.add('fade');
+            setTimeout(() => alert.remove(), 500);
+        }
+    }, 2000); // 5 giây
+    function previewImage(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            const image = document.getElementById('logoPreview');
+            image.src = e.target.result;
+            image.style.display = 'block'; // Hiển thị ảnh preview
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
 @endsection

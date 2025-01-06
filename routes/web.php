@@ -1,9 +1,10 @@
 <?php
 
+use App\Http\Controllers\admin\AdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Auth\SecretController;
+
 
 Auth::routes([
     'reset' => false,     // Tắt route reset mật khẩu
@@ -16,9 +17,7 @@ Route::fallback(function () {
 Route::middleware(['auth'])->group(function () {
     // Trang quản trị chỉ dành cho admin
     Route::middleware(['role:admin'])->group(function () {
-        Route::get('/admin', function () {
-            return view('admin.home.index');
-        })->name('admin.home.index');
+        Route::resource('admin', AdminController::class);
 
         Route::get('/admin/qldonhang', function () {
             return view('admin.qldonhang.index');
@@ -57,7 +56,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Các route khác dành cho người đăng nhập
-    Route::get('/secretkey', [App\Http\Controllers\SecretController::class, 'showSecret'])->name('secretkey');
+    Route::get('/secretkey', [App\Http\Controllers\Auth\SecretController::class, 'showSecret'])->name('secretkey');
     Route::get('/checkout', function () {
         return view('client.checkout');
     })->name('client.checkout');
@@ -81,10 +80,6 @@ Route::middleware(['auth'])->group(function () {
     })->name('client.order-history');
 });
 // Các route khác không cần đăng nhập
-Route::get('/', function () {
-    return view('layouts.client');
-});
-
 Route::prefix('auth')->name('auth.')->group(function () {
     // Route để nhập email (GET)
     Route::get('/forgotpassword', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'nhapEmail'])->name('forgotpassword');
@@ -95,10 +90,10 @@ Route::prefix('auth')->name('auth.')->group(function () {
     // Route xử lý việc thay đổi mật khẩu (POST)
     Route::post('/confirmpassword', [App\Http\Controllers\Auth\ResetPasswordController::class, 'updatePassword'])->name('updatePassword');
 });
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', function () {
     return view('client.homepage');
 })->name('client.homepage');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/shop', function () {
     return view('client.shop');
 })->name('client.shop');

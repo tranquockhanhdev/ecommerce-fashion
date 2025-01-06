@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('client/lib/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('client/css/style.css') }}" />
     @yield('css')
+
 </head>
 
 <body>
@@ -1289,6 +1290,7 @@
             <button>Gửi</button>
         </div>
     </div>
+
 </body>
 
 </html>

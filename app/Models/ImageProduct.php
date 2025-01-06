@@ -18,6 +18,8 @@ class ImageProduct extends Model
     ];
 
     public $timestamps = true; // Mặc định Laravel đã bật
+
+    
     public function product()
     {
         return $this->belongsTo(Product::class); // Mỗi hình ảnh sản phẩm thuộc về một sản phẩm

@@ -11,6 +11,7 @@ class Product extends Model
 
     protected $table = 'product';
 
+
     protected $fillable = [
         'category_id',
         'name',
@@ -21,16 +22,19 @@ class Product extends Model
         'status',
     ];
 
+
     public $timestamps = true;
     protected $dates = ['deleted_at'];
 
-    // Quan hệ với bảng ảnh (hasMany)
+
+
     public function images()
     {
         return $this->hasMany(ImageProduct::class);
     }
 
-    // Quan hệ với bảng chi tiết sản phẩm (hasMany)
+
+
     public function details()
     {
         return $this->hasMany(ProductDetail::class);

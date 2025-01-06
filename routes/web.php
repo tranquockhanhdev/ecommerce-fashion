@@ -55,29 +55,42 @@ Route::middleware(['auth'])->group(function () {
         })->name('staff.home.index');
     });
 
-    // Các route khác dành cho người đăng nhập
+    // User routes
+    Route::prefix('user')->group(function () {
+        Route::get('/account-setting', function () {
+            return view('client.user.account-setting');
+        })->name('client.user.account-setting');
+
+        Route::get('/dashboard', function () {
+            return view('client.user.user-dashboard');
+        })->name('client.user.user-dashboard');
+
+        Route::get('/order-details', function () {
+            return view('client.user.order-details');
+        })->name('client.user.order-details');
+
+        Route::get('/order-history', function () {
+            return view('client.user.order-history');
+        })->name('client.user.order-history');
+    });
+
+    // Cart routes
+    Route::prefix('cart')->group(function () {
+        Route::get('/checkout', function () {
+            return view('client.cart.checkout');
+        })->name('client.cart.checkout');
+
+        Route::get('/wishlist', function () {
+            return view('client.cart.wishlist');
+        })->name('client.cart.wishlist');
+
+        Route::get('/shopping-cart', function () {
+            return view('client.cart.shopping-cart');
+        })->name('client.cart.shopping-cart');
+    });
+
+    // Secret route
     Route::get('/secretkey', [App\Http\Controllers\Auth\SecretController::class, 'showSecret'])->name('secretkey');
-    Route::get('/checkout', function () {
-        return view('client.checkout');
-    })->name('client.checkout');
-    Route::get('/wishlist', function () {
-        return view('client.wishlist');
-    })->name('client.wishlist');
-    Route::get('/shopping-cart', function () {
-        return view('client.shopping-cart');
-    })->name('client.shopping-cart');
-    Route::get('/account-setting', function () {
-        return view('client.account-setting');
-    })->name('client.account-setting');
-    Route::get('/order-details', function () {
-        return view('client.order-details');
-    })->name('client.order-details');
-    Route::get('/user-dashboard', function () {
-        return view('client.user-dashboard');
-    })->name('client.user-dashboard');
-    Route::get('/order-history', function () {
-        return view('client.order-history');
-    })->name('client.order-history');
 });
 // Các route khác không cần đăng nhập
 Route::prefix('auth')->name('auth.')->group(function () {
@@ -90,25 +103,41 @@ Route::prefix('auth')->name('auth.')->group(function () {
     // Route xử lý việc thay đổi mật khẩu (POST)
     Route::post('/confirmpassword', [App\Http\Controllers\Auth\ResetPasswordController::class, 'updatePassword'])->name('updatePassword');
 });
+// Public routes
 Route::get('/', function () {
-    return view('client.homepage');
-})->name('client.homepage');
+    return view('client.pages.homepage');
+})->name('client.pages.homepage');
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/shop', function () {
-    return view('client.shop');
-})->name('client.shop');
-Route::get('/blog-list', function () {
-    return view('client.blog-list');
-})->name('client.blog-list');
-Route::get('/single-blog', function () {
-    return view('client.single-blog');
-})->name('client.single-blog');
-Route::get('/about', function () {
-    return view('client.about');
-})->name('client.about');
-Route::get('/contact', function () {
-    return view('client.contact');
-})->name('client.contact');
-Route::get('/product-details', function () {
-    return view('client.product-details');
-})->name('client.product-details');
+
+Route::prefix('shop')->group(function () {
+    Route::get('/shop', function () {
+        return view('client.shop.shop');
+    })->name('client.shop.shop');
+
+    Route::get('/product-details', function () {
+        return view('client.shop.product-details');
+    })->name('client.shop.product-details');
+});
+
+// Blog routes
+Route::prefix('blog')->group(function () {
+    Route::get('/list', function () {
+        return view('client.blog.blog-list');
+    })->name('client.blog.blog-list');
+
+    Route::get('/single', function () {
+        return view('client.blog.single-blog');
+    })->name('client.blog.single-blog');
+});
+
+// Static pages
+Route::prefix('pages')->group(function () {
+    Route::get('/about', function () {
+        return view('client.pages.about');
+    })->name('client.pages.about');
+
+    Route::get('/contact', function () {
+        return view('client.pages.contact');
+    })->name('client.pages.contact');
+});

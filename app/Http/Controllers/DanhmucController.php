@@ -73,12 +73,13 @@ class DanhmucController extends Controller
                         $fail('đã tồn tại.');
                     }
                 }
-            ],
-            'slug' => 'unique:category,slug,',
+            ]
         ]);
+
         $category = Category::findOrFail($id);         
         $category->update([
             'name' => $request->name,
+            'slug' => $request->slug,
             'image' => $request->image,
             'parent_id' => $request->parent_id,
             'status' => $request->status == 'Hiện' ? 1 : 0, 

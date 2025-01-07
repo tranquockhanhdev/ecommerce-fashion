@@ -44,7 +44,7 @@ class DanhmucController extends Controller
             'name' => $request->name,
             'slug' => $request->slug,
             'image' => $imagePath ? str_replace('public/', 'storage/', $imagePath) : null,
-            'status' => $request->status, 
+            'status' => $request->status,
             'parent_id' => $request->parent_id,
         ]);
 
@@ -66,9 +66,9 @@ class DanhmucController extends Controller
     {
         $category = Category::findOrFail($id);
         $categories = Category::whereNull('parent_id')
-                              ->where('id', '!=', $id) // Id không phải danh mục hiện tại
-                              ->get();
-    
+            ->where('id', '!=', $id) // Id không phải danh mục hiện tại
+            ->get();
+
         return view('admin.qldanhmuc.edit', compact('category', 'categories'));
     }
 
@@ -81,31 +81,38 @@ class DanhmucController extends Controller
             'name' => [
                 function ($attribute, $value, $fail) use ($id) {
                     if (Category::where('name', $value)->where('id', '!=', $id)->exists()) {
-                        $fail('đã tồn tại.');
+                        $fail('Tên danh mục đã tồn tại.');
                     }
                 }
             ]
         ]);
 
-        $category = Category::findOrFail($id);       
+        $category = Category::findOrFail($id);
+
+        // Cập nhật ảnh nếu có
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('public/category');
+            $category->image = str_replace('public/', 'storage/', $imagePath);
+        }
+
         $category->update([
             'name' => $request->name,
             'slug' => $request->slug,
-            'image' => $request->image,
             'parent_id' => $request->parent_id,
-            'status' => $request->status == 'Hiện' ? 1 : 0, 
+            'status' => $request->status,
         ]);
 
-        return redirect()->route('admin.qldanhmuc.index');
+        return redirect()->route('admin.qldanhmuc.index')->with('success', 'Danh mục đã được cập nhật thành công.');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        $category = Category::findOrFail($id); 
-        $category->delete(); 
+        $category = Category::findOrFail($id);
+        $category->delete();
 
         return redirect()->route('admin.qldanhmuc.index');
     }

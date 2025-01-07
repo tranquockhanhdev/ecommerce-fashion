@@ -33,8 +33,8 @@
                     <label for="image">Ảnh</label>
                     <input type="file" id="image" name="image" class="form-control">
                     @if($category->image)
-                        <img src="{{ asset('storage/'.$category->image) }}" alt="Ảnh danh mục" class="mt-2" width="100">
-                    @endif
+                    <input type="text" class="form-control" value="{{ ($category->image) }}" >
+                @endif
                 </div>
 
                 <!-- Trạng thái -->

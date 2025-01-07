@@ -35,7 +35,18 @@ class DanhmucController extends Controller
             'slug' => 'unique:category',
         ]);
 
-        Category::create($request->all());
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('public/category');
+        }
+
+        Category::create([
+            'name' => $request->name,
+            'slug' => $request->slug,
+            'image' => $imagePath ? str_replace('public/', 'storage/', $imagePath) : null,
+            'status' => $request->status ?? 0,
+            'parent_id' => $request->parent_id,
+        ]);
 
         return redirect()->route('admin.qldanhmuc.index')->with('success');
     }

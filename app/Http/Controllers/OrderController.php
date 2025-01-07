@@ -141,7 +141,13 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
+        // Tìm đơn hàng
         $order = Order::findOrFail($id);
+
+        // Xóa tất cả các sản phẩm liên quan trong order_item
+        $order->orderItems()->delete();
+
+        // Xóa đơn hàng
         $order->delete();
 
         return redirect()->route('admin.qldonhang.index')->with('success', 'Đơn hàng đã bị xóa!');

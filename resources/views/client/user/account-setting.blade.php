@@ -10,6 +10,11 @@
 <div class="section--xl pt-0">
     <div class="container">
         <!-- Account Settings  -->
+        @if (session('successinfo'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{ session('successinfo') }}</strong>
+        </div>
+        @endif
         <div class="dashboard__content-card">
             <div class="dashboard__content-card-header">
                 <h5 class="font-body--xxl-500">Cài Đặt Tài Khoản</h5>
@@ -17,51 +22,68 @@
             <div class="dashboard__content-card-body">
                 <div class="row">
                     <div class="col-lg-7 order-lg-0 order-2">
-                        <form action="#">
-                            <div class="contact-form__content">
-                                <div class="contact-form-input">
-                                    <label for="fname1">First Name </label>
-                                    <input type="text" id="fname1" placeholder="Điền First Name" value="{{ old('firstname', $website->firstname) }}" />
+                        <form action="{{ route('client.user.account-settingchangeInfo') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="container">
+                                <div class="form-group">
+                                    <label for="fname1">First Name</label>
+                                    <input type="text" id="fname1" class="form-control" placeholder="Điền First Name" value="{{ old('firstname', $website->firstname) }}" name="firstname" />
+                                    @error('firstname')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                <div class="contact-form-input">
-                                    <label for="lname2">Last Name </label>
-                                    <input type="text" id="lname2" placeholder="Điền LastName" value="{{ old('lastname', $website->lastname) }}" />
+
+                                <div class="form-group">
+                                    <label for="lname2">Last Name</label>
+                                    <input type="text" id="lname2" class="form-control" placeholder="Điền Last Name" value="{{ old('lastname', $website->lastname) }}" name="lastname" />
+                                    @error('lastname')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                <div class="contact-form-input">
-                                    <label for="email1">Email </label>
-                                    <input type="text" id="email1" placeholder="Điền email" value="{{ old('email', $website->email) }}" />
+
+                                <div class="form-group">
+                                    <label for="email1">Email</label>
+                                    <input type="email" id="email1" class="form-control" placeholder="Điền email" value="{{ old('email', $website->email) }}" name="email" />
+                                    @error('email')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                <div class="contact-form-input">
+
+                                <div class="form-group">
                                     <label for="date">Date</label>
-                                    <input type="date" id="date" value="{{ old('date', date('Y-m-d', strtotime($website->date))) }}" />
+                                    <input type="date" id="date" class="form-control" value="{{ old('date', date('Y-m-d', strtotime($website->date))) }}" name="date" />
+                                    @error('date')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                <div class="contact-form-btn">
-                                    <button class="button button--md" type="submit">
-                                        Lưu Thay Đổi
-                                    </button>
+
+                                <div class="form-group">
+                                    <button class="btn btn-primary" type="submit">Lưu Thay Đổi</button>
                                 </div>
                             </div>
                         </form>
+
                     </div>
                     <div class="col-lg-5 order-lg-0 order-1">
                         <div class="dashboard__content-card-img">
-                            <form action="#" style="text-align: center">
+                            <form action="{{ route('client.user.account-settingchangeAvatar') }}" method="POST" enctype="multipart/form-data" style="text-align: center">
+                                @csrf
                                 <div class="dashboard__content-img-wrapper">
                                     <div id="imagePreview"
-                                        style="background-image: url('{{ asset('./client/images/user/img-07.png') }}');">
+                                        style="background-image: url('{{ asset('storage/logos/' . $website->image) }}'); background-size: cover; background-position: center; width: 150px; height: 150px; border-radius: 50%; margin: 0 auto;">
                                     </div>
                                 </div>
-                                <!-- <button class="button button--outline">
-                                            Choose Image
-                                          </button> -->
-                                <div class="upload-image button button--outline">
-                                    <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg"
-                                        id="imageUpload" />
-                                    <label for="imageUpload">Chọn Hình Ảnh</label>
+
+                                <div class="upload-image button button--outline" style="margin-top: 15px;">
+                                    <input type="file" id="imageUpload" name="logo" accept=".png, .jpg, .jpeg" style="display: none;" />
+                                    <label for="imageUpload" style="cursor: pointer;">Chọn Hình Ảnh</label>
                                 </div>
+
+                                <button type="submit" class="button button--primary" style="margin-top: 10px;">Cập Nhật</button>
                             </form>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -77,7 +99,7 @@
                 <h5 class="font-body--xxl-500">Địa Chỉ Thanh Toán</h5>
             </div>
             <div class="dashboard__content-card-body">
-                <form action="{{ route('client.user.account-settingchangeInfo') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('client.user.account-settingchangeAddress') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="container">
                         <div class="form-group">
@@ -182,19 +204,15 @@
             setTimeout(() => alert.remove(), 500);
         }
     }, 5000); // 5 giây
-    function previewImage(event) {
+    document.getElementById('imageUpload').addEventListener('change', function(event) {
         const file = event.target.files[0];
-        const reader = new FileReader();
-
-        reader.onload = function(e) {
-            const image = document.getElementById('logoPreview');
-            image.src = e.target.result;
-            image.style.display = 'block'; // Hiển thị ảnh preview
-        };
-
         if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('imagePreview').style.backgroundImage = `url('${e.target.result}')`;
+            };
             reader.readAsDataURL(file);
         }
-    }
+    });
 </script>
 @endsection

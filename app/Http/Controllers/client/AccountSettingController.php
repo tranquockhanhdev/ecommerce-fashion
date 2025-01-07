@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\client;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Account;
 use Illuminate\Http\Request;
@@ -59,7 +60,7 @@ class AccountSettingController extends Controller
 
         return redirect()->route('client.user.account-setting')->with('success', 'Mật khẩu đã được thay đổi.');
     }
-    public function changeInfo(Request $request)
+    public function changeAddress(Request $request)
     {
         $request->validate([
             'address' => 'required|string|max:255',
@@ -72,5 +73,75 @@ class AccountSettingController extends Controller
 
         // Quay lại trang trước đó với thông báo thành công
         return redirect()->back()->with('successs', 'Thông tin đã được cập nhật!');
+    }
+    public function changeInfo(Request $request)
+    {
+        $userId = Auth::user()->id; // Lấy ID người dùng hiện tại
+        $website = Account::find($userId);
+
+        // Kiểm tra nếu email thay đổi
+        $emailRules = $website->email === $request->input('email')
+            ? 'required|string|email|max:255'
+            : 'required|string|email|max:255|unique:account';
+
+        // Xác thực dữ liệu
+        $request->validate([
+            'lastname' => 'required|string|max:255', // Họ
+            'firstname' => 'required|string|max:255', // Tên
+            'email' => $emailRules,
+            'date' => 'required|date',
+        ], [
+            'lastname.required' => 'Họ là bắt buộc.',
+            'lastname.string' => 'Họ phải là chuỗi ký tự.',
+            'lastname.max' => 'Họ không được vượt quá 255 ký tự.',
+            'firstname.required' => 'Tên là bắt buộc.',
+            'firstname.string' => 'Tên phải là chuỗi ký tự.',
+            'firstname.max' => 'Tên không được vượt quá 255 ký tự.',
+            'email.required' => 'Email là bắt buộc.',
+            'email.string' => 'Email phải là chuỗi ký tự.',
+            'email.email' => 'Email phải là địa chỉ email hợp lệ.',
+            'email.max' => 'Email không được vượt quá 255 ký tự.',
+            'email.unique' => 'Email này đã tồn tại trong hệ thống.',
+            'date.required' => 'Ngày là bắt buộc.',
+            'date.date' => 'Ngày phải là định dạng ngày hợp lệ.',
+        ]);
+
+        // Cập nhật thông tin người dùng
+        $website->firstname = $request->input('firstname');
+        $website->lastname = $request->input('lastname');
+        $website->email = $request->input('email');
+        $website->date = $request->input('date');
+        $website->save();
+
+        return redirect()->back()->with('successinfo', 'Thông tin đã được cập nhật!');
+    }
+
+    public function changeAvatar(Request $request)
+    {
+        // Xác thực tệp tải lên
+        $request->validate([
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg|max:5000', // Tối đa 5MB
+        ], [
+            'logo.image' => 'Logo phải là một tệp hình ảnh.',
+            'logo.mimes' => 'Logo chỉ được chấp nhận định dạng .png, .jpg, .jpeg.',
+            'logo.max' => 'Logo không được vượt quá 5MB.',
+        ]);
+
+        // Lấy thông tin tài khoản người dùng
+        $account = Account::find(Auth::user()->id);
+
+        if ($request->hasFile('logo')) {
+            // Lưu tệp logo mới
+            $fileName = time() . '_' . uniqid() . '.' . $request->file('logo')->getClientOriginalExtension();
+            $request->file('logo')->storeAs('logos', $fileName, 'public');
+
+            // Cập nhật thông tin logo mới trong cơ sở dữ liệu
+            $account->image = $fileName;
+        }
+
+        // Lưu thay đổi
+        $account->save();
+
+        return redirect()->back()->with('successinfo', 'Thông tin đã được cập nhật!');
     }
 }

@@ -62,7 +62,9 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('account-setting')->group(function () {
             Route::get('/', [AccountSettingController::class, 'index'])->name('client.user.account-setting');
             Route::post('/', [AccountSettingController::class, 'changePassword'])->name('client.user.account-setting');
-            Route::post('/changeInfo', [AccountSettingController::class, 'changeInfo'])->name('client.user.account-settingchangeInfo');;
+            Route::post('/changeAddress', [AccountSettingController::class, 'changeAddress'])->name('client.user.account-settingchangeAddress');
+            Route::post('/changeInfo', [AccountSettingController::class, 'changeInfo'])->name('client.user.account-settingchangeInfo');
+            Route::post('/changeAvatar', [AccountSettingController::class, 'changeAvatar'])->name('client.user.account-settingchangeAvatar');
         });
 
         Route::get('/dashboard', function () {

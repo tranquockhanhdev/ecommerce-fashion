@@ -4,7 +4,6 @@
 <div class="container-fluid">
 
     <h1 class="h3 mb-4 text-gray-800">Thêm danh mục</h1>
-    <!-- Form thêm danh mục -->
     <div class="card shadow mb-4">
         <div class="card-body">
             <form action="{{ route('admin.qldanhmuc.store') }}" method="POST" enctype="multipart/form-data">
@@ -31,8 +30,8 @@
                 <div class="form-group">
                     <label for="status">Trạng thái</label>
                     <select name="status" id="status" class="form-control" required>
-                        <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Kích hoạt</option>
-                        <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Không kích hoạt</option>
+                        <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Hiện</option>
+                        <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Ẩn</option>
                     </select>
                 </div>
 
@@ -57,7 +56,6 @@
 
 @section('script')
 <script>
-    // Tạo slug 
     document.getElementById('name').addEventListener('input', function() {
         var name = this.value;
         var slug = name
@@ -66,7 +64,8 @@
             .toLowerCase()
             .replace(/[^a-z0-9\s-]/g, '') 
             .replace(/\s+/g, '-') 
-            .replace(/-+/g, '-'); 
+            .replace(/-+/g, '-') 
+            .replace(/đ/g, 'd');
         document.getElementById('slug').value = slug;
     });
 </script>

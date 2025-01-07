@@ -17,8 +17,6 @@ class Category extends Model
     {
         return $value == 1 ? 'Hiện' : 'Ẩn';
     }
-
-    // Khi lưu trạng thái, chuyển từ chuỗi thành số
     public function setStatusAttribute($value)
     {
         $this->attributes['status'] = ($value == 'Hiện') ? 1 : 0;

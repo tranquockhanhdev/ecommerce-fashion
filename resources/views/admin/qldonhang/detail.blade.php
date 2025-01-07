@@ -13,6 +13,9 @@
                 <p><strong>ID Đơn Hàng:</strong> {{ $order->id }}</p>
                 <p><strong>Khách Hàng:</strong> {{ $order->orderCustomer->lastname }} {{ $order->orderCustomer->firstname }}
                 </p>
+                <p><strong>Địa Chỉ Giao Hàng:</strong> {{ $order->orderCustomer->address }}</p>
+                <p><strong>Số Điện Thoại:</strong> {{ $order->orderCustomer->phone }}</p>
+                <p><strong>Phương Thức Thanh Toán:</strong> {{ $order->paymentMethod->method }}</p>
                 <p><strong>Ngày Tạo:</strong> {{ $order->created_at }}</p>
                 <p><strong>Trạng Thái:</strong>
                     @if ($order->status == 0)

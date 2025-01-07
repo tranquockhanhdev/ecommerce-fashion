@@ -41,8 +41,8 @@
                 <div class="form-group">
                     <label for="status">Trạng thái</label>
                     <select name="status" id="status" class="form-control" required>
-                        <option value="1" {{ old('status', $category->status) == 1 ? 'selected' : '' }}>Kích hoạt</option>
-                        <option value="0" {{ old('status', $category->status) == 0 ? 'selected' : '' }}>Không kích hoạt</option>
+                        <option value="1" {{ old('status', $category->status) == 1 ? 'selected' : '' }}>Hiện</option>
+                        <option value="0" {{ old('status', $category->status) == 0 ? 'selected' : '' }}>Ẩn</option>
                     </select>
                 </div>
 

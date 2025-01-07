@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\client\AccountController;
+use App\Http\Controllers\client\AccountSettingController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -57,9 +59,10 @@ Route::middleware(['auth'])->group(function () {
 
     // User routes
     Route::prefix('user')->group(function () {
-        Route::get('/account-setting', function () {
-            return view('client.user.account-setting');
-        })->name('client.user.account-setting');
+        Route::prefix('account-setting')->name('client.user.account-setting')->group(function () {
+            Route::get('/', [AccountSettingController::class, 'index']);
+            Route::post('/', [AccountSettingController::class, 'changePassword']);
+        });
 
         Route::get('/dashboard', function () {
             return view('client.user.user-dashboard');

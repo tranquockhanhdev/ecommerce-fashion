@@ -21,19 +21,23 @@
                             <div class="contact-form__content">
                                 <div class="contact-form-input">
                                     <label for="fname1">First Name </label>
-                                    <input type="text" id="fname1" placeholder="Dianne" />
+                                    <input type="text" id="fname1" placeholder="Điền First Name" value="{{ old('firstname', $website->firstname) }}" />
                                 </div>
                                 <div class="contact-form-input">
                                     <label for="lname2">Last Name </label>
-                                    <input type="text" id="lname2" placeholder="Russell" />
+                                    <input type="text" id="lname2" placeholder="Điền LastName" value="{{ old('lastname', $website->lastname) }}" />
                                 </div>
                                 <div class="contact-form-input">
                                     <label for="email1">Email </label>
-                                    <input type="text" id="email1" placeholder="dianne.russell@gmail.com" />
+                                    <input type="text" id="email1" placeholder="Điền email" value="{{ old('email', $website->email) }}" />
                                 </div>
                                 <div class="contact-form-input">
                                     <label for="number1">Phone Number</label>
-                                    <input type="number" id="number1" placeholder="(603) 555-0123" />
+                                    <input type="number" id="number1" placeholder="Điền Sđt" value="{{ old('phone', $website->phone) }}" />
+                                </div>
+                                <div class="contact-form-input">
+                                    <label for="date">Date</label>
+                                    <input type="date" id="date" value="{{ old('date', date('Y-m-d', strtotime($website->date))) }}" />
                                 </div>
                                 <div class="contact-form-btn">
                                     <button class="button button--md" type="submit">
@@ -145,64 +149,99 @@
                 </form>
             </div>
         </div>
-
+        @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{ session('success') }}</strong>
+        </div>
+        @endif
         <!-- Change Password  -->
-        <div class="dashboard__content-card">
-            <div class="dashboard__content-card-header">
-                <h5 class="font-body--xxl-500">Đổi Mật Khẩu</h5>
-            </div>
-            <div class="dashboard__content-card-body">
-                <form action="#">
-                    <div class="contact-form__content">
-                        <div class="contact-form-input">
-                            <label for="cpassword">Current Password </label>
-                            <input type="password" id="cpassword" placeholder="Password" />
-                            <span class="icon" onclick="showPassword('cpassword',this)">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+        <div class="mb-3">
+            <form action="{{ route('client.user.account-setting') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="mb-3">
+                    <label for="cpassword" class="form-label">Current Password</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="cpassword" placeholder="Password" name="current_password">
+                        <div class="input-group-append">
+                            <span class="input-group-text" onclick="showPassword('cpassword', this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
                                     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                     <circle cx="12" cy="12" r="3"></circle>
                                 </svg>
                             </span>
                         </div>
-                        <div class="contact-form__content-group">
-                            <!-- New Password  -->
-                            <div class="contact-form-input">
-                                <label for="npassword">new Password </label>
-                                <input type="password" id="npassword" placeholder="Password" />
-                                <span class="icon" onclick="showPassword('npassword',this)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
-                                </span>
-                            </div>
-                            <!-- confirm  Password  -->
-                            <div class="contact-form-input">
-                                <label for="confirmPassword">confirm Password</label>
-                                <input type="password" id="confirmPassword" placeholder="Password" />
-                                <span class="icon" onclick="showPassword('confirmPassword',this)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="contact-form-btn">
-                            <button class="button button--md" type="submit">
-                                Đổi Mật Khẩu
-                            </button>
-                        </div>
                     </div>
-                </form>
-            </div>
+
+                </div>
+                @error('current_password')
+                <div class="text-danger">{{ $message }}</div>
+                @enderror
         </div>
+
+        <div class="mb-3">
+            <label for="npassword" class="form-label">New Password</label>
+            <div class="input-group">
+                <input type="password" class="form-control" id="npassword" placeholder="Password" name="password">
+                <div class="input-group-append">
+                    <span class="input-group-text" onclick="showPassword('npassword', this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <div class="input-group">
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" name="password_confirmation">
+                <div class="input-group-append">
+                    <span class="input-group-text" onclick="showPassword('confirmPassword', this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+
+            @error('password')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <button type="submit" class="btn btn-primary">Đổi Mật Khẩu</button>
+        </form>
     </div>
 </div>
+</div>
+@endsection
+@section('js')
+<script>
+    setTimeout(() => {
+        const alert = document.querySelector('.alert');
+        if (alert) {
+            alert.classList.remove('show');
+            alert.classList.add('fade');
+            setTimeout(() => alert.remove(), 500);
+        }
+    }, 5000); // 5 giây
+    function previewImage(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            const image = document.getElementById('logoPreview');
+            image.src = e.target.result;
+            image.style.display = 'block'; // Hiển thị ảnh preview
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
 @endsection

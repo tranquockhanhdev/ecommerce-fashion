@@ -28,6 +28,8 @@ class Account extends Authenticatable
         'image',
         'status',
         'created_at',
+        'address',
+        'phone',
 
     ];
     protected $hidden = [
@@ -145,8 +147,39 @@ class Account extends Authenticatable
         // 'updated_at',
     }
 
-    public function orders()
+    // Getter và Setter cho 'address'
+    public function getAddress()
     {
-        return $this->hasMany(Order::class, 'account_id');
+        return $this->attributes['address'];
+    }
+
+    public function setAddress($value)
+    {
+        $this->attributes['address'] = $value;
+    }
+
+    // Getter và Setter cho 'phone'
+    public function getPhone()
+    {
+        return $this->attributes['phone'];
+    }
+
+    public function setPhone($value)
+    {
+        $this->attributes['phone'] = $value;
+    }
+
+    // Quan hệ 1-Nhiều với bảng `OrderCustomer`
+    public function orderCustomers()
+    {
+        return $this->hasMany(OrderCustomer::class, 'account_id', 'id');
+    }
+    /**
+     * Quan hệ với bảng Order.
+     */
+    // Quan hệ với bảng OrderItem (1 tài khoản có nhiều OrderItems)
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class, 'account_id');
     }
 }

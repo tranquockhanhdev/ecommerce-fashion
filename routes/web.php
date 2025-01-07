@@ -59,9 +59,10 @@ Route::middleware(['auth'])->group(function () {
 
     // User routes
     Route::prefix('user')->group(function () {
-        Route::prefix('account-setting')->name('client.user.account-setting')->group(function () {
-            Route::get('/', [AccountSettingController::class, 'index']);
-            Route::post('/', [AccountSettingController::class, 'changePassword']);
+        Route::prefix('account-setting')->group(function () {
+            Route::get('/', [AccountSettingController::class, 'index'])->name('client.user.account-setting');
+            Route::post('/', [AccountSettingController::class, 'changePassword'])->name('client.user.account-setting');
+            Route::post('/changeInfo', [AccountSettingController::class, 'changeInfo'])->name('client.user.account-settingchangeInfo');;
         });
 
         Route::get('/dashboard', function () {

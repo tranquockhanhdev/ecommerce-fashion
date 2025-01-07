@@ -32,10 +32,6 @@
                                     <input type="text" id="email1" placeholder="Điền email" value="{{ old('email', $website->email) }}" />
                                 </div>
                                 <div class="contact-form-input">
-                                    <label for="number1">Phone Number</label>
-                                    <input type="number" id="number1" placeholder="Điền Sđt" value="{{ old('phone', $website->phone) }}" />
-                                </div>
-                                <div class="contact-form-input">
                                     <label for="date">Date</label>
                                     <input type="date" id="date" value="{{ old('date', date('Y-m-d', strtotime($website->date))) }}" />
                                 </div>
@@ -71,82 +67,41 @@
         </div>
 
         <!-- Billing Address  -->
+        @if (session('successs'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{ session('successs') }}</strong>
+        </div>
+        @endif
         <div class="dashboard__content-card">
             <div class="dashboard__content-card-header">
                 <h5 class="font-body--xxl-500">Địa Chỉ Thanh Toán</h5>
             </div>
             <div class="dashboard__content-card-body">
-                <form action="#">
-                    <div class="contact-form__content">
-                        <div class="contact-form__content-group">
-                            <div class="contact-form-input">
-                                <label for="fname">First Name </label>
-                                <input type="text" id="fname" placeholder="First Name" />
-                            </div>
-                            <div class="contact-form-input">
-                                <label for="lname">Last Name </label>
-                                <input type="text" id="lname" placeholder="Last Name" />
-                            </div>
-                            <div class="contact-form-input">
-                                <label for="cname">Company Name <span>(Optional)</span>
-                                </label>
-                                <input type="text" id="cname" placeholder="Your Company Name" />
-                            </div>
+                <form action="{{ route('client.user.account-settingchangeInfo') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="container">
+                        <div class="form-group">
+                            <label for="address">Street Address</label>
+                            <input type="text" id="address" class="form-control" placeholder="Your address" value="{{ old('address', $website->address) }}" name="address" />
+                            @error('address')
+                            <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
-                        <div class="contact-form-input">
-                            <label for="address">Street Address </label>
-                            <input type="text" id="address" placeholder="Your address" />
+
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="number" id="phone" class="form-control" placeholder="Phone number" name="phone" value="{{ old('phone', $website->phone) }}" />
+                            @error('phone')
+                            <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
-                        <div class="contact-form__content-group">
-                            <!-- Country -->
-                            <div class="contact-form-input">
-                                <label for="country">Country / Region </label>
-                                <select id="country" class="contact-form-input__dropdown">
-                                    <option value="01">United States</option>
-                                    <option value="02">Canada</option>
-                                    <option value="03">United Kingdom</option>
-                                    <option value="04">Bangladesh</option>
-                                </select>
-                            </div>
-                            <!-- states -->
-                            <div class="contact-form-input">
-                                <label for="states">states </label>
-                                <select id="states" class="contact-form-input__dropdown">
-                                    <option value="01">Washington DC</option>
-                                    <option value="02">Nova Scotia</option>
-                                    <option value="03">Alberta</option>
-                                    <option value="04">Manitoba</option>
-                                    <option value="05">Dhaka</option>
-                                </select>
-                            </div>
-                            <!-- zip -->
-                            <div class="contact-form-input">
-                                <label for="zip">Zip Code</label>
-                                <select id="zip" class="contact-form-input__dropdown">
-                                    <option value="01">20033</option>
-                                    <option value="02">975</option>
-                                    <option value="03">880</option>
-                                    <option value="04">95</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="contact-form__content-group">
-                            <div class="contact-form-input">
-                                <label for="email"> email </label>
-                                <input type="text" id="email" placeholder="Email Address" />
-                            </div>
-                            <div class="contact-form-input">
-                                <label for="phone"> Phone </label>
-                                <input type="number" id="phone" placeholder="Phone number" />
-                            </div>
-                        </div>
-                        <div class="contact-form-btn">
-                            <button class="button button--md" type="submit">
-                                Lưu Thay Đổi
-                            </button>
+
+                        <div class="form-group">
+                            <button class="btn btn-primary" type="submit">Lưu Thay Đổi</button>
                         </div>
                     </div>
                 </form>
+
             </div>
         </div>
         @if (session('success'))
@@ -155,65 +110,63 @@
         </div>
         @endif
         <!-- Change Password  -->
-        <div class="mb-3">
-            <form action="{{ route('client.user.account-setting') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="mb-3">
-                    <label for="cpassword" class="form-label">Current Password</label>
-                    <div class="input-group">
-                        <input type="password" class="form-control" id="cpassword" placeholder="Password" name="current_password">
-                        <div class="input-group-append">
-                            <span class="input-group-text" onclick="showPassword('cpassword', this)">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
-                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                    <circle cx="12" cy="12" r="3"></circle>
-                                </svg>
-                            </span>
-                        </div>
+        <form action="{{ route('client.user.account-setting') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="mb-3">
+                <label for="cpassword" class="form-label">Current Password</label>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="cpassword" placeholder="Password" name="current_password">
+                    <div class="input-group-append">
+                        <span class="input-group-text" onclick="showPassword('cpassword', this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </span>
                     </div>
-
                 </div>
-                @error('current_password')
-                <div class="text-danger">{{ $message }}</div>
-                @enderror
-        </div>
 
-        <div class="mb-3">
-            <label for="npassword" class="form-label">New Password</label>
-            <div class="input-group">
-                <input type="password" class="form-control" id="npassword" placeholder="Password" name="password">
-                <div class="input-group-append">
-                    <span class="input-group-text" onclick="showPassword('npassword', this)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                    </span>
-                </div>
             </div>
-
-        </div>
-
-        <div class="mb-3">
-            <label for="confirmPassword" class="form-label">Confirm Password</label>
-            <div class="input-group">
-                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" name="password_confirmation">
-                <div class="input-group-append">
-                    <span class="input-group-text" onclick="showPassword('confirmPassword', this)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                    </span>
-                </div>
-            </div>
-
-            @error('password')
+            @error('current_password')
             <div class="text-danger">{{ $message }}</div>
             @enderror
-        </div>
 
-        <button type="submit" class="btn btn-primary">Đổi Mật Khẩu</button>
+            <div class="mb-3">
+                <label for="npassword" class="form-label">New Password</label>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="npassword" placeholder="Password" name="password">
+                    <div class="input-group-append">
+                        <span class="input-group-text" onclick="showPassword('npassword', this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" name="password_confirmation">
+                    <div class="input-group-append">
+                        <span class="input-group-text" onclick="showPassword('confirmPassword', this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+                @error('password')
+                <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <button type="submit" class="btn btn-primary">Đổi Mật Khẩu</button>
         </form>
     </div>
 </div>

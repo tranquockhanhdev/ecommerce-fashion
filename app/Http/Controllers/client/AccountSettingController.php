@@ -59,4 +59,18 @@ class AccountSettingController extends Controller
 
         return redirect()->route('client.user.account-setting')->with('success', 'Mật khẩu đã được thay đổi.');
     }
+    public function changeInfo(Request $request)
+    {
+        $request->validate([
+            'address' => 'required|string|max:255',
+            'phone' => 'required|numeric',
+        ]);
+        $website = Account::find(Auth::user()->id);
+        $website->address = $request->input('address');
+        $website->phone = $request->input('phone');
+        $website->save();
+
+        // Quay lại trang trước đó với thông báo thành công
+        return redirect()->back()->with('successs', 'Thông tin đã được cập nhật!');
+    }
 }

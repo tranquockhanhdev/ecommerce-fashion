@@ -9,6 +9,12 @@
         </span>
         <span class="text">Thêm danh mục</span>
     </a>
+    <a href="#" class="btn btn-success btn-icon-split mb-3" onclick="generatePDF()">
+        <span class="icon text-white-50">
+            <i class="fas fa-print"></i>
+        </span>
+        <span class="text">In Danh Sách</span>
+    </a>
 </div>
 
 <div class="card shadow mb-4">

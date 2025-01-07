@@ -2,6 +2,14 @@
 @section('content')
 <h1 class="h3 mb-0 text-gray-800">Quản lí bình luận</h1>
 <hr>
+<div class="d-flex justify-content-between">
+    <a href="#" class="btn btn-success btn-icon-split mb-3" onclick="generatePDF()">
+        <span class="icon text-white-50">
+            <i class="fas fa-print"></i>
+        </span>
+        <span class="text">In Danh Sách</span>
+    </a>
+</div>
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Bảng bình luận</h6>

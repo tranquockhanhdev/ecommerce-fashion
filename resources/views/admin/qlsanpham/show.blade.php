@@ -11,8 +11,7 @@
             <p class="card-text"><strong>Danh mục:</strong> {{ $product->category->name }}</p>
             <p class="card-text"><strong>Giá:</strong> {{ number_format($product->price, 0, ',', '.') }} VND</p>
             <p class="card-text"><strong>Số lượng:</strong> {{ $product->quantity }}</p>
-            <p class="card-text"><strong>Mô tả:</strong> {{ $product->description }}</p>
-
+            <p class="card-text"><strong>Mô tả:</strong> {!! $product->description !!}</p>
             <h5>Hình ảnh:</h5>
             @foreach ($product->images as $image)
                 <img src="{{ asset($image->link) }}" alt="Product Image" class="img-fluid" width="200">

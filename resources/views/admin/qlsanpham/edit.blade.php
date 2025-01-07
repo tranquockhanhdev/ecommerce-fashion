@@ -52,7 +52,7 @@
                 <!-- Mô tả -->
                 <div class="mb-4">
                     <label for="description" class="form-label fw-bold text-dark">Mô tả</label>
-                    <textarea name="description" id="description" class="form-control form-control-lg shadow-sm" rows="5" required>{{ $product->description }}</textarea>
+                    <textarea name="description" id="description" class="form-control form-control-lg shadow-sm" rows="5" required> {!! $product->description !!}</textarea>
                 </div>
 
                 <!-- Trạng thái -->

@@ -53,24 +53,7 @@ class BinhluanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $comment = Comment::findOrFail($id);
-
-    // Kiểm tra nếu yêu cầu chỉ để cập nhật trạng thái
-    if ($request->has('status')) {
-        // Toggle status
-        $comment->status = $request->status == 1 ? 0 : 1;
-        $comment->save();
-
-        return response()->json([
-            'success' => true,
-            'new_status' => $comment->status
-        ]);
-    }
-
-    // Logic khác nếu cần cập nhật nội dung bình luận
-    $comment->update($request->all());
-
-    return redirect()->back()->with('success', 'Bình luận đã được cập nhật thành công!');
+        //
     }
 
     /**
@@ -79,8 +62,10 @@ class BinhluanController extends Controller
     public function destroy(string $id)
     {
         $comment = Comment::findOrFail($id);
-        $comment->delete();
 
+        $comment->status =0;
+        $comment->save();
+    
         return redirect()->back()->with('success', 'Bình luận đã được xóa thành công!');
     }
 

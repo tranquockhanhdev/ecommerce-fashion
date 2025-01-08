@@ -48,7 +48,7 @@ class DanhmucController extends Controller
             'parent_id' => $request->parent_id,
         ]);
 
-        return redirect()->route('admin.qldanhmuc.index')->with('success');
+        return redirect()->route('admin.qldanhmuc.index')->with('success','Danh mục đã được thêm thành công.');
     }
 
     /**
@@ -66,7 +66,7 @@ class DanhmucController extends Controller
     {
         $category = Category::findOrFail($id);
         $categories = Category::whereNull('parent_id')
-            ->where('id', '!=', $id) // Id không phải danh mục hiện tại
+            ->where('id', '!=', $id) 
             ->get();
 
         return view('admin.qldanhmuc.edit', compact('category', 'categories'));
@@ -114,6 +114,6 @@ class DanhmucController extends Controller
         $category = Category::findOrFail($id);
         $category->delete();
 
-        return redirect()->route('admin.qldanhmuc.index');
+        return redirect()->route('admin.qldanhmuc.index')->with('success', 'Danh mục đã được xóa thành công.');
     }
 }

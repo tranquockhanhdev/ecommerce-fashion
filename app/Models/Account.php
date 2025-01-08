@@ -182,4 +182,9 @@ class Account extends Authenticatable
     {
         return $this->hasMany(OrderItem::class, 'account_id');
     }
+    // Quan hệ 1-n: Một tài khoản có nhiều giỏ hàng
+    public function carts()
+    {
+        return $this->hasMany(Cart::class, 'account_id');
+    }
 }

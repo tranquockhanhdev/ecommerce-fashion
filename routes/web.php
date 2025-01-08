@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\client\AccountController;
+use App\Http\Controllers\client\AccountDashboardController;
 use App\Http\Controllers\client\AccountSettingController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -66,10 +67,9 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/changeInfo', [AccountSettingController::class, 'changeInfo'])->name('client.user.account-settingchangeInfo');
             Route::post('/changeAvatar', [AccountSettingController::class, 'changeAvatar'])->name('client.user.account-settingchangeAvatar');
         });
-
-        Route::get('/dashboard', function () {
-            return view('client.user.user-dashboard');
-        })->name('client.user.user-dashboard');
+        Route::prefix('user-dashboard')->group(function () {
+            Route::get('/', [AccountDashboardController::class, 'index'])->name('client.user.user-dashboard');
+        });
 
         Route::get('/order-details', function () {
             return view('client.user.order-details');

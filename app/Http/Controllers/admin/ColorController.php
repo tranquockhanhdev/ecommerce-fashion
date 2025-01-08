@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
 use App\Models\ColorProduct;
 use App\Models\Category;
 use App\Models\SizeProduct;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ColorController extends Controller
 {
@@ -39,7 +40,7 @@ class ColorController extends Controller
         ]);
 
         // Chuyển hướng về trang thêm sản phẩm
-        return redirect()->route('products.create')->with('success', 'Màu đã được thêm thành công!');
+        return redirect()->route('admin.products.create')->with('success', 'Màu đã được thêm thành công!');
     }
 
 
@@ -62,7 +63,7 @@ class ColorController extends Controller
             'color_name' => $request->color_name,
         ]);
 
-        return redirect()->route('colors.index')->with('success', 'Màu sắc đã được cập nhật!');
+        return redirect()->route('admin.colors.index')->with('success', 'Màu sắc đã được cập nhật!');
     }
 
     // Xóa màu sắc
@@ -71,6 +72,6 @@ class ColorController extends Controller
         $color = ColorProduct::findOrFail($id);
         $color->delete();
 
-        return redirect()->route('colors.index')->with('success', 'Màu sắc đã được xóa!');
+        return redirect()->route('admin.colors.index')->with('success', 'Màu sắc đã được xóa!');
     }
 }

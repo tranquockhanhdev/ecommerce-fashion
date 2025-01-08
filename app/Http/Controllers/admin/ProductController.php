@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -11,6 +11,7 @@ use App\Models\ProductDetail;
 use App\Models\ImageProduct;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
 {
@@ -135,7 +136,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-      
+
         $product = Product::with(['category', 'images', 'details.color', 'details.size'])->findOrFail($id);
         return view('admin.qlsanpham.show', compact('product'));
     }

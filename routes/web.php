@@ -4,8 +4,8 @@
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\SizeController;
-use App\Http\Controllers\BinhluanController;
-use App\Http\Controllers\DanhmucController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -54,7 +54,7 @@ Route::middleware(['auth'])->group(function () {
         // })->name('admin.qldanhmuc.index');
 
 Route::prefix('admin')->name('admin.')->group(function() {
-    Route::resource('qldanhmuc', DanhmucController::class);
+    Route::resource('qldanhmuc', CategoryController::class);
 });
 
 
@@ -155,6 +155,6 @@ Route::get('/product-details', function () {
 })->name('client.product-details');
 
 Route::prefix('admin')->name('admin.')->group(function() {
-    Route::resource('qlbinhluan', BinhluanController::class);
+    Route::resource('qlbinhluan', CommentController::class);
 });
 

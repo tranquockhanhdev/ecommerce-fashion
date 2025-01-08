@@ -10,6 +10,7 @@ use App\Http\Controllers\admin\BinhluanController;
 use App\Http\Controllers\admin\DanhmucController;
 use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\ContactController;
+use App\Http\Controllers\client\ShopController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -127,9 +128,7 @@ Route::get('/', function () {
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::prefix('shop')->group(function () {
-    Route::get('/shop', function () {
-        return view('client.shop.shop');
-    })->name('client.shop.shop');
+    Route::get('/shop', [ShopController::class, 'index'])->name('client.shop.shop');
 
     Route::get('/product-details', function () {
         return view('client.shop.product-details');

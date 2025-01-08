@@ -45,4 +45,14 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+    // Quan hệ với model Comment: Một sản phẩm có nhiều bình luận
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+    // Quan hệ 1-n: Sản phẩm có thể nằm trong nhiều mục giỏ hàng
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class, 'product_id');
+    }
 }

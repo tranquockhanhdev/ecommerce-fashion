@@ -187,4 +187,8 @@ class Account extends Authenticatable
     {
         return $this->hasMany(Cart::class, 'account_id');
     }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

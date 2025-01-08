@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
 use App\Models\Contact;
+use App\Http\Controllers\Controller;
+
 class ContactController extends Controller
 {
     /**
@@ -77,7 +79,7 @@ class ContactController extends Controller
             'email' => $request->email,
             'title' => $request->title,
             'content' => $request->content,
-            'status' => $request->status, 
+            'status' => $request->status,
         ]);
 
         return redirect()->route('admin.qllienhe.index')->with('success', 'Contact updated successfully');

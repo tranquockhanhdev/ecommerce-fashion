@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
 use App\Models\SizeProduct;
 use App\Models\Category;
 use App\Models\ColorProduct;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class SizeController extends Controller
 {
@@ -36,7 +37,7 @@ class SizeController extends Controller
             'size_name' => $request->size_name,
         ]);
 
-        return redirect()->route('products.index')->with('success', 'Kích thước đã được thêm thành công!');
+        return redirect()->route('admin.products.index')->with('success', 'Kích thước đã được thêm thành công!');
     }
 
     // Hiển thị form sửa kích thước
@@ -58,7 +59,7 @@ class SizeController extends Controller
             'size_name' => $request->size_name,
         ]);
 
-        return redirect()->route('sizes.index')->with('success', 'Kích thước đã được cập nhật!');
+        return redirect()->route('admin.sizes.index')->with('success', 'Kích thước đã được cập nhật!');
     }
 
     // Xóa kích thước
@@ -67,6 +68,6 @@ class SizeController extends Controller
         $size = SizeProduct::findOrFail($id);
         $size->delete();
 
-        return redirect()->route('sizes.index')->with('success', 'Kích thước đã được xóa!');
+        return redirect()->route('admin.sizes.index')->with('success', 'Kích thước đã được xóa!');
     }
 }

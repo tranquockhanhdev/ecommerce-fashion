@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class BinhluanController extends Controller
 {
@@ -63,10 +64,9 @@ class BinhluanController extends Controller
     {
         $comment = Comment::findOrFail($id);
 
-        $comment->status =0;
+        $comment->status = 0;
         $comment->save();
-    
+
         return redirect()->back()->with('success', 'Bình luận đã được xóa thành công!');
     }
-
 }

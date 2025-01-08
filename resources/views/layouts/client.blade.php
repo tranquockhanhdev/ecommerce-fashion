@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{ asset('client/lib/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('client/css/style.css') }}" />
     @yield('css')
+
 </head>
 
 <body>
@@ -137,7 +138,7 @@
                                     stroke-linejoin="round" />
                             </svg>
                         </button>
-                        <a href="{{ route('client.homepage') }}">
+                        <a href="{{ route('client.pages.homepage') }}">
                             <img src="{{ asset('client/images/logo.png') }}" alt="brand-logo" />
                         </a>
                     </div>
@@ -162,7 +163,7 @@
                     </form>
                     <div class="header__cart">
                         <div class="header__cart-item">
-                            <a class="fav" href="{{ route('client.wishlist') }}">
+                            <a class="fav" href="{{ route('client.cart.wishlist') }}">
                                 <svg width="25" height="23" viewBox="0 0 20 18" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -190,7 +191,7 @@
                             </div>
                         </div>
                         <div class="header__cart-item">
-                            <a href="{{ route('client.user-dashboard') }}" class="icon user-icon">
+                            <a href="{{ route('client.user.user-dashboard') }}" class="icon user-icon">
                                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -210,7 +211,7 @@
             <div class="container">
                 <div class="header__bottom-content">
                     <div class="header__bottom-left">
-                        @if (in_array(Route::currentRouteName(), ['client.homepage', 'client.sign-up']))
+                        @if (in_array(Route::currentRouteName(), ['client.pages.homepage', 'register']))
                         <ul class="header__category-content">
                             <li class="header__category-content-item">
                                 <a>
@@ -342,24 +343,24 @@
 
                         <ul class="header__navigation-menu">
                             <li
-                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.homepage' ? 'active' : '' }}">
-                                <a href="{{ route('client.homepage') }}">Trang Chủ</a>
+                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.pages.homepage' ? 'active' : '' }}">
+                                <a href="{{ route('client.pages.homepage') }}">Trang Chủ</a>
                             </li>
                             <li
-                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.shop' ? 'active' : '' }}">
-                                <a href="{{ route('client.shop') }}">Cửa Hàng</a>
+                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.shop.shop' ? 'active' : '' }}">
+                                <a href="{{ route('client.shop.shop') }}">Cửa Hàng</a>
                             </li>
                             <li
-                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.blog-list' ? 'active' : '' }}">
-                                <a href="{{ route('client.blog-list') }}">Bài Viết</a>
+                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.blog.blog-list' ? 'active' : '' }}">
+                                <a href="{{ route('client.blog.blog-list') }}">Bài Viết</a>
                             </li>
                             <li
-                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.about' ? 'active' : '' }}">
-                                <a href="{{ route('client.about') }}">Giới Thiệu</a>
+                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.pages.about' ? 'active' : '' }}">
+                                <a href="{{ route('client.pages.about') }}">Giới Thiệu</a>
                             </li>
                             <li
-                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.contact' ? 'active' : '' }}">
-                                <a href="{{ route('client.contact') }}">Liên Hệ</a>
+                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.pages.contact' ? 'active' : '' }}">
+                                <a href="{{ route('client.pages.contact') }}">Liên Hệ</a>
                             </li>
                         </ul>
 
@@ -418,28 +419,28 @@
                     </form>
                     <ul class="header__mobile-menu">
                         <li class="header__mobile-menu-item active">
-                            <a href="{{ route('client.homepage') }}" class="header__mobile-menu-item-link">
+                            <a href="{{ route('client.pages.homepage') }}" class="header__mobile-menu-item-link">
                                 Trang Chủ
                             </a>
                         </li>
                         <li class="header__mobile-menu-item">
-                            <a href="{{ route('client.shop') }}" class="header__mobile-menu-item-link">
+                            <a href="{{ route('client.shop.shop') }}" class="header__mobile-menu-item-link">
                                 Cửa Hàng
                             </a>
 
                         </li>
 
                         <li class="header__mobile-menu-item">
-                            <a href="{{ route('client.blog-list') }}" class="header__mobile-menu-item-link">
+                            <a href="{{ route('client.blog.blog-list') }}" class="header__mobile-menu-item-link">
                                 Bài Viết
                             </a>
                         </li>
                         <li class="header__mobile-menu-item">
-                            <a href="{{ route('client.about') }}" class="header__mobile-menu-item-link">Giới
+                            <a href="{{ route('client.pages.about') }}" class="header__mobile-menu-item-link">Giới
                                 Thiệu</a>
                         </li>
                         <li class="header__mobile-menu-item">
-                            <a href="{{ route('client.contact') }}" class="header__mobile-menu-item-link">Liên Hệ</a>
+                            <a href="{{ route('client.pages.contact') }}" class="header__mobile-menu-item-link">Liên Hệ</a>
                         </li>
                     </ul>
                 </div>
@@ -449,20 +450,20 @@
     <!-- Header  Section start -->
     <!-- Thanh chỉ hướngt -->
     @if (in_array(Route::currentRouteName(), [
-    'client.shop',
-    'client.product-details',
-    'client.blog-list',
-    'client.single-blog',
-    'client.about',
-    'client.contact',
-    'client.sign-up',
-    'client.user-dashboard',
-    'client.order-history',
-    'client.account-setting',
-    'client.order-details',
-    'client.wishlist',
-    'client.checkout',
-    'client.shopping-cart',
+    'client.shop.shop',
+    'client.shop.product-details',
+    'client.blog.blog-list',
+    'client.blog.single-blog',
+    'client.pages.about',
+    'client.pages.contact',
+    'register',
+    'client.user.user-dashboard',
+    'client.user.order-history',
+    'client.user.account-setting',
+    'client.user.order-details',
+    'client.cart.wishlist',
+    'client.cart.checkout',
+    'client.cart.shopping-cart',
     ]))
     <!-- breedcrumb section start -->
     <div class="section breedcrumb">
@@ -471,7 +472,7 @@
             <div class="container">
                 <ul class="breedcrumb__content">
                     <li>
-                        <a href="{{ route('client.homepage') }}">
+                        <a href="{{ route('client.pages.homepage') }}">
                             <svg width="18" height="19" viewBox="0 0 18 19" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -483,10 +484,10 @@
                         </a>
                     </li>
 
-                    @if (Route::currentRouteName() == 'client.single-blog')
+                    @if (Route::currentRouteName() == 'client.blog.single-blog')
                     <!-- Breadcrumb for single blog post -->
                     <li>
-                        <a href="{{ route('client.blog-list') }}">Bài Viết
+                        <a href="{{ route('client.blog.blog-list') }}">Bài Viết
                             <span> > </span>
                         </a>
 
@@ -495,60 +496,60 @@
                     <li class="active">
                         <a href="#">Chi Tiết Bài Viết</a>
                     </li>
-                    @elseif (Route::currentRouteName() == 'client.user-dashboard')
+                    @elseif (Route::currentRouteName() == 'client.user.user-dashboard')
                     <!-- Breadcrumb for dashboard -->
                     <li>
-                        <a href="{{ route('client.user-dashboard') }}">Tài Khoản
+                        <a href="{{ route('client.user.user-dashboard') }}">Tài Khoản
                             <span> > </span>
                         </a>
                     </li>
                     <li class="active">
                         <a href="#">Dashboard</a>
                     </li>
-                    @elseif (Route::currentRouteName() == 'client.order-history')
+                    @elseif (Route::currentRouteName() == 'client.user.order-history')
                     <!-- Breadcrumb for dashboard -->
                     <li>
-                        <a href="{{ route('client.user-dashboard') }}">Tài Khoản
+                        <a href="{{ route('client.user.user-dashboard') }}">Tài Khoản
                             <span> > </span>
                         </a>
                     </li>
                     <li class="active">
                         <a href="#">Lịch Sử Đơn Hàng</a>
                     </li>
-                    @elseif (Route::currentRouteName() == 'client.order-details')
+                    @elseif (Route::currentRouteName() == 'client.user.order-details')
                     <!-- Breadcrumb for dashboard -->
                     <li>
-                        <a href="{{ route('client.user-dashboard') }}">Tài Khoản
+                        <a href="{{ route('client.user.user-dashboard') }}">Tài Khoản
                             <span> > </span>
                         </a>
                     </li>
                     <li class="active">
                         <a href="#">Chi Tiết Đơn Hàng</a>
                     </li>
-                    @elseif (Route::currentRouteName() == 'client.account-setting')
+                    @elseif (Route::currentRouteName() == 'client.user.account-setting')
                     <!-- Breadcrumb for dashboard -->
                     <li>
-                        <a href="{{ route('client.user-dashboard') }}">Tài Khoản
+                        <a href="{{ route('client.user.user-dashboard') }}">Tài Khoản
                             <span> > </span>
                         </a>
                     </li>
                     <li class="active">
                         <a href="#">Cài Đặt</a>
                     </li>
-                    @elseif (Route::currentRouteName() == 'client.product-details')
+                    @elseif (Route::currentRouteName() == 'client.shop.product-details')
                     <!-- Breadcrumb for dashboard -->
                     <li>
-                        <a href="{{ route('client.shop') }}">Cửa Hàng
+                        <a href="{{ route('client.shop.shop') }}">Cửa Hàng
                             <span> > </span>
                         </a>
                     </li>
                     <li class="active">
                         <a href="#">Chi Tiết Sản Phẩm</a>
                     </li>
-                    @elseif (Route::currentRouteName() == 'client.checkout')
+                    @elseif (Route::currentRouteName() == 'client.cart.checkout')
                     <!-- Breadcrumb for dashboard -->
                     <li>
-                        <a href="{{ route('client.shopping-cart') }}">Giỏ Hàng
+                        <a href="{{ route('client.cart.shopping-cart') }}">Giỏ Hàng
                             <span> > </span>
                         </a>
                     </li>
@@ -561,13 +562,13 @@
                         <a href="#">
                             @php
                             $breadcrumbTitles = [
-                            'client.shop' => 'Cửa Hàng',
-                            'client.blog-list' => 'Bài Viết',
-                            'client.about' => 'Giới Thiệu',
-                            'client.contact' => 'Liên Hệ',
-                            'client.sign-up' => 'Đăng Ký',
-                            'client.wishlist' => 'Danh Sách Yêu Thích',
-                            'client.shopping-cart' => 'Giỏ Hàng',
+                            'client.shop.shop' => 'Cửa Hàng',
+                            'client.blog.blog-list' => 'Bài Viết',
+                            'client.pages.about' => 'Giới Thiệu',
+                            'client.pages.contact' => 'Liên Hệ',
+                            'register' => 'Đăng Ký',
+                            'client.cart.wishlist' => 'Danh Sách Yêu Thích',
+                            'client.cart.shopping-cart' => 'Giỏ Hàng',
                             ];
 
                             $routeName = Route::currentRouteName();
@@ -585,10 +586,10 @@
     @endif
     <!-- nav  -->
     @if (in_array(Route::currentRouteName(), [
-    'client.user-dashboard',
-    'client.order-history',
-    'client.account-setting',
-    'client.order-details',
+    'client.user.user-dashboard',
+    'client.user.order-history',
+    'client.user.account-setting',
+    'client.user.order-details',
     ]))
     <div class="dashboard section">
         <div class="container">
@@ -601,8 +602,8 @@
                         </h5>
                         <ul class="dashboard__nav-item">
                             <li
-                                class="dashboard__nav-item-link {{ Route::currentRouteName() === 'client.user-dashboard' ? 'active' : '' }}">
-                                <a href="{{ route('client.user-dashboard') }}" class="font-body--lg-400">
+                                class="dashboard__nav-item-link {{ Route::currentRouteName() === 'client.user.user-dashboard' ? 'active' : '' }}">
+                                <a href="{{ route('client.user.user-dashboard') }}" class="font-body--lg-400">
                                     <span class="icon">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -616,8 +617,8 @@
                             </li>
                             <!-- Order History -->
                             <li
-                                class="dashboard__nav-item-link {{ Route::currentRouteName() === 'client.order-history' ? 'active' : '' }}">
-                                <a href="{{ route('client.order-history') }}" class="font-body--lg-400">
+                                class="dashboard__nav-item-link {{ Route::currentRouteName() === 'client.user.order-history' ? 'active' : '' }}">
+                                <a href="{{ route('client.user.order-history') }}" class="font-body--lg-400">
                                     <span class="icon">
                                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -631,7 +632,7 @@
                             </li>
                             <!-- Wishlist -->
                             <li class="dashboard__nav-item-link">
-                                <a href="{{ route('client.wishlist') }}" class="font-body--lg-400">
+                                <a href="{{ route('client.cart.wishlist') }}" class="font-body--lg-400">
                                     <span class="icon">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -645,7 +646,7 @@
                             </li>
                             <!-- Shopping Cart  -->
                             <li class="dashboard__nav-item-link">
-                                <a href="{{ route('client.shopping-cart') }}" class="font-body--lg-400">
+                                <a href="{{ route('client.cart.shopping-cart') }}" class="font-body--lg-400">
                                     <span class="icon">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -661,8 +662,8 @@
                             </li>
                             <!--  Settings   -->
                             <li
-                                class="dashboard__nav-item-link {{ Route::currentRouteName() === 'client.account-setting' ? 'active' : '' }}">
-                                <a href="{{ route('client.account-setting') }}" class="font-body--lg-400">
+                                class="dashboard__nav-item-link {{ Route::currentRouteName() === 'client.user.account-setting' ? 'active' : '' }}">
+                                <a href="{{ route('client.user.account-setting') }}" class="font-body--lg-400">
                                     <span class="icon">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -677,19 +678,21 @@
                             </li>
                             <!--  Log out    -->
                             <li class="dashboard__nav-item-link">
-                                <a href="#" class="font-body--lg-400">
+                                <a href="#" class="font-body--lg-400" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <span class="icon">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M19 21H10C9.46957 21 8.96086 20.7893 8.58579 20.4142C8.21071 20.0391 8 19.5304 8 19V15H10V19H19V5H10V9H8V5C8 4.46957 8.21071 3.96086 8.58579 3.58579C8.96086 3.21071 9.46957 3 10 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21ZM12 16V13H3V11H12V8L17 12L12 16Z"
                                                 fill="currentColor" />
                                         </svg>
                                     </span>
-
-                                    <span class="name"> Đăng Xuất </span>
+                                    <span class="name">Đăng Xuất</span>
                                 </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
                             </li>
+
                         </ul>
                         <button class="filter-icon">
                             <svg width="22" height="19" viewBox="0 0 22 19" fill="none"
@@ -723,7 +726,7 @@
     <!-- Popup đăng  nhập end  -->
 
     <!-- Brand -->
-    @if (in_array(Route::currentRouteName(), ['client.homepage', 'client.about']))
+    @if (in_array(Route::currentRouteName(), ['client.pages.homepage', 'client.pages.about']))
     <!-- brand-name Section Start -->
     <div class="brand-name section section--xl">
         <div class="container">
@@ -1290,6 +1293,7 @@
             <button>Gửi</button>
         </div>
     </div>
+
 </body>
 
 </html>

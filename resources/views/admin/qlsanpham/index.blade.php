@@ -58,59 +58,68 @@
                     </tfoot>
                     <tbody>
                         @foreach ($products as $product)
-                            @if ($product->status == 1)
-                                <!-- Chỉ hiển thị sản phẩm có trạng thái "Hiển thị" -->
-                                <tr>
-                                    <td>{{ $product->id }}</td>
-                                    <td>{{ $product->name }}</td>
-                                    <td>{{ $product->category->name ?? 'Không có danh mục' }}</td>
-                                    <td>{{ $product->price }}</td>
-                                    <td>
-                                        @foreach ($product->details as $detail)
-                                            {{ $detail->color->color_name ?? 'Không có màu' }},
-                                        @endforeach
-                                    </td>
-                                    <td>
-                                        @foreach ($product->details as $detail)
-                                            {{ $detail->size->size_name ?? 'Không có kích thước' }},
-                                        @endforeach
-                                    </td>
-                                    <td>{{ $product->quantity }}</td>
-                                    <td>
-                                        @if ($product->status == 1)
-                                            <span class="badge badge-success">Hiển thị</span>
-                                        @else
-                                            <span class="badge badge-danger">Ẩn</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <a href="{{ route('products.edit', $product->id) }}"
-                                                class="btn btn-primary btn-icon-split mr-2">
+                            <tr>
+                                <td>{{ $product->id }}</td>
+                                <td>{{ $product->name }}</td>
+                                <td>{{ $product->category->name ?? 'Không có danh mục' }}</td>
+                                <td>{{ number_format($product->price, 0, ',', '.') }} VNĐ</td>
+                                <td>
+                                    @foreach ($product->details as $detail)
+                                        {{ $detail->color->color_name ?? 'Không có màu' }},
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach ($product->details as $detail)
+                                        {{ $detail->size->size_name ?? 'Không có kích thước' }},
+                                    @endforeach
+                                </td>
+                                <td>{{ $product->quantity }}</td>
+                                <td>
+                                    @if ($product->status == 1)
+                                        <span class="badge badge-success">Hiển thị</span>
+                                    @else
+                                        <span class="badge badge-danger">Ẩn</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <a href="{{ route('products.edit', $product->id) }}"
+                                            class="btn btn-primary btn-icon-split mr-2">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-edit"></i> Sửa
+                                            </span>
+                                        </a>
+                                        <a href="{{ route('products.show', $product->id) }}"
+                                            class="btn btn-info btn-icon-split mr-2">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-eye"></i> Xem
+                                            </span>
+                                        </a>
+                                        <button class="btn btn-warning btn-icon-split toggle-status mr-2"
+                                            data-id="{{ $product->id }}" data-status="{{ $product->status }}">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-toggle-on"></i>
+                                                {{ $product->status == 1 ? 'Ẩn' : 'Hiển thị' }}
+                                            </span>
+                                        </button>
+                                        <form action="{{ route('products.destroy', $product->id) }}" method="POST"
+                                            onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-icon-split">
                                                 <span class="icon text-white-50">
-                                                    <i class="fas fa-edit"></i> Sửa
+                                                    <i class="fas fa-trash"></i>Xóa
                                                 </span>
-                                            </a>
-                                            <a href="{{ route('products.show', $product->id) }}"
-                                                class="btn btn-info btn-icon-split mr-2">
-                                                <span class="icon text-white-50">
-                                                    <i class="fas fa-eye"></i> Xem
-                                                </span>
-                                            </a>
-                                            <button class="btn btn-danger btn-icon-split toggle-status"
-                                                data-id="{{ $product->id }}" data-status="{{ $product->status }}">
-                                                <span class="icon text-white-50">
-                                                    <i class="fas fa-trash"></i>
-                                                    {{ $product->status == 1 ? 'Xóa' : 'Hiển thị' }}
-                                                </span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endif
-                        @endforeach
 
+                                            </button>
+                                        </form>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
+
                 </table>
             </div>
         </div>
@@ -136,15 +145,65 @@
                         _token: '{{ csrf_token() }}',
                     },
                     success: function(response) {
-                        // Cập nhật trạng thái nút và ẩn/hiện sản phẩm trong giao diện
-                        button.text(response.status == 1 ? 'Ẩn' : 'Hiển thị');
-                        button.toggleClass('btn-warning btn-success');
-                        if (response.status == 0) {
-                            button.closest('tr').fadeOut();
+                        if (response.status == 1) {
+                            // Nút chuyển sang trạng thái "Ẩn"
+                            button.html(`
+            <span>
+                <i class="fas fa-eye-slash"></i>
+                Ẩn
+            </span>
+        `);
+                            button.removeClass('btn-warning').addClass(
+                                'btn-success'); // Dùng lớp mặc định Bootstrap
                         } else {
-                            button.closest('tr').fadeIn();
+                            // Nút chuyển sang trạng thái "Hiển thị"
+                            button.html(`
+            <span>
+                <i class="fas fa-eye"></i>
+                Hiển thị
+            </span>
+        `);
+                            button.removeClass('btn-success').addClass(
+                                'btn-warning'); // Dùng lớp mặc định Bootstrap
                         }
+
+                        // Cập nhật trạng thái (badge)
+                        let badge = button.closest('tr').find('span.badge');
+                        if (response.status == 1) {
+                            badge.text('Hiển thị');
+                            badge.removeClass('badge-danger').addClass(
+                                'badge-success'); // Bootstrap class
+                        } else {
+                            badge.text('Ẩn');
+                            badge.removeClass('badge-success').addClass(
+                                'badge-danger'); // Bootstrap class
+                        }
+
+                        // Hiển thị thông báo
                         alert(response.message);
+                    },
+
+                    error: function(xhr, status, error) {
+                        alert('Đã xảy ra lỗi. Vui lòng thử lại.');
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script>
+        $(document).on('click', '.delete-product', function() {
+            var productId = $(this).data('id');
+            if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?')) {
+                $.ajax({
+                    url: '/products/' + productId,
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                    },
+                    success: function(response) {
+                        alert(response.message);
+                        location.reload(); // Reload lại trang để cập nhật danh sách
                     },
                     error: function(xhr, status, error) {
                         alert('Đã xảy ra lỗi. Vui lòng thử lại.');

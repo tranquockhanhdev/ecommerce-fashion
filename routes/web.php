@@ -43,38 +43,24 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/qlnhanvien', function () {
             return view('admin.qlnhanvien.index');
         })->name('admin.qlnhanvien.index');
-
-        Route::get('/admin/qlsanpham', function () {
-            return view('admin.qlsanpham.index');
-        })->name('admin.qlsanpham.index');
-
-
         // Route::get('/admin/qldanhmuc', function () {
         //     return view('admin.qldanhmuc.index');
         // })->name('admin.qldanhmuc.index');
 
-Route::prefix('admin')->name('admin.')->group(function() {
-    Route::resource('qldanhmuc', DanhmucController::class);
-});
-
+        Route::prefix('admin')->name('admin.')->group(function () {
+            Route::resource('qldanhmuc', DanhmucController::class);
+        });
 
         Route::get('/admin/qllienhe', function () {
             return view('admin.qllienhe.index');
         })->name('admin.qllienhe.index');
-
-
-
         Route::get('/admin/qlbinhluan', function () {
             return view('admin.qlbinhluan.index');
         })->name('admin.qlbinhluan.index');
+
         Route::get('/admin/qlsanpham', [ProductController::class, 'index'])->name('admin.qlsanpham.index');
         // Resource routes cho Product
         Route::resource('products', ProductController::class);
-        Route::prefix('admin')->name('admin.')->group(function () {
-            Route::resource('qllienhe', ContactController::class);
-        });
-
-
         // Routes cho Color
         Route::resource('colors', ColorController::class);
         // Routes cho Size
@@ -83,6 +69,9 @@ Route::prefix('admin')->name('admin.')->group(function() {
         Route::delete('/delete-image/{imageId}', [ProductController::class, 'deleteImage'])->name('deleteImage');
 
         Route::post('/products/{id}/toggle-status', [ProductController::class, 'toggleStatus'])->name('products.toggleStatus');
+        Route::prefix('admin')->name('admin.')->group(function () {
+            Route::resource('qllienhe', ContactController::class);
+        });
     });
 
     // Trang nhân viên chỉ dành cho nhân viên và admin
@@ -154,7 +143,6 @@ Route::get('/product-details', function () {
     return view('client.product-details');
 })->name('client.product-details');
 
-Route::prefix('admin')->name('admin.')->group(function() {
+Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('qlbinhluan', BinhluanController::class);
 });
-

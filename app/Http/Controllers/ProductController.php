@@ -9,6 +9,7 @@ use App\Models\ColorProduct;
 use App\Models\SizeProduct;
 use App\Models\ProductDetail;
 use App\Models\ImageProduct;
+use App\Models\OrderItem;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -44,7 +45,7 @@ class ProductController extends Controller
     {
 
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:product,name',
             'category_id' => 'required|exists:category,id',
             'price' => 'required|numeric|min:0',
             'quantity' => 'required|integer|min:0',
@@ -57,6 +58,7 @@ class ProductController extends Controller
             'size_ids' => 'nullable|array',
             'size_ids.*' => 'exists:size_product,id',
         ], [
+            'name.unique' => 'Tên sản phẩm đã tồn tại. Vui lòng nhập tên khác.',
             'category_id.required' => 'Vui lòng chọn danh mục.',
             'category_id.exists' => 'Danh mục không hợp lệ.',
             'name.required' => 'Tên sản phẩm không được để trống.',
@@ -133,17 +135,13 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        // Get the product along with its related data (category, images, colors, sizes, etc.)
+      
         $product = Product::with(['category', 'images', 'details.color', 'details.size'])->findOrFail($id);
-
-        // Return a view to show the product details
         return view('admin.qlsanpham.show', compact('product'));
     }
 
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -181,7 +179,7 @@ class ProductController extends Controller
     {
         // Validate input data
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:product,name,' . $id,
             'category_id' => 'required|exists:category,id',
             'price' => 'required|numeric|min:0',
             'quantity' => 'required|integer|min:0',
@@ -270,5 +268,28 @@ class ProductController extends Controller
         return response()->json([
             'message' => 'Sản phẩm không tồn tại.',
         ], 404);
+    }
+    public function destroy($id)
+    {
+        // Tìm sản phẩm cần xóa
+        $product = Product::findOrFail($id);
+
+        // Xóa tất cả hình ảnh liên quan
+        foreach ($product->images as $image) {
+            // Xóa file vật lý
+            Storage::disk('public')->delete(str_replace('storage/', '', $image->link));
+            // Xóa bản ghi trong database
+            $image->delete();
+        }
+
+        // Xóa tất cả chi tiết sản phẩm (màu, size)
+        ProductDetail::where('product_id', $product->id)->delete();
+        OrderItem::where('product_id', $product->id)->delete();
+
+        // Xóa sản phẩm
+        $product->delete();
+
+        // Trả về thông báo thành công
+        return redirect()->route('admin.qlsanpham.index')->with('success', 'Sản phẩm đã được xóa thành công!');
     }
 }

@@ -172,7 +172,7 @@ class Account extends Authenticatable
     // Quan hệ 1-Nhiều với bảng `OrderCustomer`
     public function orderCustomers()
     {
-        return $this->hasMany(OrderCustomer::class, 'account_id', 'id');
+        return $this->hasMany(OrderCustomer::class, 'account_id');
     }
     /**
      * Quan hệ với bảng Order.

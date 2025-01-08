@@ -1,6 +1,7 @@
 @extends('layouts.client')
 @section('title', 'Thông Tin Cá Nhân | Synergy 4.0')
 @section('content-nav')
+
 <div class="section--xl pt-0">
     <div class="container">
         <div class="row">
@@ -74,16 +75,23 @@
                                     Total
                                 </th>
                                 <th scope="col" class="dashboard__order-history-table-title">
+                                    Shipping Fee
+                                </th>
+                                <th scope="col" class="dashboard__order-history-table-title">
                                     Status
+                                </th>
+                                <th scope="col" class="dashboard__order-history-table-title">
+                                    Status Payment
                                 </th>
                                 <th scope="col" class="dashboard__order-history-table-title"></th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($orders as $order)
                             <tr>
                                 <!-- Order Id  -->
                                 <td class="dashboard__order-history-table-item order-id">
-                                    #738
+                                    {{ $order->id }}
                                 </td>
                                 <!-- Date  -->
                                 <td
@@ -91,7 +99,7 @@
                                 dashboard__order-history-table-item
                                 order-date
                               ">
-                                    8 Sep, 20220
+                                    {{ date('Y-m-d', strtotime($order->created_at ))}}
                                 </td>
                                 <!-- Total  -->
                                 <td
@@ -100,8 +108,19 @@
                                 order-total
                               ">
                                     <p class="order-total-price">
-                                        $135.00
-                                        <span class="quantity"> (5 Products)</span>
+                                        {{$order->formatted_total }}
+                                        <!-- <span class="quantity"> (5 Products)</span> -->
+                                    </p>
+                                </td>
+                                <!-- shipping fee  -->
+                                <td
+                                    class="
+                                dashboard__order-history-table-item
+                                order-total
+                              ">
+                                    <p class="order-total-price">
+                                        {{$order->formatted_shipping }}
+                                        <!-- <span class="quantity"> (5 Products)</span> -->
                                     </p>
                                 </td>
                                 <!-- Status -->
@@ -110,7 +129,15 @@
                                 dashboard__order-history-table-item
                                 order-status
                               ">
-                                    Processing
+                                    {{ $order->status_text  }}
+                                </td>
+                                <!-- Status Payment -->
+                                <td
+                                    class="
+                                dashboard__order-history-table-item
+                                order-status
+                              ">
+                                    {{ $order->status_payment_text}}
                                 </td>
                                 <!-- Details page  -->
                                 <td
@@ -121,213 +148,15 @@
                                     <a href="order-details.html">Xem Chi Tiết</a>
                                 </td>
                             </tr>
-                            <tr>
-                                <!-- Order Id  -->
-                                <td class="dashboard__order-history-table-item order-id">
-                                    #703
-                                </td>
-                                <!-- Date  -->
-                                <td
-                                    class="
-                                dashboard__order-history-table-item
-                                order-date
-                              ">
-                                    24 May, 2020
-                                </td>
-                                <!-- Total  -->
-                                <td
-                                    class="
-                                dashboard__order-history-table-item
-                                order-total
-                              ">
-                                    <p class="order-total-price">
-                                        $25.00 <span class="quantity"> (1 Products)</span>
-                                    </p>
-                                </td>
-                                <!-- Status -->
-                                <td
-                                    class="
-                                dashboard__order-history-table-item
-                                order-status
-                              ">
-                                    on the way
-                                </td>
-                                <!-- Details page  -->
-                                <td
-                                    class="
-                                dashboard__order-history-table-item
-                                order-details
-                              ">
-                                    <a href="order-details.html"> Xem Chi Tiết</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <!-- Order Id  -->
-                                <td class="dashboard__order-history-table-item order-id">
-                                    #130
-                                </td>
-                                <!-- Date  -->
-                                <td
-                                    class="
-                                dashboard__order-history-table-item
-                                order-date
-                              ">
-                                    22 Oct, 2020
-                                </td>
-                                <!-- Total  -->
-                                <td
-                                    class="
-                                dashboard__order-history-table-item
-                                order-total
-                              ">
-                                    <p class="order-total-price">
-                                        $250.00
-                                        <span class="quantity"> (4 Products)</span>
-                                    </p>
-                                </td>
-                                <!-- Status -->
-                                <td
-                                    class="
-                                dashboard__order-history-table-item
-                                order-status
-                              ">
-                                    Completed
-                                </td>
-                                <!-- Details page  -->
-                                <td
-                                    class="
-                                dashboard__order-history-table-item
-                                order-details
-                              ">
-                                    <a href="order-details.html"> Xem Chi Tiết</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <!-- Order Id  -->
-                                <td class="dashboard__order-history-table-item order-id">
-                                    #130
-                                </td>
-                                <!-- Date  -->
-                                <td
-                                    class="
-                                dashboard__order-history-table-item
-                                order-date
-                              ">
-                                    22 Oct, 2020
-                                </td>
-                                <!-- Total  -->
-                                <td
-                                    class="
-                                dashboard__order-history-table-item
-                                order-total
-                              ">
-                                    <p class="order-total-price">
-                                        $250.00
-                                        <span class="quantity"> (4 Products)</span>
-                                    </p>
-                                </td>
-                                <!-- Status -->
-                                <td
-                                    class="
-                                dashboard__order-history-table-item
-                                order-status
-                              ">
-                                    Completed
-                                </td>
-                                <!-- Details page  -->
-                                <td
-                                    class="
-                                dashboard__order-history-table-item
-                                order-details
-                              ">
-                                    <a href="order-details.html"> Xem Chi Tiết</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <!-- Order Id  -->
-                                <td class="dashboard__order-history-table-item order-id">
-                                    #130
-                                </td>
-                                <!-- Date  -->
-                                <td
-                                    class="
-                                dashboard__order-history-table-item
-                                order-date
-                              ">
-                                    22 Oct, 2020
-                                </td>
-                                <!-- Total  -->
-                                <td
-                                    class="
-                                dashboard__order-history-table-item
-                                order-total
-                              ">
-                                    <p class="order-total-price">
-                                        $250.00
-                                        <span class="quantity"> (4 Products)</span>
-                                    </p>
-                                </td>
-                                <!-- Status -->
-                                <td
-                                    class="
-                                dashboard__order-history-table-item
-                                order-status
-                              ">
-                                    Completed
-                                </td>
-                                <!-- Details page  -->
-                                <td
-                                    class="
-                                dashboard__order-history-table-item
-                                order-details
-                              ">
-                                    <a href="order-details.html"> Xem Chi Tiết</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <!-- Order Id  -->
-                                <td class="dashboard__order-history-table-item order-id">
-                                    #130
-                                </td>
-                                <!-- Date  -->
-                                <td
-                                    class="
-                                dashboard__order-history-table-item
-                                order-date
-                              ">
-                                    22 Oct, 2020
-                                </td>
-                                <!-- Total  -->
-                                <td
-                                    class="
-                                dashboard__order-history-table-item
-                                order-total
-                              ">
-                                    <p class="order-total-price">
-                                        $250.00
-                                        <span class="quantity"> (4 Products)</span>
-                                    </p>
-                                </td>
-                                <!-- Status -->
-                                <td
-                                    class="
-                                dashboard__order-history-table-item
-                                order-status
-                              ">
-                                    Completed
-                                </td>
-                                <!-- Details page  -->
-                                <td
-                                    class="
-                                dashboard__order-history-table-item
-                                order-details
-                              ">
-                                    <a href="order-details.html"> Xem Chi Tiết</a>
-                                </td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
+                <div>
+                    {{ $orders->links('pagination::bootstrap-5') }}
+
+                </div>
+
                 <!-- More content here -->
             </div>
         </div>

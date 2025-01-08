@@ -9,13 +9,14 @@
                 <div class="col-lg-6 order-lg-0 order-2">
                     <div class="hero__text-content">
                         <h5>
-                            100% Trusted Organic Food Store
+                            Cửa hàng thời trang Synergy 4.0
                         </h5>
                         <p class="info">
-                            Morbi porttitor ligula in nunc varius sagittis. Proin dui nisi, laoreet ut tempor ac, cursus
-                            vitae eros. Cras quis ultricies elit. Proin ac lectus arcu. Maecenas aliquet vel tellus at
-                            accumsan. Donec a eros
-                            non massa vulputate ornare. Vivamus ornare commodo ante, at commodo felis congue vitae.
+                        Synergy 4.0 là một cửa hàng thời trang hiện đại, chuyên cung cấp các sản phẩm quần áo và phụ kiện phù hợp với xu hướng mới nhất. 
+                        Chúng tôi cam kết mang đến cho khách hàng những bộ trang phục chất lượng cao, thiết kế đa dạng và giá cả hợp lý. <br>
+                        <br>Synergy 4.0 tự hào là điểm đến lý tưởng cho những người yêu thích phong cách trẻ trung, năng động và cá tính. Với các bộ sưu tập 
+                        luôn được cập nhật thường xuyên, từ trang phục hàng ngày, công sở đến dạo phố và sự kiện, khách hàng sẽ dễ dàng tìm thấy những sản phẩm
+                        phù hợp với phong cách riêng của mình.
                         </p>
                     </div>
                 </div>
@@ -40,11 +41,11 @@
                 <div class="col-xxl-6">
                     <div class="hero__text-content">
                         <h5>
-                            100% Trusted Organic Food Store
+                            100% An toàn khi mua sắm
                         </h5>
                         <p class="info--two">
-                            Pellentesque a ante vulputate leo porttitor luctus sed eget eros. Nulla et rhoncus neque. Duis
-                            non diam eget est luctus tincidunt a a mi. Nulla eu eros consequat tortor tincidunt feugiat.
+                            Synergy 4.0 luôn đặt trải nghiệm khách hàng lên hàng đầu thông qua các chính sách rõ ràng và minh bạch.
+                            Với cam kết cung cấp dịch vụ tốt nhất, Synergy 4.0 mong muốn mang đến trải nghiệm mua sắm tiện lợi và đáng tin cậy cho mọi khách hàng.
                         </p>
                         <!-- Desktop Verison  -->
                         <div class="our-feature our-feature--grid">
@@ -66,8 +67,8 @@
                                     </svg>
                                 </div>
                                 <div class="our-feature__item-info">
-                                    <h2 class="font-body--xl-500">100% Organic Food</h2>
-                                    <p class="font-body--md-400">100% healthy & Fresh food.</p>
+                                    <h2 class="font-body--xl-500">Sản phẩm</h2>
+                                    <p class="font-body--md-400">Sản phẩn chính hảng chất lượng cao.</p>
                                 </div>
                             </div>
                             <!-- Support  -->
@@ -88,8 +89,8 @@
                                     </svg>
                                 </div>
                                 <div class="our-feature__item-info">
-                                    <h2 class="font-body--xl-500">Great Support 24/7</h2>
-                                    <p class="font-body--md-400">Instant access to Contact</p>
+                                    <h2 class="font-body--xl-500">Hỗ trợ 24/7</h2>
+                                    <p class="font-body--md-400">Truy cập ngay vào Liên hệ.</p>
                                 </div>
                             </div>
                             <!-- Customer feedback  -->
@@ -134,8 +135,8 @@
                                     </svg>
                                 </div>
                                 <div class="our-feature__item-info">
-                                    <h2 class="font-body--xl-500">Customer Feedback</h2>
-                                    <p class="font-body--md-400">Our happy customer</p>
+                                    <h2 class="font-body--xl-500">Phản hồi</h2>
+                                    <p class="font-body--md-400">100% đánh giá trực quan từ khách hàng.</p>
                                 </div>
                             </div>
                             <!-- Secure Payment -->
@@ -159,8 +160,8 @@
                                     </svg>
                                 </div>
                                 <div class="our-feature__item-info">
-                                    <h2 class="font-body--xl-500">100% Sucure Payment</h2>
-                                    <p class="font-body--md-400">We ensure your money is save</p>
+                                    <h2 class="font-body--xl-500">An toàn thanh toán</h2>
+                                    <p class="font-body--md-400">Thanh toán an toàn, đảm bảo bảo mật thông tin.</p>
                                 </div>
                             </div>
                             <!-- Free Shipping  -->
@@ -174,8 +175,8 @@
                                     </svg>
                                 </div>
                                 <div class="our-feature__item-info">
-                                    <h2 class="font-body--xl-500">Free Shipping</h2>
-                                    <p class="font-body--md-400">Free shipping with discount</p>
+                                    <h2 class="font-body--xl-500">Miễn phí vận chuyển</h2>
+                                    <p class="font-body--md-400">Ưu đãi miễn phí vận chuyển đơn hàng trong nước.</p>
                                 </div>
                             </div>
                             <!-- Organic Food  -->
@@ -196,8 +197,8 @@
                                     </svg>
                                 </div>
                                 <div class="our-feature__item-info">
-                                    <h2 class="font-body--xl-500">100% Organic Food</h2>
-                                    <p class="font-body--md-400">100% healthy & Fresh food.</p>
+                                    <h2 class="font-body--xl-500">Đổi/Trả Hàng</h2>
+                                    <p class="font-body--md-400">Hỗ trợ đổi/trả hàng trong vòng 7-14 ngày.</p>
                                 </div>
                             </div>
                         </div>
@@ -223,8 +224,8 @@
                                             </svg>
                                         </div>
                                         <div class="our-feature__item-info">
-                                            <h2 class="font-body--xl-500">100% Organic Food</h2>
-                                            <p class="font-body--md-400">100% healthy & Fresh food.</p>
+                                            <h2 class="font-body--xl-500">Sản phẩm</h2>
+                                            <p class="font-body--md-400">Sản phẩn chính hảng chất lượng cao.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -247,8 +248,8 @@
                                             </svg>
                                         </div>
                                         <div class="our-feature__item-info">
-                                            <h2 class="font-body--xl-500">Great Support 24/7</h2>
-                                            <p class="font-body--md-400">Instant access to Contact</p>
+                                            <h2 class="font-body--xl-500">Hỗ trợ 24/7</h2>
+                                            <p class="font-body--md-400">Truy cập ngay vào Liên hệ.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -295,8 +296,8 @@
                                             </svg>
                                         </div>
                                         <div class="our-feature__item-info">
-                                            <h2 class="font-body--xl-500">Customer Feedback</h2>
-                                            <p class="font-body--md-400">Our happy customer</p>
+                                            <h2 class="font-body--xl-500">Phản hồi</h2>
+                                            <p class="font-body--md-400">100% đánh giá trực quan từ khách hàng.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -322,8 +323,8 @@
                                             </svg>
                                         </div>
                                         <div class="our-feature__item-info">
-                                            <h2 class="font-body--xl-500">100% Sucure Payment</h2>
-                                            <p class="font-body--md-400">We ensure your money is save</p>
+                                            <h2 class="font-body--xl-500">An toàn thanh toán</h2>
+                                            <p class="font-body--md-400">Thanh toán an toàn, đảm bảo bảo mật thông tin.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -339,8 +340,8 @@
                                             </svg>
                                         </div>
                                         <div class="our-feature__item-info">
-                                            <h2 class="font-body--xl-500">Free Shipping</h2>
-                                            <p class="font-body--md-400">Free shipping with discount</p>
+                                            <h2 class="font-body--xl-500">Miễn phí vận chuyển</h2>
+                                            <p class="font-body--md-400">Ưu đãi miễn phí vận chuyển đơn hàng trong nước.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -363,8 +364,8 @@
                                             </svg>
                                         </div>
                                         <div class="our-feature__item-info">
-                                            <h2 class="font-body--xl-500">100% Organic Food</h2>
-                                            <p class="font-body--md-400">100% healthy & Fresh food.</p>
+                                            <h2 class="font-body--xl-500">Đổi/Trả Hàng</h2>
+                                            <p class="font-body--md-400">Hỗ trợ đổi/trả hàng trong vòng 7-14 ngày.</p>
                                         </div>
                                     </div>
                                 </div>

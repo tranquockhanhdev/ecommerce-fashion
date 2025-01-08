@@ -83,23 +83,30 @@
                         <form action="{{ route('admin.qllienhe.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
+                            <!-- Hiển thị thông báo lỗi chung -->
+                                @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                @endif
+
                             <div class="contact-form-group">
                                 <div class="contact-form--input">
                                     <input type="text " placeholder="Your Name" id="user_name" name="user_name" value="{{ old('user_name') }}"/>
-                                    @error('user_name') <p class="text-danger">{{ $message }}</p> @enderror
                                 </div>
                                 <div class="contact-form--input">
                                     <input type="email" placeholder="Your Email" id="email" name="email" value="{{ old('email') }}"/>
-                                    @error('email') <p class="text-danger">{{ $message }}</p> @enderror
                                 </div>
                             </div>
                             <div class="contact-form--input">
                                 <input type="text" placeholder="Title" id="title" name="title" value="{{ old('title') }}"/>
-                                @error('title') <p class="text-danger">{{ $message }}</p> @enderror
                             </div>
                             <div class="contact-form--input contact-form--input-area" id="subject">
-                                <textarea cols="auto" rows="auto" placeholder="Subjects" id="content" name="content" value="{{ old('content') }}"></textarea>
-                                @error('content') <p class="text-danger">{{ $message }}</p> @enderror
+                                <textarea cols="auto" rows="auto" placeholder="Subjects" id="content" name="content">{{ old('content') }}</textarea>
                             </div>
                             <div class="contact-form-button">
                                 <button class="button button--md" type="submit">

@@ -50,7 +50,7 @@ class ContactController extends Controller
             'status' => 0,
         ]);
 
-        return redirect()->view('clients.contact');
+        return redirect()->back()->withInput();
     }
 
     /**

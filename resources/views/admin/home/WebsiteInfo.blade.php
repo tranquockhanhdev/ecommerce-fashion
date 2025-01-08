@@ -13,7 +13,7 @@
 
     <div class="collapse show" id="collapseCardExample">
         <div class="card-body">
-            <form id="websiteInfoForm" action="{{ route('admin.update', $website->id) }}" method="POST" enctype="multipart/form-data">
+            <form id="websiteInfoForm" action="{{ route('admin.website.update', $website->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <!-- Site Name -->
@@ -61,13 +61,14 @@
                 <!-- Logo mới (tải lên) -->
                 <div class="mb-3">
                     <label for="logo" class="form-label">Logo Mới</label>
+                    <div class="mt-2">
+                        <img id="logoPreview" src="#" alt="Logo Preview" style="display:none;" width="150">
+                    </div>
                     <input type="file" class="form-control @error('logo') is-invalid @enderror" id="logo" name="logo" accept="image/*" onchange="previewImage(event)">
                     @error('logo')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-                    <div class="mt-2">
-                        <img id="logoPreview" src="#" alt="Logo Preview" style="display:none;" width="150">
-                    </div>
+
                 </div>
 
                 <!-- Submit Button -->

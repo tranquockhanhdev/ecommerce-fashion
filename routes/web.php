@@ -1,12 +1,19 @@
 <?php
 
-use App\Http\Controllers\admin\AdminController;
-use App\Http\Controllers\client\AccountController;
-use App\Http\Controllers\client\AccountDashboardController;
 use App\Http\Controllers\client\AccountSettingController;
+use App\Http\Controllers\client\AccountDashboardController;
+use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\admin\ProductController;
+use App\Http\Controllers\admin\ColorController;
+use App\Http\Controllers\admin\SizeController;
+use App\Http\Controllers\admin\BinhluanController;
+use App\Http\Controllers\admin\DanhmucController;
+use App\Http\Controllers\admin\OrderController;
+use App\Http\Controllers\admin\ContactController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Auth\SecretController;
 
 
 Auth::routes([
@@ -19,37 +26,36 @@ Route::fallback(function () {
 });
 Route::middleware(['auth'])->group(function () {
     // Trang quản trị chỉ dành cho admin
-    Route::middleware(['role:admin'])->group(function () {
-        Route::resource('admin', AdminController::class);
+    Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
+        // Dashboard cho admin
+        Route::get('/', [AdminController::class, 'index'])->name('index');
+        Route::resource('/website', AdminController::class);
 
-        Route::get('/admin/qldonhang', function () {
-            return view('admin.qldonhang.index');
-        })->name('admin.qldonhang.index');
+        // Quản lý khách hàng
+        Route::view('/qlkhachhang', 'admin.qlkhachhang.index')->name('qlkhachhang.index');
 
-        Route::get('/admin/qlkhachhang', function () {
-            return view('admin.qlkhachhang.index');
-        })->name('admin.qlkhachhang.index');
+        // Quản lý nhân viên
+        Route::view('/qlnhanvien', 'admin.qlnhanvien.index')->name('qlnhanvien.index');
 
-        Route::get('/admin/qlnhanvien', function () {
-            return view('admin.qlnhanvien.index');
-        })->name('admin.qlnhanvien.index');
+        // Quản lý bình luận
+        Route::resource('qlbinhluan', BinhluanController::class);
 
-        Route::get('/admin/qlsanpham', function () {
-            return view('admin.qlsanpham.index');
-        })->name('admin.qlsanpham.index');
+        // Quản lý đơn hàng, liên hệ, danh mục
+        Route::resource('qldonhang', OrderController::class);
+        Route::resource('qllienhe', ContactController::class);
+        Route::resource('qldanhmuc', DanhmucController::class);
 
-        Route::get('/admin/qldanhmuc', function () {
-            return view('admin.qldanhmuc.index');
-        })->name('admin.qldanhmuc.index');
+        // Quản lý sản phẩm
+        Route::get('/qlsanpham', [ProductController::class, 'index'])->name('qlsanpham.index');
+        Route::resource('products', ProductController::class);
+        Route::post('/products/{id}/toggle-status', [ProductController::class, 'toggleStatus'])->name('products.toggleStatus');
+        Route::delete('/delete-image/{imageId}', [ProductController::class, 'deleteImage'])->name('deleteImage');
 
-        Route::get('/admin/qllienhe', function () {
-            return view('admin.qllienhe.index');
-        })->name('admin.qllienhe.index');
-
-        Route::get('/admin/qlbinhluan', function () {
-            return view('admin.qlbinhluan.index');
-        })->name('admin.qlbinhluan.index');
+        // Quản lý màu sắc và kích thước
+        Route::resource('colors', ColorController::class);
+        Route::resource('sizes', SizeController::class);
     });
+
 
     // Trang nhân viên chỉ dành cho nhân viên và admin
     Route::middleware(['role:admin,staff'])->group(function () {
@@ -99,6 +105,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/secretkey', [App\Http\Controllers\Auth\SecretController::class, 'showSecret'])->name('secretkey');
 });
 // Các route khác không cần đăng nhập
+// Route::get('/', function () {
+//     return view('client.homepage');
+// });
+
 Route::prefix('auth')->name('auth.')->group(function () {
     // Route để nhập email (GET)
     Route::get('/forgotpassword', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'nhapEmail'])->name('forgotpassword');

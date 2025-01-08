@@ -91,6 +91,8 @@ class RegisterController extends Controller
                 'confirmed', // Kiểm tra khớp với trường xác nhận mật khẩu
             ],
             'date' => ['required', 'date'], // Ngày sinh
+            'address' => ['nullable', 'string', 'max:255'], // Địa chỉ có thể null
+            'phone' => ['nullable', 'string', 'max:15', 'regex:/^[0-9]+$/'], // Số điện thoại có thể null và chỉ chứa số
         ], [
             // Custom error messages
             'password.regex' => 'Mật khẩu phải chứa ít nhất 1 chữ thường, 1 chữ hoa, 1 số và 1 ký tự đặc biệt.',
@@ -120,6 +122,8 @@ class RegisterController extends Controller
             'role' => "customer",            // Thêm vai trò
             'image' => $data['image'] ?? 'default-avatar.png',  // Thêm hình ảnh (nếu có)
             'status' => 1, // Trạng thái mặc định là active
+            'address' => $data['address'] ?? null, // Gán giá trị null address
+            'phone' => $data['phone'] ?? null,     // Gán giá trị null phone
             'created_at' => now(),
         ]);
         Auth::login($account);

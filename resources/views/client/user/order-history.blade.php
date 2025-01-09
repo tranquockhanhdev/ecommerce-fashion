@@ -23,673 +23,87 @@
                                     Total
                                 </th>
                                 <th scope="col" class="dashboard__order-history-table-title">
+                                    Shipping Fee
+                                </th>
+                                <th scope="col" class="dashboard__order-history-table-title">
                                     Status
+                                </th>
+                                <th scope="col" class="dashboard__order-history-table-title">
+                                    Status Payment
                                 </th>
                                 <th scope="col" class="dashboard__order-history-table-title"></th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($orders as $order)
                             <tr>
                                 <!-- Order Id  -->
                                 <td class="dashboard__order-history-table-item order-id">
-                                    #738
+                                    {{ $order->id }}
                                 </td>
                                 <!-- Date  -->
                                 <td
                                     class="
-                      dashboard__order-history-table-item
-                      order-date
-                    ">
-                                    8 Sep, 20220
+                                dashboard__order-history-table-item
+                                order-date
+                              ">
+                                    {{ date('Y-m-d', strtotime($order->created_at ))}}
                                 </td>
                                 <!-- Total  -->
                                 <td
                                     class="
-                      dashboard__order-history-table-item
-                      order-total
-                    ">
+                                dashboard__order-history-table-item
+                                order-total
+                              ">
                                     <p class="order-total-price">
-                                        $135.00
-                                        <span class="quantity"> (5 Products)</span>
+                                        {{$order->formatted_total }}
+                                        <!-- <span class="quantity"> (5 Products)</span> -->
+                                    </p>
+                                </td>
+                                <!-- shipping fee  -->
+                                <td
+                                    class="
+                                dashboard__order-history-table-item
+                                order-total
+                              ">
+                                    <p class="order-total-price">
+                                        {{$order->formatted_shipping }}
+                                        <!-- <span class="quantity"> (5 Products)</span> -->
                                     </p>
                                 </td>
                                 <!-- Status -->
                                 <td
                                     class="
-                      dashboard__order-history-table-item
-                      order-status
-                    ">
-                                    Processing
+                                dashboard__order-history-table-item
+                                order-status
+                              ">
+                                    {{ $order->status_text  }}
+                                </td>
+                                <!-- Status Payment -->
+                                <td
+                                    class="
+                                dashboard__order-history-table-item
+                                order-status
+                              ">
+                                    {{ $order->status_payment_text}}
                                 </td>
                                 <!-- Details page  -->
                                 <td
                                     class="
-                      dashboard__order-history-table-item
-                      order-details
-                    ">
-                                    <a href="order-details.html"> View Details</a>
+                                dashboard__order-history-table-item
+                                order-details
+                              ">
+                                    <a href="{{ route('client.user.order-details', $order->id) }}">Xem Chi Tiết</a>
+
                                 </td>
                             </tr>
-                            <tr>
-                                <!-- Order Id  -->
-                                <td class="dashboard__order-history-table-item order-id">
-                                    #703
-                                </td>
-                                <!-- Date  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-date
-                    ">
-                                    24 May, 2020
-                                </td>
-                                <!-- Total  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-total
-                    ">
-                                    <p class="order-total-price">
-                                        $25.00 <span class="quantity"> (1 Products)</span>
-                                    </p>
-                                </td>
-                                <!-- Status -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-status
-                    ">
-                                    on the way
-                                </td>
-                                <!-- Details page  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-details
-                    ">
-                                    <a href="order-details.html"> View Details</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <!-- Order Id  -->
-                                <td class="dashboard__order-history-table-item order-id">
-                                    #130
-                                </td>
-                                <!-- Date  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-date
-                    ">
-                                    22 Oct, 2020
-                                </td>
-                                <!-- Total  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-total
-                    ">
-                                    <p class="order-total-price">
-                                        $250.00
-                                        <span class="quantity"> (4 Products)</span>
-                                    </p>
-                                </td>
-                                <!-- Status -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-status
-                    ">
-                                    Completed
-                                </td>
-                                <!-- Details page  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-details
-                    ">
-                                    <a href="order-details.html"> View Details</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <!-- Order Id  -->
-                                <td class="dashboard__order-history-table-item order-id">
-                                    #130
-                                </td>
-                                <!-- Date  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-date
-                    ">
-                                    22 Oct, 2020
-                                </td>
-                                <!-- Total  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-total
-                    ">
-                                    <p class="order-total-price">
-                                        $250.00
-                                        <span class="quantity"> (4 Products)</span>
-                                    </p>
-                                </td>
-                                <!-- Status -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-status
-                    ">
-                                    Completed
-                                </td>
-                                <!-- Details page  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-details
-                    ">
-                                    <a href="order-details.html"> View Details</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <!-- Order Id  -->
-                                <td class="dashboard__order-history-table-item order-id">
-                                    #130
-                                </td>
-                                <!-- Date  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-date
-                    ">
-                                    22 Oct, 2020
-                                </td>
-                                <!-- Total  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-total
-                    ">
-                                    <p class="order-total-price">
-                                        $250.00
-                                        <span class="quantity"> (4 Products)</span>
-                                    </p>
-                                </td>
-                                <!-- Status -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-status
-                    ">
-                                    Completed
-                                </td>
-                                <!-- Details page  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-details
-                    ">
-                                    <a href="order-details.html"> View Details</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <!-- Order Id  -->
-                                <td class="dashboard__order-history-table-item order-id">
-                                    #130
-                                </td>
-                                <!-- Date  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-date
-                    ">
-                                    22 Oct, 2020
-                                </td>
-                                <!-- Total  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-total
-                    ">
-                                    <p class="order-total-price">
-                                        $250.00
-                                        <span class="quantity"> (4 Products)</span>
-                                    </p>
-                                </td>
-                                <!-- Status -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-status
-                    ">
-                                    Completed
-                                </td>
-                                <!-- Details page  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-details
-                    ">
-                                    <a href="order-details.html"> View Details</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <!-- Order Id  -->
-                                <td class="dashboard__order-history-table-item order-id">
-                                    #130
-                                </td>
-                                <!-- Date  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-date
-                    ">
-                                    22 Oct, 2020
-                                </td>
-                                <!-- Total  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-total
-                    ">
-                                    <p class="order-total-price">
-                                        $250.00
-                                        <span class="quantity"> (4 Products)</span>
-                                    </p>
-                                </td>
-                                <!-- Status -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-status
-                    ">
-                                    Completed
-                                </td>
-                                <!-- Details page  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-details
-                    ">
-                                    <a href="order-details.html"> View Details</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <!-- Order Id  -->
-                                <td class="dashboard__order-history-table-item order-id">
-                                    #130
-                                </td>
-                                <!-- Date  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-date
-                    ">
-                                    22 Oct, 2020
-                                </td>
-                                <!-- Total  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-total
-                    ">
-                                    <p class="order-total-price">
-                                        $250.00
-                                        <span class="quantity"> (4 Products)</span>
-                                    </p>
-                                </td>
-                                <!-- Status -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-status
-                    ">
-                                    Completed
-                                </td>
-                                <!-- Details page  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-details
-                    ">
-                                    <a href="order-details.html"> View Details</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <!-- Order Id  -->
-                                <td class="dashboard__order-history-table-item order-id">
-                                    #130
-                                </td>
-                                <!-- Date  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-date
-                    ">
-                                    22 Oct, 2020
-                                </td>
-                                <!-- Total  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-total
-                    ">
-                                    <p class="order-total-price">
-                                        $250.00
-                                        <span class="quantity"> (4 Products)</span>
-                                    </p>
-                                </td>
-                                <!-- Status -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-status
-                    ">
-                                    Completed
-                                </td>
-                                <!-- Details page  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-details
-                    ">
-                                    <a href="order-details.html"> View Details</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <!-- Order Id  -->
-                                <td class="dashboard__order-history-table-item order-id">
-                                    #130
-                                </td>
-                                <!-- Date  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-date
-                    ">
-                                    22 Oct, 2020
-                                </td>
-                                <!-- Total  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-total
-                    ">
-                                    <p class="order-total-price">
-                                        $250.00
-                                        <span class="quantity"> (4 Products)</span>
-                                    </p>
-                                </td>
-                                <!-- Status -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-status
-                    ">
-                                    Completed
-                                </td>
-                                <!-- Details page  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-details
-                    ">
-                                    <a href="order-details.html"> View Details</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <!-- Order Id  -->
-                                <td class="dashboard__order-history-table-item order-id">
-                                    #130
-                                </td>
-                                <!-- Date  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-date
-                    ">
-                                    22 Oct, 2020
-                                </td>
-                                <!-- Total  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-total
-                    ">
-                                    <p class="order-total-price">
-                                        $250.00
-                                        <span class="quantity"> (4 Products)</span>
-                                    </p>
-                                </td>
-                                <!-- Status -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-status
-                    ">
-                                    Completed
-                                </td>
-                                <!-- Details page  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-details
-                    ">
-                                    <a href="order-details.html"> View Details</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <!-- Order Id  -->
-                                <td class="dashboard__order-history-table-item order-id">
-                                    #130
-                                </td>
-                                <!-- Date  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-date
-                    ">
-                                    22 Oct, 2020
-                                </td>
-                                <!-- Total  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-total
-                    ">
-                                    <p class="order-total-price">
-                                        $250.00
-                                        <span class="quantity"> (4 Products)</span>
-                                    </p>
-                                </td>
-                                <!-- Status -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-status
-                    ">
-                                    Completed
-                                </td>
-                                <!-- Details page  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-details
-                    ">
-                                    <a href="order-details.html"> View Details</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <!-- Order Id  -->
-                                <td class="dashboard__order-history-table-item order-id">
-                                    #130
-                                </td>
-                                <!-- Date  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-date
-                    ">
-                                    22 Oct, 2020
-                                </td>
-                                <!-- Total  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-total
-                    ">
-                                    <p class="order-total-price">
-                                        $250.00
-                                        <span class="quantity"> (4 Products)</span>
-                                    </p>
-                                </td>
-                                <!-- Status -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-status
-                    ">
-                                    Completed
-                                </td>
-                                <!-- Details page  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-details
-                    ">
-                                    <a href="order-details.html"> View Details</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <!-- Order Id  -->
-                                <td class="dashboard__order-history-table-item order-id">
-                                    #130
-                                </td>
-                                <!-- Date  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-date
-                    ">
-                                    22 Oct, 2020
-                                </td>
-                                <!-- Total  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-total
-                    ">
-                                    <p class="order-total-price">
-                                        $250.00
-                                        <span class="quantity"> (4 Products)</span>
-                                    </p>
-                                </td>
-                                <!-- Status -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-status
-                    ">
-                                    Completed
-                                </td>
-                                <!-- Details page  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-details
-                    ">
-                                    <a href="order-details.html"> View Details</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <!-- Order Id  -->
-                                <td class="dashboard__order-history-table-item order-id">
-                                    #130
-                                </td>
-                                <!-- Date  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-date
-                    ">
-                                    22 Oct, 2020
-                                </td>
-                                <!-- Total  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-total
-                    ">
-                                    <p class="order-total-price">
-                                        $250.00
-                                        <span class="quantity"> (4 Products)</span>
-                                    </p>
-                                </td>
-                                <!-- Status -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-status
-                    ">
-                                    Completed
-                                </td>
-                                <!-- Details page  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-details
-                    ">
-                                    <a href="order-details.html"> View Details</a>
-                                </td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
-                <div class="dashboard__order-pagination">
-                    <nav aria-label="Page navigation pagination--one" class="pagination-wrapper">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item pagination-item disabled">
-                                <a class="page-link pagination-link" href="#" tabindex="-1">
-                                    <svg width="8" height="14" viewBox="0 0 8 14" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M6.91663 1.16634L1.08329 6.99967L6.91663 12.833" stroke="currentColor"
-                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                    </svg>
-                                </a>
-                            </li>
-                            <li class="page-item pagination-item">
-                                <a class="page-link pagination-link active" href="#">1</a>
-                            </li>
-                            <li class="page-item pagination-item">
-                                <a class="page-link pagination-link" href="#">2</a>
-                            </li>
-                            <li class="page-item pagination-item">
-                                <a class="page-link pagination-link" href="#">3</a>
-                            </li>
-                            <li class="page-item pagination-item">
-                                <a class="page-link pagination-link" href="#">4</a>
-                            </li>
-                            <li class="page-item pagination-item">
-                                <a class="page-link pagination-link" href="#">5</a>
-                            </li>
-                            <li class="page-item pagination-item">
-                                <p class="page-link pagination-link">...</p>
-                            </li>
-                            <li class="page-item pagination-item">
-                                <a class="page-link pagination-link" href="#">21</a>
-                            </li>
-                            <li class="page-item pagination-item">
-                                <a class="page-link pagination-link" href="#">
-                                    <svg width="8" height="14" viewBox="0 0 8 14" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M1.08337 1.16634L6.91671 6.99967L1.08337 12.833" stroke="currentColor"
-                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                    </svg>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
+                <div>
+                    {{ $orders->links('pagination::bootstrap-5') }}
+
                 </div>
             </div>
         </div>

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Auth\SecretController;
-
+use App\Http\Controllers\client\AccountOrderController;
 
 Auth::routes([
     'reset' => false,     // Tắt route reset mật khẩu
@@ -76,14 +76,10 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('user-dashboard')->group(function () {
             Route::get('/', [AccountDashboardController::class, 'index'])->name('client.user.user-dashboard');
         });
-
-        Route::get('/order-details', function () {
-            return view('client.user.order-details');
-        })->name('client.user.order-details');
-
-        Route::get('/order-history', function () {
-            return view('client.user.order-history');
-        })->name('client.user.order-history');
+        Route::prefix('order')->group(function () {
+            Route::get('/history', [AccountOrderController::class, 'index'])->name('client.user.order-history');
+            Route::get('/{id}', [AccountOrderController::class, 'details'])->name('client.user.order-details');
+        });
     });
 
     // Cart routes

@@ -57,7 +57,7 @@
         <div class="dashboard__order-history" style="margin-top: 24px">
             <div class="dashboard__order-history-title">
                 <h2 class="font-body--xxl-500">Lịch Sử Đặt Hàng Gần Đây</h2>
-                <a href="order-history.html" class="font-body--lg-500">
+                <a href="{{route('client.user.order-history')}}" class="font-body--lg-500">
                     Xem Tất Cả</a>
             </div>
             <div class="dashboard__order-history-table">
@@ -151,10 +151,6 @@
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-                <div>
-                    {{ $orders->links('pagination::bootstrap-5') }}
-
                 </div>
 
                 <!-- More content here -->

@@ -8,19 +8,19 @@ use App\Models\Account;
 use App\Models\Order;
 use App\Models\OrderCustomer;
 use App\Http\Controllers\Controller;
+use App\Models\PaymentMethod;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-class AccountDashboardController extends Controller
+class AccountOrderController extends Controller
 {
     public function index()
     {
         $user = Auth::user();
         $userId = $user->id;
-        $account = Account::findOrFail($userId);
         $orders = Order::whereHas('orderCustomer', function ($query) use ($userId) {
             $query->where('account_id',  $userId);
-        })->paginate(5); // Phân trang, 10 bản ghi mỗi trang
+        })->paginate(10); // Phân trang, 10 bản ghi mỗi trang
 
         // Ánh xạ giá trị status và status_payment
         $statusMap = [
@@ -44,6 +44,22 @@ class AccountDashboardController extends Controller
             $order->formatted_total = number_format($order->total, 0, ',', '.') . ' VND';
             $order->formatted_shipping = number_format($order->shipping_fee, 0, ',', '.') . ' VND';
         }
-        return view('client.user.user-dashboard', compact('account', 'orders'));
+        return view('client.user.order-history', compact('orders'));
+    }
+    public function details(string $id)
+    {
+        // Tìm đơn hàng theo ID
+        $orders = Order::findOrFail($id);
+        // Tìm thông tin khách hàng của đơn hàng
+        $orderCustomer = OrderCustomer::findOrFail($orders->ordercustomer_id);
+        // Tìm phương thức thanh toán của đơn hàng
+        $paymentMethod = PaymentMethod::findOrFail($orders->payment_method_id);
+
+        // Format tiền theo định dạng Việt Nam Đồng
+        $orders->formatted_total = number_format($orders->total, 0, ',', '.') . ' VND';
+        $orders->formatted_shipping = number_format($orders->shipping_fee, 0, ',', '.') . ' VND';
+
+        // Trả về view với các dữ liệu cần thiết
+        return view('client.user.order-details', compact('orders', 'orderCustomer', 'paymentMethod'));
     }
 }

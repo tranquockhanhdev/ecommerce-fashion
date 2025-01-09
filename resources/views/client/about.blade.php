@@ -12,11 +12,18 @@
                             Cửa hàng thời trang Synergy 4.0
                         </h5>
                         <p class="info">
-                        Synergy 4.0 là một cửa hàng thời trang hiện đại, chuyên cung cấp các sản phẩm quần áo và phụ kiện phù hợp với xu hướng mới nhất. 
-                        Chúng tôi cam kết mang đến cho khách hàng những bộ trang phục chất lượng cao, thiết kế đa dạng và giá cả hợp lý. <br>
-                        <br>Synergy 4.0 tự hào là điểm đến lý tưởng cho những người yêu thích phong cách trẻ trung, năng động và cá tính. Với các bộ sưu tập 
-                        luôn được cập nhật thường xuyên, từ trang phục hàng ngày, công sở đến dạo phố và sự kiện, khách hàng sẽ dễ dàng tìm thấy những sản phẩm
-                        phù hợp với phong cách riêng của mình.
+                            Synergy 4.0 là một cửa hàng thời trang hiện đại, chuyên cung cấp các sản phẩm quần áo và phụ
+                            kiện phù hợp với xu hướng mới nhất.
+                            Chúng tôi cam kết mang đến cho khách hàng những bộ trang phục chất lượng cao, thiết kế đa dạng
+                            và giá cả hợp lý. <br>
+                            <br>Synergy 4.0 tự hào là điểm đến lý tưởng cho những người yêu thích phong cách trẻ trung, năng
+                            động và cá tính. Với các bộ sưu tập
+                            luôn được cập nhật thường xuyên, từ trang phục hàng ngày, công sở đến dạo phố và sự kiện, khách
+                            hàng sẽ dễ dàng tìm thấy những sản phẩm
+                            phù hợp với phong cách riêng của mình. <br>
+                            <br>
+                            <b>Địa chỉ: 65 Đ. Huỳnh Thúc Kháng, Bến Nghé, Quận 1, Hồ Chí Minh<br>
+                            Số điện thoại: (+84) 332 172 749 </b>
                         </p>
                     </div>
                 </div>
@@ -44,34 +51,29 @@
                             100% An toàn khi mua sắm
                         </h5>
                         <p class="info--two">
-                            Synergy 4.0 luôn đặt trải nghiệm khách hàng lên hàng đầu thông qua các chính sách rõ ràng và minh bạch.
-                            Với cam kết cung cấp dịch vụ tốt nhất, Synergy 4.0 mong muốn mang đến trải nghiệm mua sắm tiện lợi và đáng tin cậy cho mọi khách hàng.
+                            Synergy 4.0 luôn đặt trải nghiệm khách hàng lên hàng đầu thông qua các chính sách rõ ràng và
+                            minh bạch.
+                            Với cam kết cung cấp dịch vụ tốt nhất, Synergy 4.0 mong muốn mang đến trải nghiệm mua sắm tiện
+                            lợi và đáng tin cậy cho mọi khách hàng.
                         </p>
                         <!-- Desktop Verison  -->
                         <div class="our-feature our-feature--grid">
-                            <!-- Organic Food  -->
+                            
                             <div class="our-feature__item">
                                 <div class="icon">
-                                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
+                                    <svg width="36" height="36" viewBox="0 0 36 36" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
-                                        <g clip-path="url(#)">
-                                            <path
-                                                d="M36.4905 0.538949C36.4372 0.343152 36.3046 0.178413 36.1246 0.0846357C35.7694 -0.103321 35.329 0.032269 35.141 0.387478C35.1405 0.388382 35.14 0.389287 35.1396 0.390192C35.1396 0.410294 31.4528 7.56272 20.1352 8.80906C18.6589 8.96657 17.2158 9.35173 15.8574 9.95088C13.4259 11.008 11.4178 12.8477 10.1523 15.1775C8.97092 17.3659 8.48162 19.8614 8.74919 22.3339C8.94629 24.1363 9.54826 25.8709 10.5102 27.4078C8.49992 28.8511 2.12345 33.8405 1.54852 39.1958C1.5063 39.5954 1.79618 39.9537 2.19581 39.9959C2.59555 40.0381 2.95367 39.7482 2.99589 39.3486C3.52257 34.5682 9.50504 29.9326 11.3705 28.5898C13.6099 31.3398 16.963 32.8917 20.5613 33.145C22.9832 33.3013 25.4079 32.8883 27.6414 31.9389C30.0659 30.9216 32.2072 29.3308 33.8812 27.3032C38.1951 22.0766 40.2496 13.2919 36.4905 0.538949ZM11.7887 26.6881C11.5113 26.2512 11.2667 25.7943 11.0569 25.3211C10.6155 24.3228 10.3307 23.2624 10.2126 22.1771C9.96638 19.9995 10.3869 17.7984 11.4188 15.865C12.5341 13.8152 14.3032 12.1975 16.4444 11.2696C17.6685 10.7366 18.9677 10.3962 20.296 10.2605C27.766 9.45636 32.1604 6.13143 34.428 3.71914C33.0957 8.10538 30.8019 12.1393 27.7138 15.5273L27.2715 11.0726C27.249 10.6713 26.9054 10.3643 26.5042 10.3868C26.103 10.4093 25.7959 10.7529 25.8184 11.1541C25.8195 11.1739 25.8214 11.1937 25.8241 11.2133L26.391 16.9385C23.0098 20.3679 18.3099 23.8135 11.7887 26.6881ZM32.7554 26.3705V26.3745C31.2345 28.2262 29.2863 29.6806 27.0785 30.6121C25.0483 31.4701 22.8448 31.8391 20.6458 31.6896C17.5845 31.5345 14.7118 30.1639 12.6651 27.8822C15.0635 26.8209 17.3826 25.5888 19.6045 24.1954L25.993 25.4016C26.39 25.4638 26.7623 25.1923 26.8245 24.7953C26.8845 24.4123 26.6338 24.0495 26.2543 23.9703L21.3453 23.0415C23.612 21.4848 25.7219 19.7115 27.6454 17.7466C27.6807 17.7162 27.713 17.6826 27.7419 17.6461C32.8157 12.3632 34.9747 7.13655 35.8753 3.92017C38.36 14.5181 36.4583 21.8917 32.7554 26.3705Z"
-                                                fill="currentColor" />
-                                        </g>
-                                        <defs>
-                                            <clipPath>
-                                                <rect width="40" height="40" fill="white" />
-                                            </clipPath>
-                                        </defs>
+                                        <path d="M18 3C14 3 11 6 11 6L6 8L8 14H9V28H27V14H28L30 8L25 6C25 6 22 3 18 3Z"
+                                            stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"
+                                            stroke-linejoin="round" />
                                     </svg>
                                 </div>
                                 <div class="our-feature__item-info">
                                     <h2 class="font-body--xl-500">Sản phẩm</h2>
-                                    <p class="font-body--md-400">Sản phẩn chính hảng chất lượng cao.</p>
+                                    <p class="font-body--md-400">Sản phẩm chính hãng chất lượng cao.</p>
                                 </div>
                             </div>
-                            <!-- Support  -->
+                            
                             <div class="our-feature__item">
                                 <div class="icon">
                                     <svg width="36" height="36" viewBox="0 0 36 36" fill="none"
@@ -89,11 +91,11 @@
                                     </svg>
                                 </div>
                                 <div class="our-feature__item-info">
-                                    <h2 class="font-body--xl-500">Hỗ trợ 24/7</h2>
-                                    <p class="font-body--md-400">Truy cập ngay vào Liên hệ.</p>
+                                    <h2 class="font-body--xl-500">Hỗ Trợ Khách Hàng 24/7</h2>
+                                    <p class="font-body--md-400">Truy cập ngay vào để được hỗ trợ.</p>
                                 </div>
                             </div>
-                            <!-- Customer feedback  -->
+                            
                             <div class="our-feature__item">
                                 <div class="icon">
                                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
@@ -139,7 +141,7 @@
                                     <p class="font-body--md-400">100% đánh giá trực quan từ khách hàng.</p>
                                 </div>
                             </div>
-                            <!-- Secure Payment -->
+                            
                             <div class="our-feature__item">
                                 <div class="icon">
                                     <svg width="36" height="36" viewBox="0 0 36 36" fill="none"
@@ -160,11 +162,11 @@
                                     </svg>
                                 </div>
                                 <div class="our-feature__item-info">
-                                    <h2 class="font-body--xl-500">An toàn thanh toán</h2>
-                                    <p class="font-body--md-400">Thanh toán an toàn, đảm bảo bảo mật thông tin.</p>
+                                    <h2 class="font-body--xl-500">100% Thanh Toán An Toàn</h2>
+                                    <p class="font-body--md-400">Chúng tôi đảm bảo tiền của bạn sẽ được tiết kiệm.</p>
                                 </div>
                             </div>
-                            <!-- Free Shipping  -->
+                            
                             <div class="our-feature__item">
                                 <div class="icon">
                                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
@@ -176,10 +178,10 @@
                                 </div>
                                 <div class="our-feature__item-info">
                                     <h2 class="font-body--xl-500">Miễn phí vận chuyển</h2>
-                                    <p class="font-body--md-400">Ưu đãi miễn phí vận chuyển đơn hàng trong nước.</p>
+                                    <p class="font-body--md-400">Miễn phí vận chuyển cho tất cả các đơn hàng của bạn.</p>
                                 </div>
                             </div>
-                            <!-- Organic Food  -->
+                            
                             <div class="our-feature__item">
                                 <div class="icon">
                                     <svg width="36" height="36" viewBox="0 0 36 36" fill="none"
@@ -197,8 +199,8 @@
                                     </svg>
                                 </div>
                                 <div class="our-feature__item-info">
-                                    <h2 class="font-body--xl-500">Đổi/Trả Hàng</h2>
-                                    <p class="font-body--md-400">Hỗ trợ đổi/trả hàng trong vòng 7-14 ngày.</p>
+                                    <h2 class="font-body--xl-500">Đảm Bảo Hoàn Tiền</h2>
+                                    <p class="font-body--md-400">Đảm bảo hoàn tiền trong 30 ngày.</p>
                                 </div>
                             </div>
                         </div>
@@ -206,21 +208,15 @@
                         <div class="our-feature our-feature--slider swiper-container">
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide">
-                                    <!-- Organic Food  -->
+                                    
                                     <div class="our-feature__item">
                                         <div class="icon">
-                                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
+                                            <svg width="36" height="36" viewBox="0 0 36 36" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
-                                                <g clip-path="url(#)">
-                                                    <path
-                                                        d="M36.4905 0.538949C36.4372 0.343152 36.3046 0.178413 36.1246 0.0846357C35.7694 -0.103321 35.329 0.032269 35.141 0.387478C35.1405 0.388382 35.14 0.389287 35.1396 0.390192C35.1396 0.410294 31.4528 7.56272 20.1352 8.80906C18.6589 8.96657 17.2158 9.35173 15.8574 9.95088C13.4259 11.008 11.4178 12.8477 10.1523 15.1775C8.97092 17.3659 8.48162 19.8614 8.74919 22.3339C8.94629 24.1363 9.54826 25.8709 10.5102 27.4078C8.49992 28.8511 2.12345 33.8405 1.54852 39.1958C1.5063 39.5954 1.79618 39.9537 2.19581 39.9959C2.59555 40.0381 2.95367 39.7482 2.99589 39.3486C3.52257 34.5682 9.50504 29.9326 11.3705 28.5898C13.6099 31.3398 16.963 32.8917 20.5613 33.145C22.9832 33.3013 25.4079 32.8883 27.6414 31.9389C30.0659 30.9216 32.2072 29.3308 33.8812 27.3032C38.1951 22.0766 40.2496 13.2919 36.4905 0.538949ZM11.7887 26.6881C11.5113 26.2512 11.2667 25.7943 11.0569 25.3211C10.6155 24.3228 10.3307 23.2624 10.2126 22.1771C9.96638 19.9995 10.3869 17.7984 11.4188 15.865C12.5341 13.8152 14.3032 12.1975 16.4444 11.2696C17.6685 10.7366 18.9677 10.3962 20.296 10.2605C27.766 9.45636 32.1604 6.13143 34.428 3.71914C33.0957 8.10538 30.8019 12.1393 27.7138 15.5273L27.2715 11.0726C27.249 10.6713 26.9054 10.3643 26.5042 10.3868C26.103 10.4093 25.7959 10.7529 25.8184 11.1541C25.8195 11.1739 25.8214 11.1937 25.8241 11.2133L26.391 16.9385C23.0098 20.3679 18.3099 23.8135 11.7887 26.6881ZM32.7554 26.3705V26.3745C31.2345 28.2262 29.2863 29.6806 27.0785 30.6121C25.0483 31.4701 22.8448 31.8391 20.6458 31.6896C17.5845 31.5345 14.7118 30.1639 12.6651 27.8822C15.0635 26.8209 17.3826 25.5888 19.6045 24.1954L25.993 25.4016C26.39 25.4638 26.7623 25.1923 26.8245 24.7953C26.8845 24.4123 26.6338 24.0495 26.2543 23.9703L21.3453 23.0415C23.612 21.4848 25.7219 19.7115 27.6454 17.7466C27.6807 17.7162 27.713 17.6826 27.7419 17.6461C32.8157 12.3632 34.9747 7.13655 35.8753 3.92017C38.36 14.5181 36.4583 21.8917 32.7554 26.3705Z"
-                                                        fill="currentColor" />
-                                                </g>
-                                                <defs>
-                                                    <clipPath>
-                                                        <rect width="40" height="40" fill="white" />
-                                                    </clipPath>
-                                                </defs>
+                                                <path
+                                                    d="M18 3C14 3 11 6 11 6L6 8L8 14H9V28H27V14H28L30 8L25 6C25 6 22 3 18 3Z"
+                                                    stroke="currentColor" stroke-width="2" fill="none"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
                                             </svg>
                                         </div>
                                         <div class="our-feature__item-info">
@@ -230,7 +226,7 @@
                                     </div>
                                 </div>
                                 <div class="swiper-slide">
-                                    <!-- Support  -->
+                                    
                                     <div class="our-feature__item">
                                         <div class="icon">
                                             <svg width="36" height="36" viewBox="0 0 36 36" fill="none"
@@ -248,13 +244,13 @@
                                             </svg>
                                         </div>
                                         <div class="our-feature__item-info">
-                                            <h2 class="font-body--xl-500">Hỗ trợ 24/7</h2>
-                                            <p class="font-body--md-400">Truy cập ngay vào Liên hệ.</p>
+                                            <h2 class="font-body--xl-500">Hỗ Trợ Khách Hàng 24/7</h2>
+                                            <p class="font-body--md-400">Truy cập ngay vào để được hỗ trợ.</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="swiper-slide">
-                                    <!-- Customer feedback  -->
+                                    
                                     <div class="our-feature__item">
                                         <div class="icon">
                                             <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
@@ -302,7 +298,7 @@
                                     </div>
                                 </div>
                                 <div class="swiper-slide">
-                                    <!-- Secure Payment -->
+                                   
                                     <div class="our-feature__item">
                                         <div class="icon">
                                             <svg width="36" height="36" viewBox="0 0 36 36" fill="none"
@@ -323,13 +319,14 @@
                                             </svg>
                                         </div>
                                         <div class="our-feature__item-info">
-                                            <h2 class="font-body--xl-500">An toàn thanh toán</h2>
-                                            <p class="font-body--md-400">Thanh toán an toàn, đảm bảo bảo mật thông tin.</p>
+                                            <h2 class="font-body--xl-500">100% Thanh Toán An Toàn</h2>
+                                            <p class="font-body--md-400">Chúng tôi đảm bảo tiền của bạn sẽ được tiết kiệm.
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="swiper-slide">
-                                    <!-- Free Shipping  -->
+                                    
                                     <div class="our-feature__item">
                                         <div class="icon">
                                             <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
@@ -341,12 +338,13 @@
                                         </div>
                                         <div class="our-feature__item-info">
                                             <h2 class="font-body--xl-500">Miễn phí vận chuyển</h2>
-                                            <p class="font-body--md-400">Ưu đãi miễn phí vận chuyển đơn hàng trong nước.</p>
+                                            <p class="font-body--md-400">Miễn phí vận chuyển cho tất cả các đơn hàng của
+                                                bạn.</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="swiper-slide">
-                                    <!-- Organic Food  -->
+                                    
                                     <div class="our-feature__item">
                                         <div class="icon">
                                             <svg width="36" height="36" viewBox="0 0 36 36" fill="none"
@@ -364,8 +362,8 @@
                                             </svg>
                                         </div>
                                         <div class="our-feature__item-info">
-                                            <h2 class="font-body--xl-500">Đổi/Trả Hàng</h2>
-                                            <p class="font-body--md-400">Hỗ trợ đổi/trả hàng trong vòng 7-14 ngày.</p>
+                                            <h2 class="font-body--xl-500">Đảm Bảo Hoàn Tiền</h2>
+                                            <p class="font-body--md-400">Đảm bảo hoàn tiền trong 30 ngày.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -386,13 +384,12 @@
                 <div class="col-lg-6">
                     <div class="hero__text-content">
                         <h6>
-                            We Delivered, You Enjoy Your Order.
+                            Của hàng quần áo uy tính tại Việt Nam
                         </h6>
                         <p class="info--two">
-                            Ut suscipit egestas suscipit. Sed posuere pellentesque nunc, ultrices consectetur velit dapibus
-                            eu. Mauris sollicitudin dignissim diam, ac mattis eros accumsan rhoncus. Curabitur auctor
-                            bibendum nunc eget
-                            elementum.
+                            Synergy 4.0 chuyên cung cấp quần áo thời trang kiểu, đa dạng từ công sở đến dạo phố, luôn bắt
+                            kịp xu hướng và đảm bảo chất lượng.
+                            Chúng tôi mang đến sự thoải mái và phong cách riêng biệt cho mọi khách hàng.
                         </p>
                         <ul class="hero__list-info">
                             <li>
@@ -405,7 +402,7 @@
                                             stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
                                 </span>
-                                <p>Sed in metus pellentesque.</p>
+                                <p>Chất lượng đảm bảo.</p>
                             </li>
                             <li>
                                 <span class="icon">
@@ -417,7 +414,7 @@
                                             stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
                                 </span>
-                                <p>Fusce et ex commodo, aliquam nulla efficitur, tempus lorem.</p>
+                                <p>Miễn phí đổi trả.</p>
                             </li>
                             <li>
                                 <span class="icon">
@@ -429,11 +426,11 @@
                                             stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
                                 </span>
-                                <p>Maecenas ut nunc fringilla erat varius.</p>
+                                <p>Vận chuyển nhanh chóng.</p>
                             </li>
                         </ul>
                         <a href="#" class="button button--md">
-                            Shop now
+                            Mua ngay
                             <span>
                                 <svg width="17" height="15" viewBox="0 0 17 15" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -460,9 +457,9 @@
     <section class="members members--two section section--lg">
         <div class="container">
             <div class="section__head section__head--one justify-content-center">
-                <h2 class="section--title-one font-title--xl">Our Awesome Team</h2>
-                <p>Pellentesque a ante vulputate leo porttitor luctus sed eget eros. Nulla et rhoncus neque. Duis non diam
-                    eget est luctus tincidunt a a mi.</p>
+                <h2 class="section--title-one font-title--xl">Đội ngũ tuyệt vời của chúng tôi</h2>
+                <p>Chúng tôi luôn có một đội ngũ chuyên nghiệp, sẵn sàng mang đến cho
+                    khách hàng những mẫu quần áo thời trang chất lượng và phong cách.</p>
             </div>
             <div class="members-slider--one swiper-container">
                 <div class="swiper-wrapper">
@@ -518,8 +515,7 @@
                                 </div>
                             </div>
                             <div class="cards-mb__designation">
-                                <h5 class="font-body--xl-500">Jenny Wilson</h5>
-                                <span class="font-body--md-400">CEO &amp; Founder</span>
+                                <h5 class="font-body--xl-500">Phạm Tuấn khang</h5>
                             </div>
                         </div>
                     </div>
@@ -575,8 +571,7 @@
                                 </div>
                             </div>
                             <div class="cards-mb__designation">
-                                <h5 class="font-body--xl-500">Jane Cooper</h5>
-                                <span class="font-body--md-400">Worker</span>
+                                <h5 class="font-body--xl-500">Lý Thanh Duy</h5>
                             </div>
                         </div>
                     </div>
@@ -632,15 +627,14 @@
                                 </div>
                             </div>
                             <div class="cards-mb__designation">
-                                <h5 class="font-body--xl-500">Cody Fisher</h5>
-                                <span class="font-body--md-400">Security Guard</span>
+                                <h5 class="font-body--xl-500">Trần Quốc Khánh</h5>
                             </div>
                         </div>
                     </div>
                     <div class="swiper-slide">
                         <div class="cards-mb">
                             <div class="cards-mb__img-wrapper">
-                                <img src="{{ asset('client/images/members/img-02.png') }}" alt="members" />
+                                <img src="{{ asset('client/images/members/img-04.png') }}" alt="members" />
                                 <div class="cards-mb__img-wrapper--social">
                                     <!-- fb -->
                                     <span>
@@ -689,8 +683,7 @@
                                 </div>
                             </div>
                             <div class="cards-mb__designation">
-                                <h5 class="font-body--xl-500">Robert Fox</h5>
-                                <span class="font-body--md-400">Senior Farmer Manager</span>
+                                <h5 class="font-body--xl-500">Trần Thiện Hữu Dũng</h5>
                             </div>
                         </div>
                     </div>
@@ -726,7 +719,7 @@
     <section class="testimonial testimonial--five section section--gray-0 section--xxl">
         <div class="container">
             <div class="section__head">
-                <h2 class="section--title-one font-title--xl">Client Testimonials</h2>
+                <h2 class="section--title-one font-title--xl">Đánh giá của khách hàng</h2>
                 <div class="arrows">
                     <button class="arrows__btn swiper-button--prev">
                         <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
@@ -753,8 +746,7 @@
                     <div class="swiper-slide">
                         <div class="cards-tm">
                             <p class="cards-tm__text font-body--md-400">
-                                Pellentesque eu nibh eget mauris congue mattis mattis nec tellus. Phasellus imperdiet elit
-                                eu magna dictum, bibendum cursus velit sodales. Donec sed neque eget
+                                Quần áo chất lượng tuyệt vời, thiết kế đẹp mắt và thoải mái. Dịch vụ khách hàng chu đáo, tôi rất hài lòng và sẽ mua thêm.
                             </p>
                             <div class="cards-tm__info d-flex align-items-center justify-content-between">
                                 <div class="cards-tm__info-left d-flex align-items-center">
@@ -762,9 +754,9 @@
                                         <img src="{{ asset('client/images/user/img-01.png') }}" alt="user" />
                                     </div>
                                     <div class="cards-tm__info-left--designation">
-                                        <h2 class="font-body--lg-500">Robert Fox</h2>
+                                        <h2 class="font-body--lg-500">Đạt</h2>
                                         <span class="font-body--md-400">
-                                            Customer
+                                            Khách hàng
                                         </span>
                                     </div>
                                 </div>
@@ -836,8 +828,7 @@
                     <div class="swiper-slide">
                         <div class="cards-tm">
                             <p class="cards-tm__text font-body--md-400">
-                                Pellentesque eu nibh eget mauris congue mattis mattis nec tellus. Phasellus imperdiet elit
-                                eu magna dictum, bibendum cursus velit sodales. Donec sed neque eget
+                                Sản phẩm đẹp, vừa vặn và chất liệu rất tốt. Đặt mua lần đầu nhưng rất ấn tượng. Sẽ giới thiệu cho bạn bè và gia đình
                             </p>
                             <div class="cards-tm__info d-flex align-items-center justify-content-between">
                                 <div class="cards-tm__info-left d-flex align-items-center">
@@ -845,9 +836,9 @@
                                         <img src="{{ asset('client/images/user/img-02.png') }}" alt="user" />
                                     </div>
                                     <div class="cards-tm__info-left--designation">
-                                        <h2 class="font-body--lg-500">Dianne Russell</h2>
+                                        <h2 class="font-body--lg-500">Đô</h2>
                                         <span class="font-body--md-400">
-                                            Customer
+                                            Khách hàng
                                         </span>
                                     </div>
                                 </div>
@@ -919,18 +910,17 @@
                     <div class="swiper-slide">
                         <div class="cards-tm">
                             <p class="cards-tm__text font-body--md-400">
-                                Pellentesque eu nibh eget mauris congue mattis mattis nec tellus. Phasellus imperdiet elit
-                                eu magna dictum, bibendum cursus velit sodales. Donec sed neque eget
+                                Tôi rất thích các mẫu quần áo ở đây, đa dạng và phong cách. Mua sắm nhanh chóng, giao hàng đúng hẹn. Chắc chắn sẽ quay lại.
                             </p>
                             <div class="cards-tm__info d-flex align-items-center justify-content-between">
                                 <div class="cards-tm__info-left d-flex align-items-center">
                                     <div class="cards-tm__info--user-img">
-                                        <img src="{{ asset('client/images/user/img-01.png') }}" alt="user" />
+                                        <img src="{{ asset('client/images/user/img-03.png') }}" alt="user" />
                                     </div>
                                     <div class="cards-tm__info-left--designation">
-                                        <h2 class="font-body--lg-500">Robert Fox</h2>
+                                        <h2 class="font-body--lg-500">Nhất</h2>
                                         <span class="font-body--md-400">
-                                            Customer
+                                            Khách hàng
                                         </span>
                                     </div>
                                 </div>

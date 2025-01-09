@@ -753,7 +753,8 @@
 
                                     <div class="cards-md__info d-flex justify-content-between align-items-center">
                                         <a href="product-details.html" class="cards-md__info-left">
-                                            <h6 class="font-body--md-400">{{ $product['name'] }}</h6>
+                                            <h6 class="font-body--md-400">
+                                                {{ \Illuminate\Support\Str::limit($product['name'], 50, '...') }}</h6>
                                             <div class="cards-md__info-price">
                                                 <p>Giá: {{ number_format($product['price'], 0, ',', '.') }} VND</p>
                                             </div>
@@ -776,13 +777,21 @@
                                         </a>
                                         <div class="cards-md__info-right">
                                             <span class="action-btn">
-                                                <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M6.66667 8.83333H4.16667L2.5 18H17.5L15.8333 8.83333H13.3333M6.66667 8.83333V6.33333C6.66667 4.49239 8.15905 3 10 3V3C11.8409 3 13.3333 4.49238 13.3333 6.33333V8.83333M6.66667 8.83333H13.3333M6.66667 8.83333V11.3333M13.3333 8.83333V11.3333"
-                                                        stroke="currentColor" stroke-width="1.3" stroke-linecap="round"
-                                                        stroke-linejoin="round"></path>
-                                                </svg>
+                                                <!-- Button thêm vào giỏ hàng -->
+
+                                                <form action="{{ route('cart.add', $product['id']) }}" method="POST">
+                                                    @csrf
+
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <svg width="20" height="21" viewBox="0 0 20 21"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.66667 8.83333H4.16667L2.5 18H17.5L15.8333 8.83333H13.3333M6.66667 8.83333V6.33333C6.66667 4.49239 8.15905 3 10 3V3C11.8409 3 13.3333 4.49238 13.3333 6.33333V8.83333M6.66667 8.83333H13.3333M6.66667 8.83333V11.3333M13.3333 8.83333V11.3333"
+                                                                stroke="currentColor" stroke-width="1.3"
+                                                                stroke-linecap="round" stroke-linejoin="round"></path>
+                                                        </svg>
+                                                    </button>
+                                                </form>
                                             </span>
                                         </div>
                                     </div>
@@ -795,39 +804,9 @@
                     <nav aria-label="Page navigation pagination--one" class="pagination-wrapper section--xl"
                         style="padding-top: 20px;">
                         <ul class="pagination justify-content-center">
-                            <li class="page-item pagination-item disabled">
-                                <a class="page-link pagination-link" href="#" tabindex="-1">
-                                    <svg width="8" height="14" viewBox="0 0 8 14" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M6.91663 1.16634L1.08329 6.99967L6.91663 12.833" stroke="currentColor"
-                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                    </svg>
-                                </a>
-                            </li>
-                            <li class="page-item pagination-item"><a class="page-link pagination-link active"
-                                    href="#">1</a></li>
-                            <li class="page-item pagination-item"><a class="page-link pagination-link"
-                                    href="#">2</a></li>
-                            <li class="page-item pagination-item"><a class="page-link pagination-link"
-                                    href="#">3</a></li>
-                            <li class="page-item pagination-item"><a class="page-link pagination-link"
-                                    href="#">4</a></li>
-                            <li class="page-item pagination-item"><a class="page-link pagination-link"
-                                    href="#">5</a></li>
-                            <li class="page-item pagination-item">
-                                <p class="page-link pagination-link">...</p>
-                            </li>
-                            <li class="page-item pagination-item"><a class="page-link pagination-link"
-                                    href="#">21</a></li>
-                            <li class="page-item pagination-item">
-                                <a class="page-link pagination-link" href="#">
-                                    <svg width="8" height="14" viewBox="0 0 8 14" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M1.08337 1.16634L6.91671 6.99967L1.08337 12.833" stroke="currentColor"
-                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                    </svg>
-                                </a>
-                            </li>
+
+                            {{ $products->links() }}
+
                         </ul>
                     </nav>
                 </div>

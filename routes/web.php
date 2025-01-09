@@ -11,6 +11,7 @@ use App\Http\Controllers\admin\DanhmucController;
 use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\ContactController;
 use App\Http\Controllers\client\ShopController;
+use App\Http\Controllers\client\CartController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -97,9 +98,16 @@ Route::middleware(['auth'])->group(function () {
             return view('client.cart.wishlist');
         })->name('client.cart.wishlist');
 
-        Route::get('/shopping-cart', function () {
-            return view('client.cart.shopping-cart');
-        })->name('client.cart.shopping-cart');
+        // Route hiển thị giỏ hàng
+        Route::get('/shopping-cart', [CartController::class, 'showCart'])->name('client.cart.shopping-cart');
+
+        // Route thêm sản phẩm vào giỏ hàng
+        Route::post('/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
+        Route::put('/update/{cartItemId}', [CartController::class, 'updateQuantity'])->name('cart.update');
+
+
+        // Route xóa sản phẩm khỏi giỏ hàng
+        Route::delete('/remove/{cartItemId}', [CartController::class, 'removeFromCart'])->name('cart.remove');
     });
 
     // Secret route

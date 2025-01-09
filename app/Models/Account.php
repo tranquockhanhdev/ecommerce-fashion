@@ -178,10 +178,7 @@ class Account extends Authenticatable
      * Quan hệ với bảng Order.
      */
     // Quan hệ với bảng OrderItem (1 tài khoản có nhiều OrderItems)
-    public function orderItems()
-    {
-        return $this->hasMany(OrderItem::class, 'account_id');
-    }
+
     // Quan hệ 1-n: Một tài khoản có nhiều giỏ hàng
     public function carts()
     {

@@ -21,9 +21,6 @@
                             luôn được cập nhật thường xuyên, từ trang phục hàng ngày, công sở đến dạo phố và sự kiện, khách
                             hàng sẽ dễ dàng tìm thấy những sản phẩm
                             phù hợp với phong cách riêng của mình. <br>
-                            <br>
-                            <b>Địa chỉ: 65 Đ. Huỳnh Thúc Kháng, Bến Nghé, Quận 1, Hồ Chí Minh<br>
-                            Số điện thoại: (+84) 332 172 749 </b>
                         </p>
                     </div>
                 </div>

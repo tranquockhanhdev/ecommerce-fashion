@@ -21,7 +21,7 @@ class AccountOrderController extends Controller
         $userId = $user->id;
         $orders = Order::whereHas('orderCustomer', function ($query) use ($userId) {
             $query->where('account_id',  $userId);
-        })->paginate(10); // Phân trang, 10 bản ghi mỗi trang
+        })->get(); // Phân trang, 10 bản ghi mỗi trang
 
         // Ánh xạ giá trị status và status_payment
         $statusMap = [

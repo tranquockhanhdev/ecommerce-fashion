@@ -8,6 +8,7 @@ use App\Models\Account;
 use App\Models\Order;
 use App\Models\OrderCustomer;
 use App\Http\Controllers\Controller;
+use App\Models\OrderItem;
 use App\Models\PaymentMethod;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -54,12 +55,15 @@ class AccountOrderController extends Controller
         $orderCustomer = OrderCustomer::findOrFail($orders->ordercustomer_id);
         // Tìm phương thức thanh toán của đơn hàng
         $paymentMethod = PaymentMethod::findOrFail($orders->payment_method_id);
-
+        // Tìm các sản phẩm trong đơn hàng
+        $orderItems = OrderItem::where('order_id',  $orders->id)->get();
         // Format tiền theo định dạng Việt Nam Đồng
         $orders->formatted_total = number_format($orders->total, 0, ',', '.') . ' VND';
         $orders->formatted_shipping = number_format($orders->shipping_fee, 0, ',', '.') . ' VND';
-
+        foreach ($orderItems as $orderItem) {
+            $orderItem->formatted_price = number_format($orderItem->price, 0, ',', '.') . ' VND';
+        }
         // Trả về view với các dữ liệu cần thiết
-        return view('client.user.order-details', compact('orders', 'orderCustomer', 'paymentMethod'));
+        return view('client.user.order-details', compact('orders', 'orderCustomer', 'paymentMethod', 'orderItems'));
     }
 }

@@ -240,6 +240,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($orderItems as $orderItem)
                             <tr>
                                 <!-- Product item  -->
                                 <td
@@ -249,10 +250,10 @@
                     ">
                                     <a href="product-details.html" class="dashboard__product-item">
                                         <div class="dashboard__product-item-img">
-                                            <img src="{{ asset('client/images/products/img-01.png') }}"
-                                                alt="product" />
+                                            <img src="{{ asset($orderItem->product->images->first()->link) }}" alt="product" />
+
                                         </div>
-                                        <h5 class="font-body--md-400">Apple</h5>
+                                        <h5 class="font-body--md-400"> {{$orderItem->name}}</h5>
                                     </a>
                                 </td>
                                 <!-- Price  -->
@@ -262,7 +263,7 @@
                       order-date
                       align-middle
                     ">
-                                    $14.00
+                                    {{$orderItem->formatted_price}}
                                 </td>
                                 <!-- quantity -->
                                 <td
@@ -271,7 +272,7 @@
                       order-total
                       align-middle
                     ">
-                                    <p class="order-total-price">x5</p>
+                                    <p class="order-total-price"> {{$orderItem->quantity}}</p>
                                 </td>
                                 <!-- Subtotal  -->
                                 <td class="
@@ -280,95 +281,10 @@
                       align-middle
                     "
                                     style="text-align: left">
-                                    <p class="font-body--md-500">$70.00</p>
+                                    <p class="font-body--md-500"> {{ number_format($orderItem->price * $orderItem->quantity, 0, ',', '.') }} VND</p>
                                 </td>
                             </tr>
-                            <tr>
-                                <!-- Product item  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      align-middle
-                    ">
-                                    <a href="product-details.html" class="dashboard__product-item">
-                                        <div class="dashboard__product-item-img">
-                                            <img src="{{ asset('client/images/products/img-02.png') }}"
-                                                alt="product" />
-                                        </div>
-                                        <h5 class="font-body--md-400">Orrange</h5>
-                                    </a>
-                                </td>
-                                <!-- Price  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-date
-                      align-middle
-                    ">
-                                    $14.00
-                                </td>
-                                <!-- quantity -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-total
-                      align-middle
-                    ">
-                                    <p class="order-total-price">x2</p>
-                                </td>
-                                <!-- Subtotal  -->
-                                <td class="
-                      dashboard__order-history-table-item
-                      order-status
-                      align-middle
-                    "
-                                    style="text-align: left">
-                                    <p class="font-body--md-500">$28.00</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <!-- Product item  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      align-middle
-                    ">
-                                    <a href="product-details.html" class="dashboard__product-item">
-                                        <div class="dashboard__product-item-img">
-                                            <img src="{{ asset('client/images/products/img-01.png') }}"
-                                                alt="product" />
-                                        </div>
-                                        <h5 class="font-body--md-400">Apple</h5>
-                                    </a>
-                                </td>
-                                <!-- Price  -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-date
-                      align-middle
-                    ">
-                                    $26.00
-                                </td>
-                                <!-- quantity -->
-                                <td
-                                    class="
-                      dashboard__order-history-table-item
-                      order-total
-                      align-middle
-                    ">
-                                    <p class="order-total-price">x10</p>
-                                </td>
-                                <!-- Subtotal  -->
-                                <td class="
-                      dashboard__order-history-table-item
-                      order-status
-                      align-middle
-                    "
-                                    style="text-align: left">
-                                    <p class="font-body--md-500">$267.00</p>
-                                </td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

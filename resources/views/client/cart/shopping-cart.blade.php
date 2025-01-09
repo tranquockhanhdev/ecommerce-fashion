@@ -49,7 +49,8 @@
                     <!-- Hiển thị thông báo nếu giỏ hàng trống -->
                     <div class="col-12 text-center">
                         <p class="font-body--lg-400">Giỏ hàng của bạn đang trống.</p>
-                        <a href="{{ route('shop.index') }}" class="button button--md shop">Quay lại cửa hàng</a>
+                        <a href="{{ route('client.shop.shop') }}" class="button button--md shop">Quay lại cửa
+                            hàng</a>
                     </div>
                 @else
                     <div class="col-lg-8">
@@ -145,9 +146,15 @@
                             </div>
                             <!-- Action Buttons -->
                             <div class="cart-table-action-btn d-flex">
-                                <a href="" class="button button--md shop">Quay lại cửa hàng</a>
-                                <a href="" class="button button--md update">Xóa giỏ hàng</a>
+                                <a href="{{ route('client.cart.shopping-cart') }}" class="button button--md shop">Quay lại
+                                    cửa hàng</a>
+
+                                <!-- Xóa giỏ hàng -->
+                                <button type="button" id="clearCartBtn" class="button button--md update">Xóa giỏ
+                                    hàng</button>
                             </div>
+
+
                         </div>
                     </div>
 
@@ -162,8 +169,10 @@
                                         <!-- Subtotal -->
                                         <div class="bill-card__memo-item subtotal">
                                             <p class="font-body--md-400">Tạm tính:</p>
-                                            <span class="font-body--md-500">${{ number_format($total, 2) }}</span>
+                                            <span class="font-body--md-500">{{ number_format($total, 0, ',', '.') }}
+                                                VNĐ</span>
                                         </div>
+
                                         <!-- Shipping -->
                                         <div class="bill-card__memo-item shipping">
                                             <p class="font-body--md-400">Phí vận chuyển:</p>
@@ -172,8 +181,10 @@
                                         <!-- Total -->
                                         <div class="bill-card__memo-item total">
                                             <p class="font-body--lg-400">Tổng cộng:</p>
-                                            <span class="font-body--xl-500">${{ number_format($total, 2) }}</span>
+                                            <span class="font-body--xl-500">{{ number_format($total, 0, ',', '.') }}
+                                                VNĐ</span>
                                         </div>
+
                                     </div>
                                     <form action="{}">
                                         <button class="button button--lg w-100" style="margin-top: 20px" type="submit">
@@ -210,5 +221,34 @@
             }
         }
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#clearCartBtn').click(function() {
+                if (confirm('Bạn có chắc chắn muốn xóa toàn bộ giỏ hàng?')) {
+                    $.ajax({
+                        url: '{{ route('cart.removeAll') }}',
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                alert(response.message);
+                                // Cập nhật lại giao diện giỏ hàng (ví dụ: làm trống giỏ hàng)
+                                location.reload(); // Tải lại trang để cập nhật lại giỏ hàng
+                            } else {
+                                alert(response.message);
+                            }
+                        },
+                        error: function() {
+                            alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
 
 @endsection

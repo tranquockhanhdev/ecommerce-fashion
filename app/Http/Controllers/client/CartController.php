@@ -103,4 +103,25 @@ class CartController extends Controller
 
         return redirect()->route('client.cart.shopping-cart')->with('success', 'Sản phẩm đã được xóa khỏi giỏ hàng.');
     }
+    public function removeAll(Request $request)
+    {
+        // Kiểm tra xem người dùng đã đăng nhập chưa
+        if (!Auth::check()) {
+            return response()->json(['success' => false, 'message' => 'Bạn cần đăng nhập để xóa giỏ hàng.']);
+        }
+
+        $userId = Auth::id(); // Lấy ID người dùng đã đăng nhập
+
+        // Lấy giỏ hàng của người dùng
+        $cart = Cart::where('account_id', $userId)->first();
+
+        if ($cart) {
+            // Xóa tất cả sản phẩm trong giỏ hàng của người dùng
+            $cart->cartItems()->delete(); // Xóa tất cả các cart_items liên kết với giỏ hàng
+
+            return response()->json(['success' => true, 'message' => 'Giỏ hàng đã được xóa.']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Giỏ hàng của bạn hiện tại không có sản phẩm.']);
+    }
 }

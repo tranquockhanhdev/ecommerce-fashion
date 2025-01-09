@@ -108,6 +108,7 @@ Route::middleware(['auth'])->group(function () {
 
         // Route xóa sản phẩm khỏi giỏ hàng
         Route::delete('/remove/{cartItemId}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+        Route::delete('/cart/remove-all', [CartController::class, 'removeAll'])->name('cart.removeAll');
     });
 
     // Secret route

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Auth\SecretController;
 use App\Http\Controllers\client\AccountOrderController;
+use App\Http\Controllers\client\CommentController;
 use App\Http\Controllers\client\wishlistController;
 
 Auth::routes([
@@ -81,6 +82,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/history', [AccountOrderController::class, 'index'])->name('client.user.order-history');
             Route::get('/{id}', [AccountOrderController::class, 'details'])->name('client.user.order-details');
             Route::put('/{id}', [AccountOrderController::class, 'cancelOrder'])->name('client.user.cancel-order');
+            Route::put('/bought', [CommentController::class, 'index'])->name('client.user.bought');
         });
     });
 
@@ -91,7 +93,6 @@ Route::middleware(['auth'])->group(function () {
         })->name('client.cart.checkout');
 
         Route::resource('/wishlist', wishlistController::class);
-
         Route::get('/shopping-cart', function () {
             return view('client.cart.shopping-cart');
         })->name('client.cart.shopping-cart');

@@ -644,6 +644,19 @@
                                     <span class="name"> Danh Sách Yêu Thích</span>
                                 </a>
                             </li>
+                            <!-- Sản Phẩm Đã Mua -->
+                            <li class="dashboard__nav-item-link">
+                                <a href="{{ route('client.user.bought') }}" class="font-body--lg-400">
+                                    <span class="icon">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 11.5L12 14.5L15 10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M4 7L7 14H17L20 7H4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </span>
+
+                                    <span class="name"> Sản Phẩm Đã Mua </span>
+                                </a>
+                            </li>
                             <!-- Shopping Cart  -->
                             <li class="dashboard__nav-item-link">
                                 <a href="{{ route('client.cart.shopping-cart') }}" class="font-body--lg-400">
@@ -922,6 +935,7 @@
                             <li class="footer__navigation-link">
                                 <a href="/cart/wishlist"> Danh Sách Yêu Thích </a>
                             </li>
+
                         </ul>
                     </div>
                     <!-- Helps  -->

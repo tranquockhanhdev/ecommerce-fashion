@@ -163,7 +163,7 @@
                     </form>
                     <div class="header__cart">
                         <div class="header__cart-item">
-                            <a class="fav" href="{{ route('client.cart.wishlist') }}">
+                            <a class="fav" href="{{ route('wishlist.index') }}">
                                 <svg width="25" height="23" viewBox="0 0 20 18" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -461,7 +461,7 @@
     'client.user.order-history',
     'client.user.account-setting',
     'client.user.order-details',
-    'client.cart.wishlist',
+    'wishlist.index',
     'client.cart.checkout',
     'client.cart.shopping-cart',
     ]))
@@ -567,7 +567,7 @@
                             'client.pages.about' => 'Giới Thiệu',
                             'client.pages.contact' => 'Liên Hệ',
                             'register' => 'Đăng Ký',
-                            'client.cart.wishlist' => 'Danh Sách Yêu Thích',
+                            'wishlist.index' => 'Danh Sách Yêu Thích',
                             'client.cart.shopping-cart' => 'Giỏ Hàng',
                             ];
 
@@ -632,7 +632,7 @@
                             </li>
                             <!-- Wishlist -->
                             <li class="dashboard__nav-item-link">
-                                <a href="{{ route('client.cart.wishlist') }}" class="font-body--lg-400">
+                                <a href="{{ route('wishlist.index') }}" class="font-body--lg-400">
                                     <span class="icon">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">

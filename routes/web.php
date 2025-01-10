@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Auth\SecretController;
 use App\Http\Controllers\client\AccountOrderController;
+use App\Http\Controllers\client\wishlistController;
 
 Auth::routes([
     'reset' => false,     // Tắt route reset mật khẩu
@@ -89,9 +90,7 @@ Route::middleware(['auth'])->group(function () {
             return view('client.cart.checkout');
         })->name('client.cart.checkout');
 
-        Route::get('/wishlist', function () {
-            return view('client.cart.wishlist');
-        })->name('client.cart.wishlist');
+        Route::resource('/wishlist', wishlistController::class);
 
         Route::get('/shopping-cart', function () {
             return view('client.cart.shopping-cart');

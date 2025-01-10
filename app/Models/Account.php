@@ -182,4 +182,8 @@ class Account extends Authenticatable
     {
         return $this->hasMany(OrderItem::class, 'account_id');
     }
+    public function favoriteProducts()
+    {
+        return $this->hasMany(FavoriteProduct::class, 'account_id', 'id');
+    }
 }

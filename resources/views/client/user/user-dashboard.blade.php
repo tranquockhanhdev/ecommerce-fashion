@@ -145,7 +145,7 @@
                                 dashboard__order-history-table-item
                                 order-details
                               ">
-                                    <a href="order-details.html">Xem Chi Tiết</a>
+                                    <a href="{{ route('client.user.order-details', $order->id) }}">Xem Chi Tiết</a>
                                 </td>
                             </tr>
                             @endforeach

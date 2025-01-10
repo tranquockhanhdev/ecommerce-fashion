@@ -8,7 +8,11 @@
             <div class="dashboard__order-history-title">
                 <h2 class="font-body--xxl-500">Lịch Sử Đơn Hàng</h2>
             </div>
-
+            @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>{{ session('success') }}</strong>
+            </div>
+            @endif
             <!-- Đã Nhận Đơn -->
             <div class="dashboard__order-history-table">
                 <h3>Đã Nhận Đơn</h3>
@@ -144,4 +148,26 @@
         </div>
     </div>
 </div>
+@endsection
+@section('js')
+<script>
+    setTimeout(() => {
+        const alert = document.querySelector('.alert');
+        if (alert) {
+            alert.classList.remove('show');
+            alert.classList.add('fade');
+            setTimeout(() => alert.remove(), 500);
+        }
+    }, 5000); // 5 giây
+    document.getElementById('imageUpload').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('imagePreview').style.backgroundImage = `url('${e.target.result}')`;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
 @endsection

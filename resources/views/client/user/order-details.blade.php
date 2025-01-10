@@ -9,6 +9,18 @@
                 <h2 class="font-body--xxl-500">Chi Tiết Đơn Hàng</h2>
                 <a href="{{route('client.user.order-history')}}">quay lại</a>
             </div>
+            @if($orders->status == 1)
+            <div class="alert alert-danger " role="alert">
+                <!-- Nút hủy đơn hàng -->
+                <form action="{{ route('client.user.cancel-order', $orders->id) }}" method="POST" style="display: inline;">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')">
+                        Hủy đơn hàng
+                    </button>
+                </form>
+            </div>
+            @endif
 
             <div class="dashboard__details-content">
                 <div class="row">

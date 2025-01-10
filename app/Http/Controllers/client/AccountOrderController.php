@@ -66,4 +66,19 @@ class AccountOrderController extends Controller
         // Trả về view với các dữ liệu cần thiết
         return view('client.user.order-details', compact('orders', 'orderCustomer', 'paymentMethod', 'orderItems'));
     }
+    public function cancelOrder(string $id)
+    {
+        $order = Order::find($id);
+
+        // Kiểm tra nếu đơn hàng không ở trạng thái có thể hủy
+        if ($order->status != 1) {
+            return redirect()->back()->with('error', 'Không thể hủy đơn hàng này!');
+        }
+
+        // Cập nhật trạng thái đơn hàng thành hủy
+        $order->status = 0; // Giả sử 0 là trạng thái hủy
+        $order->save();
+
+        return redirect()->route('client.user.order-history')->with('success', 'Đơn hàng đã được hủy thành công!');
+    }
 }

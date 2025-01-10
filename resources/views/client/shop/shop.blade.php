@@ -1,9 +1,7 @@
 @extends('layouts.client')
 @section('title', 'Cửa Hàng | Synergy 4.0')
 @section('css')
-
     <link rel="stylesheet" href="{{ asset('client/lib/css/nouislider.min.css') }}" />
-
 @endsection
 @section('content')
     <!-- Banner Section Start  -->
@@ -37,6 +35,8 @@
         </div>
     </section>
     <!-- Banner Section End  -->
+
+
     <!-- Filter  -->
     <div class="filter--search">
         <div class="container">
@@ -710,7 +710,11 @@
                 </div>
                 <div class="col-lg-9">
                     <!-- Desktop Version  -->
-
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
                     <div class="row shop__product-items">
                         @foreach ($productData as $product)
                             <div class="col-xl-4 col-md-6">

@@ -68,9 +68,10 @@
                                     <tbody>
                                         @foreach ($cartItems as $cartItem)
                                             <tr>
+
                                                 <!-- Product item -->
                                                 <td class="cart-table-item align-middle">
-                                                    <a href="#"
+                                                    <a href="{{ route('client.shop.product-details') }}"
                                                         class="cart-table__product-item d-flex align-items-center">
                                                         <!-- Product Image -->
                                                         <div class="cart-table__product-item-img"
@@ -146,7 +147,7 @@
                             </div>
                             <!-- Action Buttons -->
                             <div class="cart-table-action-btn d-flex">
-                                <a href="{{ route('client.cart.shopping-cart') }}" class="button button--md shop">Quay lại
+                                <a href="{{ route('client.shop.shop') }}" class="button button--md shop">Quay lại
                                     cửa hàng</a>
 
                                 <!-- Xóa giỏ hàng -->
@@ -155,7 +156,12 @@
                             </div>
 
 
+                            <div class="d-flex justify-content-center">
+                                {{ $cartItems->links() }}
+                            </div>
+
                         </div>
+
                     </div>
 
                     <div class="col-lg-4">

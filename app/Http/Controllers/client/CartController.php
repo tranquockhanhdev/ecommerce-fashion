@@ -25,16 +25,20 @@ class CartController extends Controller
             ]);
         }
 
-        // Lấy các sản phẩm trong giỏ hàng cùng với ảnh
-        $cartItems = $cart->cartItems()->with(['product.images'])->get();
+        // Phân trang giỏ hàng
+        $cartItems = $cart->cartItems()->with(['product.images'])->paginate(5);
 
         // Tính tổng giá trị giỏ hàng
         $total = $cartItems->sum(function ($item) {
             return $item->product->price * $item->quantity;
         });
 
-        return view('client.cart.shopping-cart', compact('cart', 'cartItems', 'total'));
+        // Phân trang sản phẩm từ cửa hàng
+        $products = Product::paginate(5);
+
+        return view('client.cart.shopping-cart', compact('cart', 'cartItems', 'total', 'products'));
     }
+
     // Thêm sản phẩm vào giỏ hàng
     public function addToCart(Request $request, $productId)
     {
@@ -68,7 +72,8 @@ class CartController extends Controller
         }
 
         // Quay lại giỏ hàng
-        return redirect()->route('client.cart.shopping-cart');
+        // Gửi thông báo thành công
+        return redirect()->back()->with('success', 'Sản phẩm đã được thêm vào giỏ hàng thành công!');
     }
     // Xóa sản phẩm khỏi giỏ hàng
     public function updateQuantity(Request $request, $cartItemId)
@@ -116,8 +121,11 @@ class CartController extends Controller
         $cart = Cart::where('account_id', $userId)->first();
 
         if ($cart) {
-            // Xóa tất cả sản phẩm trong giỏ hàng của người dùng
+            // Xóa tất cả các sản phẩm trong giỏ hàng của người dùng
             $cart->cartItems()->delete(); // Xóa tất cả các cart_items liên kết với giỏ hàng
+
+            // Xóa giỏ hàng của người dùng
+            $cart->delete(); // Xóa bản ghi giỏ hàng của người dùng
 
             return response()->json(['success' => true, 'message' => 'Giỏ hàng đã được xóa.']);
         }

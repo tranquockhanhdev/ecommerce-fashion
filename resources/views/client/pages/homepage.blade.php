@@ -5984,7 +5984,7 @@
                             </svg>
                         </div>
                         <h5>HỖ TRỢ 24/7</h5>
-                        <p class="number">(+84) 332 172 749</p>
+                        <p class="number">{{ $websiteInfo->phone }}</p>
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-6">

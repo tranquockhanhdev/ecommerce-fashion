@@ -6,7 +6,7 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class BinhluanController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.

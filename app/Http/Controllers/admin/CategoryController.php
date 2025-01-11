@@ -6,7 +6,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class DanhmucController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -49,7 +49,7 @@ class DanhmucController extends Controller
             'parent_id' => $request->parent_id,
         ]);
 
-        return redirect()->route('admin.qldanhmuc.index')->with('success');
+        return redirect()->route('admin.qldanhmuc.index')->with('success', 'Danh mục đã được thêm thành công');
     }
 
     /**
@@ -115,6 +115,6 @@ class DanhmucController extends Controller
         $category = Category::findOrFail($id);
         $category->delete();
 
-        return redirect()->route('admin.qldanhmuc.index');
+        return redirect()->route('admin.qldanhmuc.index')->with('success', 'Danh mục đã được xóa thành công.');
     }
 }

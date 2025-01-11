@@ -172,14 +172,24 @@ class Account extends Authenticatable
     // Quan hệ 1-Nhiều với bảng `OrderCustomer`
     public function orderCustomers()
     {
-        return $this->hasMany(OrderCustomer::class, 'account_id', 'id');
+        return $this->hasMany(OrderCustomer::class, 'account_id');
     }
     /**
      * Quan hệ với bảng Order.
      */
     // Quan hệ với bảng OrderItem (1 tài khoản có nhiều OrderItems)
-    public function orderItems()
+
+    // Quan hệ 1-n: Một tài khoản có nhiều giỏ hàng
+    public function carts()
     {
-        return $this->hasMany(OrderItem::class, 'account_id');
+        return $this->hasMany(Cart::class, 'account_id');
+    }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+    public function favoriteProducts()
+    {
+        return $this->hasMany(FavoriteProduct::class, 'account_id', 'id');
     }
 }

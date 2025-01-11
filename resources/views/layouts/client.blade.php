@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   
+
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>@yield('title', 'Synergy 4.0')</title>
     <link rel="icon" type="image/png" href="{{ asset('client/images/favicon/favicon-16x16.png') }}" />
@@ -40,7 +40,7 @@
                                         stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                             </span>
-                            Vị Trí Cửa Hàng: 65 Đ. Huỳnh Thúc Kháng, Bến Nghé, Quận 1, Hồ Chí Minh
+                            Vị Trí Cửa Hàng: {{$websiteInfo->address}}
                         </p>
                     </div>
                     <div class="header__top-right">
@@ -139,7 +139,7 @@
                             </svg>
                         </button>
                         <a href="{{ route('client.pages.homepage') }}">
-                            <img src="{{ asset('client/images/logo.png') }}" alt="brand-logo" />
+                            <img src="{{ asset('storage/logos/' . $websiteInfo->logo) }}" alt="brand-logo" />
                         </a>
                     </div>
                     <form action="#">
@@ -163,7 +163,7 @@
                     </form>
                     <div class="header__cart">
                         <div class="header__cart-item">
-                            <a class="fav" href="{{ route('client.cart.wishlist') }}">
+                            <a class="fav" href="{{ route('wishlist.index') }}">
                                 <svg width="25" height="23" viewBox="0 0 20 18" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -383,7 +383,7 @@
                                     stroke-linejoin="round" />
                             </svg>
 
-                            (+84) 332 172 749
+                            {{ $websiteInfo->phone}}
                         </span>
                     </a>
                 </div>
@@ -461,7 +461,7 @@
     'client.user.order-history',
     'client.user.account-setting',
     'client.user.order-details',
-    'client.cart.wishlist',
+    'wishlist.index',
     'client.cart.checkout',
     'client.cart.shopping-cart',
     ]))
@@ -567,7 +567,7 @@
                             'client.pages.about' => 'Giới Thiệu',
                             'client.pages.contact' => 'Liên Hệ',
                             'register' => 'Đăng Ký',
-                            'client.cart.wishlist' => 'Danh Sách Yêu Thích',
+                            'wishlist.index' => 'Danh Sách Yêu Thích',
                             'client.cart.shopping-cart' => 'Giỏ Hàng',
                             ];
 
@@ -632,7 +632,7 @@
                             </li>
                             <!-- Wishlist -->
                             <li class="dashboard__nav-item-link">
-                                <a href="{{ route('client.cart.wishlist') }}" class="font-body--lg-400">
+                                <a href="{{ route('wishlist.index') }}" class="font-body--lg-400">
                                     <span class="icon">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -642,6 +642,19 @@
                                         </svg>
                                     </span>
                                     <span class="name"> Danh Sách Yêu Thích</span>
+                                </a>
+                            </li>
+                            <!-- Sản Phẩm Đã Mua -->
+                            <li class="dashboard__nav-item-link">
+                                <a href="{{ route('client.user.bought') }}" class="font-body--lg-400">
+                                    <span class="icon">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 11.5L12 14.5L15 10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M4 7L7 14H17L20 7H4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </span>
+
+                                    <span class="name"> Sản Phẩm Đã Mua </span>
                                 </a>
                             </li>
                             <!-- Shopping Cart  -->
@@ -844,7 +857,7 @@
                     <div class="col-xl-4">
                         <div class="footer__brand-info">
                             <div class="footer__brand-info-logo">
-                                <img src="{{ asset('client/images/logo-nl-white.png') }}" alt="logo" />
+                                <img src="{{ asset('storage/logos/' . $websiteInfo->logo) }}" alt="logo" />
                             </div>
                             <p class="font-body--md-400">
                                 Sứ mệnh của chúng tôi là mang đến những sản phẩm thời trang chất lượng và hiện đại
@@ -852,13 +865,13 @@
                                 khách hàng.
                             </p>
                             <p class="font-body--md-400">
-                                Địa chỉ: 65 Đ. Huỳnh Thúc Kháng, Bến Nghé, Quận 1, Hồ Chí Minh
+                                Địa chỉ: {{ $websiteInfo->address }}
                             </p>
 
                             <p class="footer__brand-info-contact">
-                                <a href="#"><span>(+84) 332 172 749</span></a>
+                                <a href="#"><span>{{ $websiteInfo->phone }}</span></a>
                                 or
-                                <a href="#"><span>synergy40@gmail.com</span></a>
+                                <a href="#"><span>{{ $websiteInfo->email }}</span></a>
                             </p>
                             <ul class="social-icon">
                                 <li class="social-icon-link">
@@ -911,17 +924,18 @@
                                 <h2 class="font-body--lg-500">Tài Khoản</h2>
                             </li>
                             <li class="footer__navigation-link">
-                                <a href="user-dashboard.html">Tài Khoản Của Tôi</a>
+                                <a href="/user/account-setting">Tài Khoản Của Tôi</a>
                             </li>
                             <li class="footer__navigation-link">
-                                <a href="order-history.html"> Lịch Sử Đặt Hàng </a>
+                                <a href="/user/order/history"> Lịch Sử Đặt Hàng </a>
                             </li>
                             <li class="footer__navigation-link">
-                                <a href="shopping-cart.html"> Giỏ Hàng </a>
+                                <a href="/cart/shopping-cart"> Giỏ Hàng </a>
                             </li>
                             <li class="footer__navigation-link">
-                                <a href="wishlist.html"> Danh Sách Yêu Thích </a>
+                                <a href="/cart/wishlist"> Danh Sách Yêu Thích </a>
                             </li>
+
                         </ul>
                     </div>
                     <!-- Helps  -->
@@ -1006,7 +1020,7 @@
             </div>
             <div class="footer__bottom">
                 <p class="footer__copyright-text">
-                    © 2025 Synergy 4.0. All rights reserved.
+                    © 2025 {{ $websiteInfo->site_name }}. All rights reserved.
                 </p>
                 <div class="footer__partner d-flex">
                     <a href="#" class="footer__partner-item">

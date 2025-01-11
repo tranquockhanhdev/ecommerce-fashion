@@ -10,6 +10,8 @@ use App\Models\SizeProduct;
 use App\Models\ProductDetail;
 use App\Models\ImageProduct;
 use App\Models\OrderItem;
+use App\Models\CartItem;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 
@@ -286,7 +288,8 @@ class ProductController extends Controller
         // Xóa tất cả chi tiết sản phẩm (màu, size)
         ProductDetail::where('product_id', $product->id)->delete();
         OrderItem::where('product_id', $product->id)->delete();
-
+        CartItem::where('product_id', $product->id)->delete();
+        Comment::where('product_id', $product->id)->delete();
         // Xóa sản phẩm
         $product->delete();
 

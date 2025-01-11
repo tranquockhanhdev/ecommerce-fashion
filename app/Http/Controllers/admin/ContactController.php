@@ -22,7 +22,7 @@ class ContactController extends Controller
      */
     public function create()
     {
-        return view('admin.qllienhe.create');
+        //
     }
 
     /**
@@ -31,15 +31,28 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_name' => 'required|string|max:255',
-            'email' => 'required|email',
+            'user_name' => 'required|string|max:50',
+            'email' => 'bail|required|regex:/^([a-zA-Z0-9._%+-]+)@gmail\.com$/',
             'title' => 'required|string|max:255',
             'content' => 'required|string',
+        ], [
+            'user_name.required' => 'Vui lòng nhập tên người dùng.',
+            'user_name.max' => 'Tên người dùng không được vượt quá 50 ký tự.',
+            'email.required' => 'Vui lòng nhập địa chỉ email.',
+            'email.regex' => 'Địa chỉ email phải đúng định dạng là @gmail.com.',
+            'title.required' => 'Vui lòng nhập tiêu đề.',
+            'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
+            'content.required' => 'Vui lòng nhập nội dung.',
+        ]);
+        Contact::create([
+            'user_name' => $request->user_name,
+            'email' => $request->email,
+            'title' => $request->title,
+            'content' => $request->content,
+            'status' => 0,
         ]);
 
-        Contact::create($request->all());
-
-        return redirect()->route('admin.qllienhe.index')->with('success', 'Contact created successfully.');
+        return redirect()->back()->withInput();
     }
 
     /**

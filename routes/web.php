@@ -6,7 +6,6 @@ use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ColorController;
 use App\Http\Controllers\admin\SizeController;
-use App\Http\Controllers\admin\CommentController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\ContactController;
@@ -93,13 +92,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/checkout', function () {
             return view('client.cart.checkout');
         })->name('client.cart.checkout');
-
-
         Route::resource('/wishlist', wishlistController::class);
-      
-
-       
-
         // Route hiển thị giỏ hàng
         Route::get('/shopping-cart', [CartController::class, 'showCart'])->name('client.cart.shopping-cart');
 
@@ -111,7 +104,6 @@ Route::middleware(['auth'])->group(function () {
         // Route xóa sản phẩm khỏi giỏ hàng
         Route::delete('/remove/{cartItemId}', [CartController::class, 'removeFromCart'])->name('cart.remove');
         Route::delete('/cart/remove-all', [CartController::class, 'removeAll'])->name('cart.removeAll');
-
     });
 
     // Secret route

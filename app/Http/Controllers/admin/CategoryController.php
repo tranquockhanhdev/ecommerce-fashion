@@ -67,7 +67,7 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
         $categories = Category::whereNull('parent_id')
-            ->where('id', '!=', $id) // Id không phải danh mục hiện tại
+            ->where('id', '!=', $id)
             ->get();
 
         return view('admin.qldanhmuc.edit', compact('category', 'categories'));

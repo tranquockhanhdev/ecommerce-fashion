@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 @section('content')
 @if (session('success'))
-    <button class="alert alert-success" id="success-message">
-        {{ session('success') }}
-    </button>
+<button class="alert alert-success" id="success-message">
+    {{ session('success') }}
+</button>
 @endif
 <h1 class="h3 mb-0 text-gray-800">Quản lí bình luận</h1>
 <hr>
@@ -35,29 +35,29 @@
                 </thead>
                 <tbody>
                     @foreach($comments as $comment)
-                        @if($comment->status != 0)
-                        <tr>
-                            <td>{{ $comment->id }}</td>
-                            <td>{{ $comment->product_id }}</td>
-                            <td>{{ $comment->account_id }}</td>
-                            <td>{{ $comment->content }}</td>
-                            <td>{{ $comment->rating }}</td>
-                            <td>{{ $comment->created_at }}</td>
-                            <td>
-                                <div class="d-flex">
-                                    <form action="{{ route('admin.qlbinhluan.destroy', $comment->id) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-icon-split mr-2" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-trash"></i> Xóa
-                                            </span>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        @endif
+                    @if($comment->status != 0)
+                    <tr>
+                        <td>{{ $comment->id }}</td>
+                        <td>{{ $comment->product_id }}</td>
+                        <td>{{ $comment->account_id }}</td>
+                        <td>{{ $comment->content }}</td>
+                        <td>{{ $comment->rating }}</td>
+                        <td>{{ $comment->created_at }}</td>
+                        <td>
+                            <div class="d-flex">
+                                <form action="{{ route('admin.qlbinhluan.destroy', $comment->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-icon-split mr-2" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-trash"></i> Xóa
+                                        </span>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @endif
                     @endforeach
                 </tbody>
             </table>
@@ -72,10 +72,10 @@
 <script src="{{ asset('js/demo/datatables-demo.js')}}"></script>
 
 <script>
-    @if (session('success'))
-        setTimeout(function() {
-            document.getElementById('success-message').style.display = 'none';
-        }, 3000); 
+    @if(session('success'))
+    setTimeout(function() {
+        document.getElementById('success-message').style.display = 'none';
+    }, 3000);
     @endif
 </script>
 @endsection

@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-class CommentController extends Controller
+class CommentClientController extends Controller
 {
     public function index()
     {

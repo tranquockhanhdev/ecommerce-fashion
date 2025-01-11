@@ -6,8 +6,8 @@ use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ColorController;
 use App\Http\Controllers\admin\SizeController;
-use App\Http\Controllers\admin\BinhluanController;
-use App\Http\Controllers\admin\DanhmucController;
+use App\Http\Controllers\admin\CommentController;
+use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\ContactController;
 use App\Http\Controllers\client\ShopController;
@@ -40,12 +40,12 @@ Route::middleware(['auth'])->group(function () {
         Route::view('/qlnhanvien', 'admin.qlnhanvien.index')->name('qlnhanvien.index');
 
         // Quản lý bình luận
-        Route::resource('qlbinhluan', BinhluanController::class);
+        Route::resource('qlbinhluan', CommentController::class);
 
         // Quản lý đơn hàng, liên hệ, danh mục
         Route::resource('qldonhang', OrderController::class);
         Route::resource('qllienhe', ContactController::class);
-        Route::resource('qldanhmuc', DanhmucController::class);
+        Route::resource('qldanhmuc', CategoryController::class);
 
         // Quản lý sản phẩm
         Route::get('/qlsanpham', [ProductController::class, 'index'])->name('qlsanpham.index');

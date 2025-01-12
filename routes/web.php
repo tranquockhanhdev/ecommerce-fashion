@@ -127,13 +127,11 @@ Route::prefix('auth')->name('auth.')->group(function () {
 Route::get('/', function () {
     return view('client.pages.homepage');
 })->name('client.pages.homepage');
-
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::prefix('shop')->group(function () {
     Route::get('/shop', [ShopController::class, 'index'])->name('client.shop.shop');
-
+    Route::get('/shop/{id}', [ShopController::class, 'show'])->name('client.shop.shopdetails');
     Route::get('/product-details', function () {
         return view('client.shop.product-details');
     })->name('client.shop.product-details');

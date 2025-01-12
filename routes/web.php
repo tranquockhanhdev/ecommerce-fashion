@@ -99,6 +99,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
         Route::put('/update/{cartItemId}', [CartController::class, 'updateQuantity'])->name('cart.update');
 
+        Route::get('/cart-data', [CartController::class, 'getCartData']);
+        Route::delete('/cart/remove/{cartItemId}', [CartController::class, 'removeCart']);
 
         // Route xóa sản phẩm khỏi giỏ hàng
         Route::delete('/remove/{cartItemId}', [CartController::class, 'removeFromCart'])->name('cart.remove');

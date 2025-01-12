@@ -132,4 +132,49 @@ class CartController extends Controller
 
         return response()->json(['success' => false, 'message' => 'Giỏ hàng của bạn hiện tại không có sản phẩm.']);
     }
+    public function getCartData()
+    {
+        // Lấy giỏ hàng của người dùng
+        $cart = Cart::where('account_id', Auth::id())->first();
+
+        if (!$cart) {
+            return response()->json(['success' => false, 'message' => 'Giỏ hàng trống']);
+        }
+
+        // Lấy các sản phẩm trong giỏ hàng và nạp thông tin về sản phẩm và hình ảnh
+        $cartItems = $cart->cartItems()->with(['product.images' => function ($query) {
+            $query->limit(1); // Lấy 1 hình ảnh đầu tiên
+        }])->get();
+
+        // Tính tổng giá trị giỏ hàng
+        $total = $cartItems->sum(function ($item) {
+            return $item->product->price * $item->quantity;
+        });
+
+        // Cập nhật đường dẫn hình ảnh từ thư mục 'storage'
+        foreach ($cartItems as $item) {
+            if ($item->product->images->isNotEmpty()) {
+                $item->product->images[0]->url = asset('' . $item->product->images[0]->link);
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'cartItems' => $cartItems,
+            'total' => $total,
+        ]);
+    }
+    public function removeCart($cartItemId)
+    {
+        // Lấy sản phẩm và xóa khỏi giỏ hàng
+        $cartItem = CartItem::find($cartItemId);  // Sửa Cart thành CartItem
+
+        if (!$cartItem) {
+            return response()->json(['success' => false, 'message' => 'Sản phẩm không tồn tại trong giỏ hàng.']);
+        }
+
+        $cartItem->delete();
+
+        return response()->json(['success' => true, 'message' => 'Sản phẩm đã được xóa khỏi giỏ hàng.']);
+    }
 }

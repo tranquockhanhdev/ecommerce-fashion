@@ -96,17 +96,17 @@
 
                         <div class="contact-form-group">
                             <div class="contact-form--input">
-                                <input type="text " placeholder="Your Name" id="user_name" name="user_name" value="{{ old('user_name') }}" />
+                                <input type="text " placeholder="Tên" id="user_name" name="user_name" value="{{ old('user_name') }}" />
                             </div>
                             <div class="contact-form--input">
-                                <input type="email" placeholder="Your Email" id="email" name="email" value="{{ old('email') }}" />
+                                <input type="email" placeholder="Email" id="email" name="email" value="{{ old('email') }}" />
                             </div>
                         </div>
                         <div class="contact-form--input">
-                            <input type="text" placeholder="Title" id="title" name="title" value="{{ old('title') }}" />
+                            <input type="text" placeholder="Tiêu đề" id="title" name="title" value="{{ old('title') }}" />
                         </div>
                         <div class="contact-form--input contact-form--input-area" id="subject">
-                            <textarea cols="auto" rows="auto" placeholder="Subjects" id="content" name="content">{{ old('content') }}</textarea>
+                            <textarea cols="auto" rows="auto" placeholder="Nội dung" id="content" name="content">{{ old('content') }}</textarea>
                         </div>
                         <div class="contact-form-button">
                             <button class="button button--md" type="submit">

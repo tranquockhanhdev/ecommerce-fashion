@@ -655,9 +655,5 @@
     <!-- Shop list Section End   -->
 @endsection
 @section('js')
-
     <script src="{{ asset('client/lib/js/nouislider.min.js') }}"></script>
-
-
-
 @endsection

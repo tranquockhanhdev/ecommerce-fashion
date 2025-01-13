@@ -299,7 +299,8 @@ class ProductController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('query');
-        $products = Product::where('name', 'like', '%' . $query . '%')
+        $products = Product::with('images') // Lấy ảnh cùng với sản phẩm
+            ->where('name', 'like', '%' . $query . '%')
             ->orWhere('description', 'like', '%' . $query . '%')
             ->get();
 

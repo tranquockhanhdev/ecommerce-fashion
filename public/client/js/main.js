@@ -1371,72 +1371,94 @@ document.addEventListener("DOMContentLoaded", function () {
                     const total = data.total;
                     const cartCount = cartItems.length;
 
-                    document.querySelector(
+                    // Kiểm tra sự tồn tại của phần tử trước khi thao tác
+                    const cartItemCountElem = document.querySelector(
                         ".header__cart-item .item-number"
-                    ).innerText = cartCount;
-                    document.querySelector(".shopping-cart .count").innerText =
-                        cartCount;
+                    );
+                    if (cartItemCountElem) {
+                        cartItemCountElem.innerText = cartCount;
+                    }
 
-                    document.querySelector(
+                    const shoppingCartCountElem = document.querySelector(
+                        ".shopping-cart .count"
+                    );
+                    if (shoppingCartCountElem) {
+                        shoppingCartCountElem.innerText = cartCount;
+                    }
+
+                    const cartPriceElem = document.querySelector(
                         ".header__cart-item-content-info .price"
-                    ).innerText = `${Number(total).toLocaleString("vi-VN")}đ`;
+                    );
+                    if (cartPriceElem) {
+                        cartPriceElem.innerText = `${Number(
+                            total
+                        ).toLocaleString("vi-VN")}đ`;
+                    }
 
                     const cartProductList = document.querySelector(
                         ".shopping-cart__product-content-popup"
                     );
-                    cartProductList.innerHTML = ""; // Xóa các sản phẩm cũ
+                    if (cartProductList) {
+                        cartProductList.innerHTML = ""; // Xóa các sản phẩm cũ
 
-                    cartItems.forEach((item) => {
-                        const productName =
-                            item.product.name.length > 25
-                                ? item.product.name.slice(0, 25) + "..."
-                                : item.product.name;
+                        cartItems.forEach((item) => {
+                            const productName =
+                                item.product.name.length > 25
+                                    ? item.product.name.slice(0, 25) + "..."
+                                    : item.product.name;
+                            const formattedPrice = Number(
+                                item.product.price
+                            ).toLocaleString("vi-VN");
 
-                        const formattedPrice = Number(
-                            item.product.price
-                        ).toLocaleString("vi-VN");
-
-                        const productHTML = `
-                        <div class="shopping-cart__product-content">
-                            <div class="shopping-cart__product-content-item">
-                                <div class="img-wrapper">
-                                    <img src="${item.product.images[0]?.url}" alt="product" style="width: 80px; height: auto;" />
+                            const productHTML = `
+                            <div class="shopping-cart__product-content">
+                                <div class="shopping-cart__product-content-item">
+                                    <div class="img-wrapper">
+                                        <img src="${item.product.images[0]?.url}" alt="product" style="width: 80px; height: auto;" />
+                                    </div>
+                                    <div class="text-content">
+                                        <h5 class="font-body--md-400">${productName}</h5>
+                                        <p class="font-body--md-400">${item.quantity} x <span class="font-body--md-500">${formattedPrice} VNĐ</span></p>
+                                    </div>
+                                    <button class="delete-item" data-id="${item.id}">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 23C18.0748 23 23 18.0748 23 12C23 5.92525 18.0748 1 12 1C5.92525 1 1 5.92525 1 12C1 18.0748 5.92525 23 12 23Z" stroke="#CCCCCC" stroke-miterlimit="10" />
+                                            <path d="M16 8L8 16" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M16 16L8 8" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </button>
                                 </div>
-                                <div class="text-content">
-                                    <h5 class="font-body--md-400">${productName}</h5>
-                                    <p class="font-body--md-400">${item.quantity} x <span class="font-body--md-500">${formattedPrice} VNĐ</span></p>
-                                </div>
-                                <button class="delete-item" data-id="${item.id}">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 23C18.0748 23 23 18.0748 23 12C23 5.92525 18.0748 1 12 1C5.92525 1 1 5.92525 1 12C1 18.0748 5.92525 23 12 23Z" stroke="#CCCCCC" stroke-miterlimit="10" />
-                                        <path d="M16 8L8 16" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        <path d="M16 16L8 8" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </button>
                             </div>
-                        </div>
-                    `;
-                        cartProductList.innerHTML += productHTML;
-                    });
+                        `;
+                            cartProductList.innerHTML += productHTML;
+                        });
+                    }
 
                     const formattedTotal =
                         Number(total).toLocaleString("vi-VN");
-                    document.querySelector(
+                    const cartProductInfoCountElem = document.querySelector(
                         ".shopping-cart-product-info .product-count"
-                    ).innerText = `${cartCount} Sản Phẩm`;
-                    document.querySelector(
+                    );
+                    if (cartProductInfoCountElem) {
+                        cartProductInfoCountElem.innerText = `${cartCount} Sản Phẩm`;
+                    }
+
+                    const cartProductInfoPriceElem = document.querySelector(
                         ".shopping-cart-product-info .product-price"
-                    ).innerText = `₫${formattedTotal}`;
+                    );
+                    if (cartProductInfoPriceElem) {
+                        cartProductInfoPriceElem.innerText = `₫${formattedTotal}`;
+                    }
                 } else {
                     alert(data.message);
                 }
             })
             .catch((error) => console.error("Lỗi khi lấy giỏ hàng:", error));
     }
+
     // Hàm xóa sản phẩm khỏi giỏ hàng
     function deleteCartItem(cartItemId) {
         fetch(`/cart/cart/remove/${cartItemId}`, {
-            // Đã thêm dấu `/` để đúng cú pháp URL
             method: "DELETE",
             headers: {
                 "X-CSRF-TOKEN": document
@@ -1450,7 +1472,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.success) {
                     // Xóa sản phẩm khỏi giao diện
                     const itemToRemove = document.querySelector(
-                        `.delete-item[data-id="${cartItemId}"]` // Đã sửa lại template string và selector
+                        `.delete-item[data-id="${cartItemId}"]`
                     );
                     if (itemToRemove) {
                         itemToRemove
@@ -1465,9 +1487,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.error("Lỗi:", data.message);
                 }
             })
-            .catch((error) => {
-                console.error("Có lỗi xảy ra:", error);
-            });
+            .catch((error) => console.error("Có lỗi xảy ra:", error));
     }
 
     // Lắng nghe sự kiện click vào nút xóa
@@ -1479,8 +1499,4 @@ document.addEventListener("DOMContentLoaded", function () {
             deleteCartItem(cartItemId); // Gọi hàm xóa sản phẩm
         }
     });
-
-    // Gọi hàm lấy giỏ hàng khi trang được tải
-    fetchCartData();
 });
-

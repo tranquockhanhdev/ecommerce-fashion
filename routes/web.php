@@ -27,6 +27,7 @@ Auth::routes([
     'confirm' => false     // Tắt route xác minh email
 ]);
 Route::get('/search', [ProductController::class, 'search'])->name('search');
+
 Route::fallback(function () {
     return response()->view('errors.404', [], 404);
 });
@@ -140,6 +141,8 @@ Route::prefix('shop')->group(function () {
     Route::get('/product-details', function () {
         return view('client.shop.product-details');
     })->name('client.shop.product-details');
+    // Route lọc sản phẩm
+    // Route::get('/filter', [ShopController::class, 'filter'])->name('client.shop.filter');
 });
 
 // Blog routes

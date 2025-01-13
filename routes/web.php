@@ -20,6 +20,7 @@ use App\Http\Controllers\Auth\SecretController;
 use App\Http\Controllers\client\AccountOrderController;
 use App\Http\Controllers\client\CommentClientController;
 use App\Http\Controllers\client\wishlistController;
+use App\Http\Controllers\VNPayController;
 
 Auth::routes([
     'reset' => false,     // Tắt route reset mật khẩu
@@ -96,6 +97,7 @@ Route::middleware(['auth'])->group(function () {
 
         // Route thêm sản phẩm vào giỏ hàng
         Route::post('/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
+        Route::post('/addjs/{productId}', [CartController::class, 'addToCartJS'])->name('cart.addjs');
         Route::put('/update/{cartItemId}', [CartController::class, 'updateQuantity'])->name('cart.update');
 
 

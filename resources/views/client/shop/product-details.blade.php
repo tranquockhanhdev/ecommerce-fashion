@@ -191,7 +191,7 @@
                             </button>
                         </div>
                         <!-- add to cart  -->
-                        <button class="button button--md products__content-action-item">
+                        <button class="button button--md products__content-action-item" id="add-to-cart-btn" data-product-id="{{ $product->id }}">
                             Thêm vào giỏ hàng
                             <span>
                                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
@@ -299,16 +299,27 @@
                                         @php
                                         $groupedProducts = [];
                                         foreach ($productDetail as $detail) {
+                                        // Kiểm tra xem sản phẩm có size không
+                                        if ($detail->size) {
                                         $groupedProducts[$detail->color->color_name][] = $detail->size->size_name;
+                                        } else {
+                                        $groupedProducts[$detail->color->color_name][] = 'Không có size';
+                                        }
                                         }
                                         @endphp
 
                                         @foreach ($groupedProducts as $color => $sizes)
                                         <li>
-                                            {{ $color }}: {{ implode(', ', $sizes) }}
+                                            {{ $color }}:
+                                            @if (in_array('Không có size', $sizes))
+                                            Không có size
+                                            @else
+                                            {{ implode(', ', $sizes) }}
+                                            @endif
                                         </li>
                                         @endforeach
                                     </ul>
+
                                 </li>
 
                                 <li>
@@ -1378,4 +1389,42 @@
 <script src="{{ asset('client/lib/js/bvselect.js') }}"></script>
 <script src="{{ asset('client/lib/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('client/js/main.js') }}"></script>
+<script>
+    // Hàm gửi yêu cầu POST tới server
+    document.getElementById('add-to-cart-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+
+        // Lấy ID sản phẩm và số lượng từ các input
+        const productId = this.getAttribute('data-product-id');
+        const quantity = document.getElementById('counter-btn-counter').value;
+
+        // Kiểm tra số lượng nhập vào
+        if (quantity <= 0) {
+            alert('Số lượng không hợp lệ!');
+            return;
+        }
+
+        // Gửi dữ liệu đến server bằng Ajax
+        fetch("{{ route('cart.addjs', '') }}/" + productId, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}" // Token CSRF để bảo vệ request
+                },
+                body: JSON.stringify({
+                    quantity: quantity
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message); // Thông báo khi thêm thành công
+                } else {
+                    alert(data.message); // Thông báo lỗi
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
+
 @endsection

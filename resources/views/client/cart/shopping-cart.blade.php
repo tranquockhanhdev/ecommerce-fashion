@@ -192,7 +192,7 @@
                                 </div>
 
                             </div>
-                            <form action="{{ route('client.cart.checkout') }}">
+                            <form action="{{ route('client.cart.checkout', $cart->id) }}">
                                 <button class="button button--lg w-100" style="margin-top: 20px" type="submit">
                                     Đặt Hàng
                                 </button>

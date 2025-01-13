@@ -82,10 +82,9 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/history', [AccountOrderController::class, 'index'])->name('client.user.order-history');
             Route::get('/{id}', [AccountOrderController::class, 'details'])->name('client.user.order-details');
             Route::put('/{id}', [AccountOrderController::class, 'cancelOrder'])->name('client.user.cancel-order');
-            Route::put('/bought', [CommentClientController::class, 'index'])->name('client.user.bought');
         });
     });
-
+    Route::get('/bought', [CommentClientController::class, 'index'])->name('client.user.bought');
     // Cart routes
     Route::prefix('cart')->group(function () {
         Route::get('/checkout', function () {

@@ -1352,42 +1352,46 @@ function togglePassword() {
     }
 }
 document.addEventListener("DOMContentLoaded", function () {
+    // Kiểm tra xem người dùng đã đăng nhập hay chưa
+    if (window.isLoggedIn) {
+        // Nếu đã đăng nhập, gọi hàm lấy dữ liệu giỏ hàng
+        fetchCartData();
+    } else {
+        console.log("Vui lòng đăng nhập để xem giỏ hàng.");
+        // Hoặc bạn có thể hiển thị thông báo cho người dùng chưa đăng nhập
+    }
+
     // Hàm lấy dữ liệu giỏ hàng từ API
     function fetchCartData() {
-        fetch("/cart/cart-data") // Thay đổi URL theo đúng route của bạn
+        fetch("/cart/cart-data")
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
-                    // Cập nhật số lượng sản phẩm và tổng tiền trong giỏ hàng
                     const cartItems = data.cartItems;
                     const total = data.total;
                     const cartCount = cartItems.length;
 
-                    // Cập nhật số lượng sản phẩm trong giỏ hàng
                     document.querySelector(
                         ".header__cart-item .item-number"
                     ).innerText = cartCount;
                     document.querySelector(".shopping-cart .count").innerText =
                         cartCount;
-                    // Cập nhật tổng tiền vào giao diện
 
                     document.querySelector(
                         ".header__cart-item-content-info .price"
-                    ).innerText = `${Number(total).toLocaleString("vi-VN")} đ`;
-                    // Cập nhật thông tin sản phẩm trong giỏ hàng
+                    ).innerText = `${Number(total).toLocaleString("vi-VN")}đ`;
+
                     const cartProductList = document.querySelector(
                         ".shopping-cart__product-content-popup"
                     );
                     cartProductList.innerHTML = ""; // Xóa các sản phẩm cũ
 
-                    // Duyệt qua mỗi sản phẩm và thêm vào giỏ hàng
                     cartItems.forEach((item) => {
                         const productName =
                             item.product.name.length > 25
                                 ? item.product.name.slice(0, 25) + "..."
                                 : item.product.name;
 
-                        // Định dạng giá với dấu chấm phân cách hàng nghìn
                         const formattedPrice = Number(
                             item.product.price
                         ).toLocaleString("vi-VN");
@@ -1415,7 +1419,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         cartProductList.innerHTML += productHTML;
                     });
 
-                    // Cập nhật tổng tiền
                     const formattedTotal =
                         Number(total).toLocaleString("vi-VN");
                     document.querySelector(
@@ -1430,10 +1433,10 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch((error) => console.error("Lỗi khi lấy giỏ hàng:", error));
     }
-
     // Hàm xóa sản phẩm khỏi giỏ hàng
     function deleteCartItem(cartItemId) {
         fetch(`/cart/cart/remove/${cartItemId}`, {
+            // Đã thêm dấu `/` để đúng cú pháp URL
             method: "DELETE",
             headers: {
                 "X-CSRF-TOKEN": document
@@ -1447,7 +1450,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.success) {
                     // Xóa sản phẩm khỏi giao diện
                     const itemToRemove = document.querySelector(
-                        `.delete-item[data-id="${cartItemId}"]`
+                        `.delete-item[data-id="${cartItemId}"]` // Đã sửa lại template string và selector
                     );
                     if (itemToRemove) {
                         itemToRemove
@@ -1480,3 +1483,4 @@ document.addEventListener("DOMContentLoaded", function () {
     // Gọi hàm lấy giỏ hàng khi trang được tải
     fetchCartData();
 });
+

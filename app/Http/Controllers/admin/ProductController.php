@@ -296,4 +296,13 @@ class ProductController extends Controller
         // Trả về thông báo thành công
         return redirect()->route('admin.qlsanpham.index')->with('success', 'Sản phẩm đã được xóa thành công!');
     }
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $products = Product::where('name', 'like', '%' . $query . '%')
+            ->orWhere('description', 'like', '%' . $query . '%')
+            ->get();
+
+        return view('client.shop.search_results', compact('products'));
+    }
 }

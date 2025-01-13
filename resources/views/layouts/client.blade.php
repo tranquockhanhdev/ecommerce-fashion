@@ -147,9 +147,9 @@
                             <img src="{{ asset('storage/logos/' . $websiteInfo->logo) }}" alt="brand-logo" />
                         </a>
                     </div>
-                    <form action="#">
+                    <form action="{{ route('search') }}" method="GET">
                         <div class="header__input-form">
-                            <input type="text" placeholder="Tìm Kiếm" />
+                            <input type="text" name="query" placeholder="Tìm Kiếm" />
                             <span class="search-icon">
                                 <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -166,6 +166,8 @@
                             </button>
                         </div>
                     </form>
+
+
                     <div class="header__cart">
                         <div class="header__cart-item">
                             <a class="fav" href="{{ route('wishlist.index') }}">
@@ -1279,7 +1281,9 @@
             <button>Gửi</button>
         </div>
     </div>
-
+    <script>
+        window.isLoggedIn = {{ Auth::check() ? 'true' : 'false' }};
+    </script>
 </body>
 
 </html>

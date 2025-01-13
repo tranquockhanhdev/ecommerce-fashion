@@ -26,6 +26,7 @@ Auth::routes([
     'verify' => false,     // Tắt route xác minh email
     'confirm' => false     // Tắt route xác minh email
 ]);
+Route::get('/search', [ProductController::class, 'search'])->name('search');
 Route::fallback(function () {
     return response()->view('errors.404', [], 404);
 });
@@ -99,7 +100,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
         Route::put('/update/{cartItemId}', [CartController::class, 'updateQuantity'])->name('cart.update');
 
-        Route::get('/cart-data', [CartController::class, 'getCartData']);
+        Route::get('/cart-data', [CartController::class, 'getCartData'])->name('cart.data');
         Route::delete('/cart/remove/{cartItemId}', [CartController::class, 'removeCart']);
 
         // Route xóa sản phẩm khỏi giỏ hàng

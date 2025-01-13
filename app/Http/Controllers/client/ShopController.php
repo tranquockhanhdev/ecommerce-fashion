@@ -37,4 +37,5 @@ class ShopController extends Controller
             'products' => $products, // Để dùng đối tượng phân trang trong view
         ]);
     }
+    
 }

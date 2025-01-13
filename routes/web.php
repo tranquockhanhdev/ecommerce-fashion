@@ -20,6 +20,7 @@ use App\Http\Controllers\Auth\SecretController;
 use App\Http\Controllers\client\AccountOrderController;
 use App\Http\Controllers\client\CommentClientController;
 use App\Http\Controllers\client\wishlistController;
+use App\Http\Controllers\client\HomepageController;
 
 Auth::routes([
     'reset' => false,     // Tắt route reset mật khẩu
@@ -124,9 +125,11 @@ Route::prefix('auth')->name('auth.')->group(function () {
     Route::post('/confirmpassword', [App\Http\Controllers\Auth\ResetPasswordController::class, 'updatePassword'])->name('updatePassword');
 });
 // Public routes
-Route::get('/', function () {
-    return view('client.pages.homepage');
-})->name('client.pages.homepage');
+// Route::get('/', function () {
+//     return view('client.pages.homepage');
+// })->name('client.pages.homepage');
+
+Route::get('/', [HomepageController::class, 'index'])->name('client.pages.homepage');
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

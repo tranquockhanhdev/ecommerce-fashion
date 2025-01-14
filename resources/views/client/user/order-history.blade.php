@@ -13,6 +13,11 @@
                 <strong>{{ session('success') }}</strong>
             </div>
             @endif
+            @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+            @endif
             <!-- Đã Nhận Đơn -->
             <div class="dashboard__order-history-table">
                 <h3>Đã Nhận Đơn</h3>
@@ -26,6 +31,7 @@
                                 <th scope="col" class="dashboard__order-history-table-title">Shipping Fee</th>
                                 <th scope="col" class="dashboard__order-history-table-title">Status</th>
                                 <th scope="col" class="dashboard__order-history-table-title">Status Payment</th>
+                                <th scope="col" class="dashboard__order-history-table-title">Payment Method</th>
                                 <th scope="col" class="dashboard__order-history-table-title"></th>
                             </tr>
                         </thead>
@@ -38,6 +44,13 @@
                                 <td class="dashboard__order-history-table-item order-total">{{$order->formatted_shipping}}</td>
                                 <td class="dashboard__order-history-table-item order-status">{{ $order->status_text }}</td>
                                 <td class="dashboard__order-history-table-item order-status">{{ $order->status_payment_text }}</td>
+                                <td class="dashboard__order-history-table-item order-status"> @if ($order->payment_method_id == 1)
+                                    VNPAY
+                                    @elseif ($order->payment_method_id == 2)
+                                    Thanh toán khi nhận hàng
+                                    @else
+                                    Phương thức thanh toán không xác định
+                                    @endif</td>
                                 <td class="dashboard__order-history-table-item order-details"><a href="{{ route('client.user.order-details', $order->id) }}">Xem Chi Tiết</a></td>
                             </tr>
                             @endforeach
@@ -59,6 +72,7 @@
                                 <th scope="col" class="dashboard__order-history-table-title">Shipping Fee</th>
                                 <th scope="col" class="dashboard__order-history-table-title">Status</th>
                                 <th scope="col" class="dashboard__order-history-table-title">Status Payment</th>
+                                <th scope="col" class="dashboard__order-history-table-title">Payment Method</th>
                                 <th scope="col" class="dashboard__order-history-table-title"></th>
                             </tr>
                         </thead>
@@ -71,6 +85,13 @@
                                 <td class="dashboard__order-history-table-item order-total">{{$order->formatted_shipping}}</td>
                                 <td class="dashboard__order-history-table-item order-status">{{ $order->status_text }}</td>
                                 <td class="dashboard__order-history-table-item order-status">{{ $order->status_payment_text }}</td>
+                                <td class="dashboard__order-history-table-item order-status"> @if ($order->payment_method_id == 1)
+                                    VNPAY
+                                    @elseif ($order->payment_method_id == 2)
+                                    Thanh toán khi nhận hàng
+                                    @else
+                                    Phương thức thanh toán không xác định
+                                    @endif</td>
                                 <td class="dashboard__order-history-table-item order-details"><a href="{{ route('client.user.order-details', $order->id) }}">Xem Chi Tiết</a></td>
                             </tr>
                             @endforeach
@@ -92,6 +113,7 @@
                                 <th scope="col" class="dashboard__order-history-table-title">Shipping Fee</th>
                                 <th scope="col" class="dashboard__order-history-table-title">Status</th>
                                 <th scope="col" class="dashboard__order-history-table-title">Status Payment</th>
+                                <th scope="col" class="dashboard__order-history-table-title">Payment Method</th>
                                 <th scope="col" class="dashboard__order-history-table-title"></th>
                             </tr>
                         </thead>
@@ -104,6 +126,13 @@
                                 <td class="dashboard__order-history-table-item order-total">{{$order->formatted_shipping}}</td>
                                 <td class="dashboard__order-history-table-item order-status">{{ $order->status_text }}</td>
                                 <td class="dashboard__order-history-table-item order-status">{{ $order->status_payment_text }}</td>
+                                <td class="dashboard__order-history-table-item order-status"> @if ($order->payment_method_id == 1)
+                                    VNPAY
+                                    @elseif ($order->payment_method_id == 2)
+                                    Thanh toán khi nhận hàng
+                                    @else
+                                    Phương thức thanh toán không xác định
+                                    @endif</td>
                                 <td class="dashboard__order-history-table-item order-details"><a href="{{ route('client.user.order-details', $order->id) }}">Xem Chi Tiết</a></td>
                             </tr>
                             @endforeach
@@ -125,6 +154,7 @@
                                 <th scope="col" class="dashboard__order-history-table-title">Shipping Fee</th>
                                 <th scope="col" class="dashboard__order-history-table-title">Status</th>
                                 <th scope="col" class="dashboard__order-history-table-title">Status Payment</th>
+                                <th scope="col" class="dashboard__order-history-table-title">Payment Method</th>
                                 <th scope="col" class="dashboard__order-history-table-title"></th>
                             </tr>
                         </thead>
@@ -137,6 +167,13 @@
                                 <td class="dashboard__order-history-table-item order-total">{{$order->formatted_shipping}}</td>
                                 <td class="dashboard__order-history-table-item order-status">{{ $order->status_text }}</td>
                                 <td class="dashboard__order-history-table-item order-status">{{ $order->status_payment_text }}</td>
+                                <td class="dashboard__order-history-table-item order-status"> @if ($order->payment_method_id == 1)
+                                    VNPAY
+                                    @elseif ($order->payment_method_id == 2)
+                                    Thanh toán khi nhận hàng
+                                    @else
+                                    Phương thức thanh toán không xác định
+                                    @endif</td>
                                 <td class="dashboard__order-history-table-item order-details"><a href="{{ route('client.user.order-details', $order->id) }}">Xem Chi Tiết</a></td>
                             </tr>
                             @endforeach

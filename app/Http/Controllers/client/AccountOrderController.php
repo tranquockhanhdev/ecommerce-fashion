@@ -49,6 +49,7 @@ class AccountOrderController extends Controller
     }
     public function details(string $id)
     {
+
         // Tìm đơn hàng theo ID
         $orders = Order::findOrFail($id);
         // Tìm thông tin khách hàng của đơn hàng
@@ -77,6 +78,7 @@ class AccountOrderController extends Controller
 
         // Cập nhật trạng thái đơn hàng thành hủy
         $order->status = 0; // Giả sử 0 là trạng thái hủy
+        $order->status_payment = 0; // Giả sử 0 là trạng thái hủy
         $order->save();
 
         return redirect()->route('client.user.order-history')->with('success', 'Đơn hàng đã được hủy thành công!');

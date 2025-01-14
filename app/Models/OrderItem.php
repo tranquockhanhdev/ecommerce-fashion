@@ -10,9 +10,13 @@ class OrderItem extends Model
     use HasFactory;
 
     protected $table = 'order_item';
-    
+
     protected $fillable = [
-        'order_id', 'product_id', 'name', 'quantity', 'price',
+        'order_id',
+        'product_id',
+        'name',
+        'quantity',
+        'price',
     ];
 
     // Quan hệ với Order

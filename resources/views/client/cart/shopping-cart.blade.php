@@ -41,6 +41,11 @@
 <!-- Shopping Cart Section Start -->
 <section class="shoping-cart section section--xl">
     <div class="container">
+        @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+        @endif
         <div class="section__head justify-content-center">
             <h2 class="section--title-four font-title--sm">Giỏ Hàng Của Tôi</h2>
         </div>

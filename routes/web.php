@@ -90,6 +90,7 @@ Route::middleware(['auth'])->group(function () {
     // Cart routes
     Route::prefix('cart')->group(function () {
         Route::get('/checkout/{id}', [CheckoutController::class, 'index'])->name('client.cart.checkout');
+        Route::post('/checkout/{cart}', [CheckoutController::class, 'processCheckout'])->name('checkout');
         Route::resource('/wishlist', wishlistController::class);
         // Route hiển thị giỏ hàng
         Route::get('/shopping-cart', [CartController::class, 'showCart'])->name('client.cart.shopping-cart');
@@ -158,3 +159,5 @@ Route::prefix('pages')->group(function () {
         return view('client.pages.contact');
     })->name('client.pages.contact');
 });
+//trang thanh toán
+Route::get('vnpay_return', [CheckoutController::class, 'vnpay_return'])->name('vnpay.return');

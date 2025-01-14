@@ -296,14 +296,31 @@ class ProductController extends Controller
         // Trả về thông báo thành công
         return redirect()->route('admin.qlsanpham.index')->with('success', 'Sản phẩm đã được xóa thành công!');
     }
-    public function search(Request $request)
+    public function filterAndSearch(Request $request)
     {
-        $query = $request->input('query');
-        $products = Product::with('images') // Lấy ảnh cùng với sản phẩm
-            ->where('name', 'like', '%' . $query . '%')
-            ->orWhere('description', 'like', '%' . $query . '%')
-            ->get();
+        $query = $request->input('query'); // Từ khóa tìm kiếm
+        $categoryFilter = $request->input('category'); // Lọc theo danh mục
 
-        return view('client.shop.search_results', compact('products'));
+        // Truy vấn sản phẩm kết hợp tìm kiếm và lọc theo danh mục
+        $products = Product::with(['images', 'comments'])
+            ->when($query, function ($queryBuilder) use ($query) {
+                return $queryBuilder->where('name', 'like', '%' . $query . '%')
+                    ->orWhere('description', 'like', '%' . $query . '%'); // Tìm kiếm theo từ khóa
+            })
+            ->when($categoryFilter, function ($queryBuilder) use ($categoryFilter) {
+                return $queryBuilder->where('category_id', $categoryFilter); // Lọc theo danh mục
+            })
+            ->paginate(10); // Phân trang
+
+        // Lấy tất cả danh mục
+        $categories = Category::all();
+
+        // Trả về view
+        return view('client.shop.search_results', [
+            'products' => $products,
+            'categories' => $categories,
+            'query' => $query, // Truyền từ khóa tìm kiếm
+            'categoryFilter' => $categoryFilter, // Danh mục lọc đã chọn
+        ]);
     }
 }

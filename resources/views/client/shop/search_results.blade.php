@@ -9,7 +9,6 @@
     @if ($products->isEmpty())
         <p>Không tìm thấy sản phẩm nào.</p>
     @else
-        <!-- Filter  -->
         <div class="filter--search">
             <div class="container">
                 <div class="filter--search__content row">
@@ -33,19 +32,32 @@
                     </div>
                     <div class="col-lg-9">
                         <div class="filter--search-result">
+                            <!-- Phần Sắp Xếp -->
                             <div class="sort-list">
                                 <label for="sort">Sắp Xếp Theo:</label>
-                                <select id="sort" class="sort-list__dropmenu">
-                                    <option value="01">Latest</option>
-                                    <option value="02">Newest</option>
-                                    <option value="03">Oldest</option>
-                                </select>
+                                <form action="{{ route('client.shop.shop') }}" method="get" class="d-inline">
+                                    <select id="sort" name="sort" class="sort-list__dropmenu"
+                                        onchange="this.form.submit()">
+                                        <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Mới Nhất
+                                        </option>
+                                        <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Cũ Nhất
+                                        </option>
+                                        <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Giá
+                                            Thấp -> Cao</option>
+                                        <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>
+                                            Giá
+                                            Cao -> Thấp</option>
+                                    </select>
+                                </form>
                             </div>
+
+                            <!-- Phần Kết Quả Tìm Thấy -->
                             <div class="result-found">
-                                <p><span class="number">52</span> Kết Quả Được Tìm Thấy</p>
+                                <p><span class="number">{{ $products->total() }}</span> Kết Quả Được Tìm Thấy</p>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -72,86 +84,69 @@
                             <div class="shop__sidebar-content">
                                 <div class="accordion shop" id="shop">
                                     <!-- All Categories  -->
-                                    <div class="accordion-item shop-item">
-                                        <h2 class="accordion-header" id="shop-item-accordion--one">
-                                            <button class="accordion-button shop-button font-body--xxl-500" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
-                                                aria-controls="collapseOne">
-                                                Tất cả Danh Mục
-                                                <span class="icon">
-                                                    <svg width="14" height="8" viewBox="0 0 14 8" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M13 7L7 1L1 7" stroke="#1A1A1A" stroke-width="2"
-                                                            stroke-linecap="round" stroke-linejoin="round" />
-                                                    </svg>
-                                                </span>
-                                            </button>
-                                        </h2>
-                                        <div id="collapseOne" class="accordion-collapse shop-collapse collapse show show"
-                                            aria-labelledby="shop-item-accordion--one" data-bs-parent="#shop">
-                                            <div class="accordion-body shop-body">
-                                                <div class="categories">
-                                                    <div class="categories-item">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="category"
-                                                                id="fruit" />
-                                                            <label class="form-check-label" for="fruit"> Fresh Fruit (25)
-                                                                <span class="current">(134)</span> </label>
-                                                        </div>
+                                    <form action="{{ route('search') }}" method="get">
+                                        <div class="accordion-item shop-item">
+                                            <h2 class="accordion-header" id="shop-item-accordion--one">
+                                                <button class="accordion-button shop-button font-body--xxl-500"
+                                                    type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                                    aria-expanded="true" aria-controls="collapseOne">
+                                                    Tất cả Danh Mục
+                                                    <span class="icon">
+                                                        <svg width="14" height="8" viewBox="0 0 14 8" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M13 7L7 1L1 7" stroke="#1A1A1A" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round" />
+                                                        </svg>
+                                                    </span>
+                                                </button>
+                                            </h2>
+
+                                            <div id="collapseOne" class="accordion-collapse shop-collapse collapse show"
+                                                aria-labelledby="shop-item-accordion--one" data-bs-parent="#shop">
+                                                <div class="accordion-body shop-body">
+                                                    <!-- Thanh tìm kiếm -->
+                                                    <div class="search-bar mb-3">
+                                                        <input type="text" class="form-control" name="query"
+                                                            placeholder="Tìm kiếm sản phẩm..."
+                                                            value="{{ request('query') }}" />
                                                     </div>
-                                                    <div class="categories-item">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="category"
-                                                                id="vegetable" checked />
-                                                            <label class="form-check-label" for="vegetable"> Fresh Fruit
-                                                                <span class="current">(150)</span> </label>
-                                                        </div>
+
+                                                    <!-- Lọc theo danh mục -->
+                                                    <div class="categories">
+                                                        @foreach ($categories as $category)
+                                                            <div class="categories-item">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        name="category" value="{{ $category->id }}"
+                                                                        id="category-{{ $category->id }}"
+                                                                        {{ request('category') == $category->id ? 'checked' : '' }}
+                                                                        onchange="this.form.submit()" />
+                                                                    <label class="form-check-label"
+                                                                        for="category-{{ $category->id }}">{{ $category->name }}</label>
+                                                                </div>
+                                                            </div>
+                                                        @endforeach
                                                     </div>
-                                                    <div class="categories-item">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="category" id="cooking" checked />
-                                                            <label class="form-check-label" for="cooking"> Cooking <span
-                                                                    class="current">(54)</span> </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="categories-item">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="category" id="snacks" checked />
-                                                            <label class="form-check-label" for="snacks"> Snacks <span
-                                                                    class="current">(47)</span> </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="categories-item">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="category" id="beverage" checked />
-                                                            <label class="form-check-label" for="beverage"> Beverages
-                                                                <span class="current">(43)</span> </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="categories-item">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="category" id="health" checked />
-                                                            <label class="form-check-label" for="health"> Beauty &
-                                                                Health
-                                                                <span class="current">(38)</span> </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="categories-item">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="category" id="bread" checked />
-                                                            <label class="form-check-label" for="bread"> Bread &
-                                                                Bakery<span class="current">(15)</span> </label>
-                                                        </div>
+
+                                                    <!-- Nút Lọc -->
+                                                    <div class="d-flex justify-content-between mt-3">
+                                                        <button type="submit" class="btn btn-primary btn-lg"
+                                                            style="border-radius: 50px; padding: 10px 20px; font-size: 16px;">
+                                                            <i class="bi bi-filter"></i> Lọc
+                                                        </button>
+
+                                                        <!-- Nút bỏ lọc -->
+                                                        <a href="{{ route('client.shop.shop') }}"
+                                                            class="btn btn-outline-secondary px-4"
+                                                            style="border-radius: 50px; padding: 10px 20px; font-size: 16px;">
+                                                            Bỏ lọc
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </form>
+
                                     <!-- Price Range -->
                                     <div class="accordion-item shop-item">
                                         <h2 class="accordion-header" id="shop-item-accordion--two">
@@ -496,7 +491,8 @@
                                 <!-- banner  -->
                                 <div class="shop-item">
                                     <div class="shop-img-banner">
-                                        <img src="{{ asset('client/images/banner/banner-sm-19.jpg') }}" alt="banner-sm" />
+                                        <img src="{{ asset('client/images/banner/banner-sm-19.jpg') }}"
+                                            alt="banner-sm" />
                                         <div class="text-content">
                                             <h5><span>79%</span> Giảm giá</h5>
                                             <p>cho Đơn Hàng Nhanh Của Bạn</p>

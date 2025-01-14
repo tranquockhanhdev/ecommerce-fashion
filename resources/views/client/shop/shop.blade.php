@@ -361,49 +361,25 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button type="submit">Lọc</button>
+                                            <div class="d-flex justify-content-between">
+                                                <!-- Nút Lọc -->
+                                                <button type="submit" class="btn btn-primary btn-lg"
+                                                    style="border-radius: 50px; padding: 10px 20px; font-size: 16px;">
+                                                    <i class="bi bi-filter"></i> Lọc
+                                                </button>
+
+                                                <!-- Nút bỏ lọc -->
+                                                <a href="{{ route('client.shop.shop') }}"
+                                                    class="btn btn-outline-secondary px-4"
+                                                    style="border-radius: 50px; padding: 10px 20px; font-size: 16px;">
+                                                    Bỏ lọc</a>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Popular Tag -->
-                            <div class="accordion-item shop-item">
-                                <h2 class="accordion-header" id="shop-item-accordion--four">
-                                    <button class="accordion-button shop-button font-body--xxl-500 collapsed"
-                                        type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour"
-                                        aria-expanded="false" aria-controls="collapseFour">
-                                        Tag Phổ Biến
-                                        <span class="icon">
-                                            <svg width="14" height="8" viewBox="0 0 14 8" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M13 7L7 1L1 7" stroke="#1A1A1A" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </span>
-                                    </button>
-                                </h2>
-                                <div id="collapseFour" class="accordion-collapse shop-collapse collapse show"
-                                    aria-labelledby="shop-item-accordion--four" data-bs-parent="#shop">
-                                    <div class="accordion-body shop-body">
-                                        <div class="popular-tags">
-                                            <a href="#" class="tag-btn">Healthy</a>
-                                            <a href="#" class="tag-btn active">Low Fat </a>
-                                            <a href="#" class="tag-btn">Vegetarian</a>
-                                            <a href="#" class="tag-btn">Kid Foods </a>
-                                            <a href="#" class="tag-btn">Vitamins</a>
-                                            <a href="#" class="tag-btn">Bread</a>
-                                            <a href="#" class="tag-btn">Meat</a>
-                                            <a href="#" class="tag-btn">Snacks</a>
-                                            <a href="#" class="tag-btn">Tiffin</a>
-                                            <a href="#" class="tag-btn">Launch</a>
-                                            <a href="#" class="tag-btn">Dinner</a>
-                                            <a href="#" class="tag-btn">breakfast</a>
-                                            <a href="#" class="tag-btn">Fruit</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                             <!-- banner  -->
                             <div class="shop-item">
                                 <div class="shop-img-banner">

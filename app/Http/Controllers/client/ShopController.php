@@ -49,7 +49,7 @@ class ShopController extends Controller
                         return $query;
                 }
             })
-            ->paginate(10); // Phân trang sản phẩm
+            ->paginate(12); // Phân trang sản phẩm
 
         // Biến đổi dữ liệu để chỉ lấy những thông tin cần thiết (name, price, image, rating)
         $productData = collect($products->items())->map(function ($product) {

@@ -65,12 +65,11 @@
                                             <i class="fas fa-edit"></i> Sửa
                                         </span>
                                     </a>
-                                    <form action="{{ route('admin.qldanhmuc.destroy', $category->id) }}" method="POST"
-                                        style="display:inline;">
+                                    <form action="{{ route('admin.qldanhmuc.destroy', $category->id) }}" method="POST" style="display:inline;" id="delete-form-{{ $category->id }}">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-icon-split mr-2"
-                                            onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">
+                                        <button type="button" class="btn btn-danger btn-icon-split mr-2" 
+                                            onclick="confirmDelete({{ $category->id }}, {{ $category->products()->count() }})">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-trash"></i> Xóa
                                             </span>
@@ -98,5 +97,20 @@
             document.getElementById('success-message').style.display = 'none';
         }, 3000); 
     @endif
+</script>
+<script>
+    function confirmDelete(categoryId, productCount) {
+        let message = 'Bạn có chắc chắn muốn xóa không?';
+        
+        // Kiểm tra nếu có sản phẩm liên quan đến danh mục
+        if (productCount > 0) {
+            message = 'Danh mục này có ' + productCount + ' sản phẩm. Bạn có muốn xóa tất cả các sản phẩm của danh mục này và xóa danh mục không?';
+        }
+
+        if (confirm(message)) {
+            // Nếu người dùng xác nhận, gửi form
+            document.getElementById('delete-form-' + categoryId).submit();
+        }
+    }
 </script>
 @endsection

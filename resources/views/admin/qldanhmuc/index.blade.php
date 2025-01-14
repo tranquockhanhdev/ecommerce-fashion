@@ -102,13 +102,12 @@
     function confirmDelete(categoryId, productCount) {
         let message = 'Bạn có chắc chắn muốn xóa không?';
         
-        // Kiểm tra nếu có sản phẩm liên quan đến danh mục
         if (productCount > 0) {
             message = 'Danh mục này có ' + productCount + ' sản phẩm. Bạn có muốn xóa tất cả các sản phẩm của danh mục này và xóa danh mục không?';
         }
 
         if (confirm(message)) {
-            // Nếu người dùng xác nhận, gửi form
+            
             document.getElementById('delete-form-' + categoryId).submit();
         }
     }

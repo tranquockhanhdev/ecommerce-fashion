@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\client\AccountSettingController;
 use App\Http\Controllers\client\AccountDashboardController;
+use App\Http\Controllers\client\ArticleController;
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ColorController;
@@ -48,7 +49,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('qldanhmuc', CategoryController::class);
 
         // Quản lý sản phẩm
-        Route::get('qlsanpham', [ProductController::class, 'index'])->name('qlsanpham.index');
+        Route::get('/qlsanpham', [ProductController::class, 'index'])->name('qlsanpham.index');
         Route::resource('products', ProductController::class);
         Route::post('products/{id}/toggle-status', [ProductController::class, 'toggleStatus'])->name('products.toggleStatus');
         Route::delete('delete-image/{imageId}', [ProductController::class, 'deleteImage'])->name('deleteImage');
@@ -93,7 +94,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/checkout', function () {
             return view('client.cart.checkout');
         })->name('client.cart.checkout');
-        Route::resource('/wishlist', wishlistController::class);
+        Route::middleware('auth')->group(function () {
+            Route::get('/wishlist', [wishlistController::class, 'index'])->name('wishlist.index');
+            Route::post('/toggle-favorite/{productId}', [wishlistController::class, 'toggleFavorite'])->name('wishlist.toggle-favorite');
+        });
         // Route hiển thị giỏ hàng
         Route::get('/shopping-cart', [CartController::class, 'showCart'])->name('client.cart.shopping-cart');
 
@@ -136,19 +140,15 @@ Route::prefix('shop')->group(function () {
     Route::get('/shop', [ShopController::class, 'index'])->name('client.shop.shop');
     Route::get('/shop/{id}', [ShopController::class, 'show'])->name('client.shop.shopdetails');
     Route::get('/product-details', function () {
-        return view('client.shop.product-details');
-    })->name('client.shop.product-details');
+        return view('client.shop.product-details');})->name('client.shop.product-details');
 });
 
 // Blog routes
 Route::prefix('blog')->group(function () {
-    Route::get('/list', function () {
-        return view('client.blog.blog-list');
-    })->name('client.blog.blog-list');
-
-    Route::get('/single', function () {
-        return view('client.blog.single-blog');
-    })->name('client.blog.single-blog');
+    Route::get('/list', [ArticleController::class, 'index'])->name('client.blog.blog-list');
+    Route::get('/list/{id}', [ArticleController::class, 'show'])->name('article.show');
+    Route::get('/blog/search', [ArticleController::class, 'search'])->name('client.blog.search');
+    Route::get('/category/{id}', [CategoryController::class, 'show'])->name('category.articles');
 });
 
 // Static pages
@@ -161,3 +161,4 @@ Route::prefix('pages')->group(function () {
         return view('client.pages.contact');
     })->name('client.pages.contact');
 });
+

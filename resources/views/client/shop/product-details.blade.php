@@ -183,23 +183,39 @@
                                 <label class="products__content-category font-body--md-500">Chọn màu:</label>
                                 <select id="color-select" class="select-input">
                                     <option value="">Chọn màu</option>
-                                    @foreach ($colors as $color)
-                                        <option value="{{ $color->id }}">{{ $color->color_name }}</option>
-                                    @endforeach
+                                    @if ($colors->isEmpty() || $colors->filter(fn($color) => $color !== null)->isEmpty())
+                                        <option value="">Không có màu</option>
+                                    @else
+                                        @foreach ($colors as $color)
+                                            @if ($color !== null)
+                                                <option value="{{ $color->id }}">{{ $color->color_name }}</option>
+                                            @endif
+                                        @endforeach
+                                    @endif
                                 </select>
-
                             </div>
+
+                            <!-- Select size -->
                             <div class="select-wrapper products__content-action-item">
                                 <label class="products__content-category font-body--md-500">Chọn kích thước:</label>
                                 <select id="size-select" class="select-input">
                                     <option value="">Chọn kích thước</option>
-                                    @foreach ($sizes as $size)
-                                        <option value="{{ $size->id }}">{{ $size->size_name }}</option>
-                                    @endforeach
+                                    @if ($sizes->isEmpty() || $sizes->filter(fn($size) => $size !== null)->isEmpty())
+                                        <option value="">Không có kích thước</option>
+                                    @else
+                                        @foreach ($sizes as $size)
+                                            @if ($size !== null)
+                                                <option value="{{ $size->id }}">{{ $size->size_name }}</option>
+                                            @endif
+                                        @endforeach
+                                    @endif
                                 </select>
                             </div>
                         </div>
                     </div>
+
+
+
                     <!-- Action button -->
                     <div class="products__content">
                         <div class="products__content-action">
@@ -1428,15 +1444,19 @@
             const selectedColorId = document.getElementById('color-select').value;
             const selectedSizeId = document.getElementById('size-select').value;
 
-            // Kiểm tra nếu chưa chọn màu sắc hoặc kích thước
-            if (!selectedColorId || !selectedSizeId) {
-                alert('Vui lòng chọn màu sắc và kích thước!');
+            // Kiểm tra số lượng nhập vào
+            if (quantity <= 0 || isNaN(quantity)) {
+                alert('Số lượng không hợp lệ!');
                 return;
             }
 
-            // Kiểm tra số lượng nhập vào
-            if (quantity <= 0) {
-                alert('Số lượng không hợp lệ!');
+            // Kiểm tra nếu sản phẩm có màu hoặc kích thước
+            const hasColor = selectedColorId !== '';
+            const hasSize = selectedSizeId !== '';
+
+            // Nếu sản phẩm có cả màu và kích thước, yêu cầu người dùng chọn ít nhất 1 trong 2
+            if (!hasColor && !hasSize) {
+                alert('Vui lòng chọn màu hoặc kích thước!');
                 return;
             }
 
@@ -1449,19 +1469,25 @@
                     },
                     body: JSON.stringify({
                         quantity: quantity,
-                        color_id: selectedColorId, // Pass color_id
-                        size_id: selectedSizeId // Pass size_id
+                        color_id: hasColor ? selectedColorId :
+                        null, // Nếu có màu thì gửi màu, nếu không gửi null
+                        size_id: hasSize ? selectedSizeId :
+                            null // Nếu có size thì gửi size, nếu không gửi null
                     })
                 })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
                         alert(data.message); // Thông báo khi thêm thành công
+                        // You can add additional logic here, such as updating the cart UI or redirecting
                     } else {
                         alert(data.message); // Thông báo lỗi
                     }
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng!');
+                });
         });
     </script>
 

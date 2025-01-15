@@ -15,7 +15,6 @@ class CartController extends Controller
     // Hiển thị giỏ hàng
     public function showCart()
     {
-        // Lấy giỏ hàng của người dùng hiện tại
         $cart = Cart::where('account_id', Auth::id())->first();
 
         if (!$cart) {
@@ -26,19 +25,36 @@ class CartController extends Controller
             ]);
         }
 
-        // Phân trang giỏ hàng
-        $cartItems = $cart->cartItems()->with(['product.images'])->paginate(5);
+        $cartItems = $cart->cartItems()->with(['product.images', 'productDetails.color', 'productDetails.size'])->paginate(5);
 
-        // Tính tổng giá trị giỏ hàng
+        // Gán thêm màu sắc và kích cỡ cho từng cartItem
+        foreach ($cartItems as $cartItem) {
+            // Lấy màu sắc
+            $cartItem->colors = $cartItem->product->details
+                ->pluck('color')
+                ->filter(function ($color) {
+                    return !is_null($color) && $color !== '';
+                })
+                ->unique('id');
+
+            // Lấy kích cỡ
+            $cartItem->sizes = $cartItem->product->details
+                ->pluck('size')
+                ->filter(function ($size) {
+                    return !is_null($size) && $size !== '';
+                })
+                ->unique('id');
+        }
+
         $total = $cartItems->sum(function ($item) {
             return $item->product->price * $item->quantity;
         });
 
-        // Phân trang sản phẩm từ cửa hàng
-        $products = Product::paginate(5);
-
-        return view('client.cart.shopping-cart', compact('cart', 'cartItems', 'total', 'products'));
+        return view('client.cart.shopping-cart', compact('cart', 'cartItems', 'total'));
     }
+
+
+
 
     public function addToCartJS(Request $request, $productId)
     {
@@ -108,7 +124,7 @@ class CartController extends Controller
 
         // Kiểm tra số lượng hợp lệ
         if ($quantity < 1) {
-            return redirect()->back()->with('error', 'Số lượng không hợp lệ.');
+            return response()->json(['error' => 'Số lượng không hợp lệ.']);
         }
 
         // Cập nhật số lượng
@@ -116,9 +132,46 @@ class CartController extends Controller
             'quantity' => $quantity,
         ]);
 
-        return redirect()->back()->with('success', 'Cập nhật số lượng thành công!');
+        return response()->json(['success' => 'Cập nhật số lượng thành công!']);
     }
 
+
+    public function update(Request $request, $id)
+    {
+        try {
+            // Lấy thông tin sản phẩm trong giỏ hàng
+            $cartItem = CartItem::findOrFail($id);
+
+            // Kiểm tra chi tiết sản phẩm (màu và kích cỡ) có tồn tại
+            $productDetail = ProductDetail::where('product_id', $cartItem->product_id)
+                ->where('colorproduct_id', $request->color_id)
+                ->where('sizeproduct_id', $request->size_id)
+                ->first();
+
+            if (!$productDetail) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không tìm thấy chi tiết sản phẩm phù hợp.',
+                ], 404);
+            }
+
+            // Cập nhật chi tiết sản phẩm trong giỏ hàng
+            $cartItem->product_detail_id = $productDetail->id;
+            $cartItem->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Cập nhật thành công!',
+            ], 200);
+        } catch (\Exception $e) {
+            // Xử lý lỗi và phản hồi lỗi về client
+            return response()->json([
+                'success' => false,
+                'message' => 'Đã xảy ra lỗi khi cập nhật sản phẩm trong giỏ hàng.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 
     public function removeFromCart($cartItemId)
     {

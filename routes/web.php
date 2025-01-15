@@ -98,9 +98,10 @@ Route::middleware(['auth'])->group(function () {
         // Route thêm sản phẩm vào giỏ hàng
         Route::post('/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
         Route::post('/addjs/{productId}', [CartController::class, 'addToCartJS'])->name('cart.addjs');
-        // Route::post('/add-to-cart/{productId}', [CartController::class, 'addToCartJS']);
+
 
         Route::put('/update/{cartItemId}', [CartController::class, 'updateQuantity'])->name('cart.update');
+        Route::patch('/cart/item/update/{cartItem}', [CartController::class, 'update'])->name('cart.item.update');
 
 
         // Route xóa sản phẩm khỏi giỏ hàng

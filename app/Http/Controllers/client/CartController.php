@@ -25,11 +25,18 @@ class CartController extends Controller
             ]);
         }
 
-        $cartItems = $cart->cartItems()->with(['product.images', 'productDetails.color', 'productDetails.size'])->paginate(5);
+        // Lọc sản phẩm theo status == 1 và sản phẩm còn tồn tại trong kho
+        $cartItems = $cart->cartItems()
+            ->with(['product.images', 'productDetails.color', 'productDetails.size'])
+            ->whereHas('product', function ($query) {
+                $query->where('status', 1)  // Điều kiện kiểm tra status = 1
+                    ->where('quantity', '>', 0);  // Sản phẩm phải còn tồn kho
+            })
+            ->paginate(5);
 
         // Gán thêm màu sắc và kích cỡ cho từng cartItem
         foreach ($cartItems as $cartItem) {
-            // Lấy màu sắc
+            // Lấy màu sắc (chỉ lấy màu sắc hợp lệ)
             $cartItem->colors = $cartItem->product->details
                 ->pluck('color')
                 ->filter(function ($color) {
@@ -37,7 +44,7 @@ class CartController extends Controller
                 })
                 ->unique('id');
 
-            // Lấy kích cỡ
+            // Lấy kích cỡ (chỉ lấy kích cỡ hợp lệ)
             $cartItem->sizes = $cartItem->product->details
                 ->pluck('size')
                 ->filter(function ($size) {
@@ -46,12 +53,21 @@ class CartController extends Controller
                 ->unique('id');
         }
 
+        // Cập nhật lại giá sản phẩm trong giỏ hàng nếu có thay đổi
+        foreach ($cartItems as $cartItem) {
+            // Cập nhật giá sản phẩm từ bảng product
+            $cartItem->price = $cartItem->product->price * $cartItem->quantity; // Cập nhật giá mới nhất
+        }
+
+        // Tính tổng giỏ hàng
         $total = $cartItems->sum(function ($item) {
-            return $item->product->price * $item->quantity;
+            return $item->price; // Tính tổng giá đã cập nhật
         });
 
         return view('client.cart.shopping-cart', compact('cart', 'cartItems', 'total'));
     }
+
+
 
 
 
@@ -80,6 +96,14 @@ class CartController extends Controller
             ]);
         }
 
+        // Kiểm tra số lượng tồn kho
+        if ($quantity > $product->quantity) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Số lượng yêu cầu vượt quá số lượng tồn kho!'
+            ]);
+        }
+
         // Kiểm tra giỏ hàng của người dùng
         $cart = Cart::firstOrCreate(['account_id' => Auth::id()]); // Tạo hoặc lấy giỏ hàng của người dùng
 
@@ -89,8 +113,18 @@ class CartController extends Controller
             ->first();
 
         if ($cartItem) {
-            // Nếu sản phẩm đã có trong giỏ hàng, cập nhật số lượng và tổng giá
-            $cartItem->quantity += $quantity;
+            // Nếu sản phẩm đã có trong giỏ hàng, kiểm tra tổng số lượng
+            $newQuantity = $cartItem->quantity + $quantity;
+
+            if ($newQuantity > $product->quantity) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Số lượng trong giỏ hàng vượt quá tồn kho!'
+                ]);
+            }
+
+            // Cập nhật số lượng và tổng giá
+            $cartItem->quantity = $newQuantity;
             $cartItem->price = $cartItem->quantity * $product->price; // Cập nhật giá tổng (quantity * price)
             $cartItem->save();
         } else {
@@ -113,11 +147,15 @@ class CartController extends Controller
 
 
 
+
     // Xóa sản phẩm khỏi giỏ hàng
     public function updateQuantity(Request $request, $cartItemId)
     {
         // Tìm cart item
         $cartItem = CartItem::findOrFail($cartItemId);
+
+        // Lấy sản phẩm từ cart item
+        $product = $cartItem->product;
 
         // Lấy số lượng mới từ request
         $quantity = $request->input('quantity');
@@ -127,13 +165,19 @@ class CartController extends Controller
             return response()->json(['error' => 'Số lượng không hợp lệ.']);
         }
 
-        // Cập nhật số lượng
+        // Kiểm tra số lượng tồn kho
+        if ($quantity > $product->quantity) {
+            return response()->json(['error' => 'Số lượng vượt quá số lượng tồn kho.']);
+        }
+
+        // Cập nhật số lượng trong giỏ hàng
         $cartItem->update([
             'quantity' => $quantity,
         ]);
 
         return response()->json(['success' => 'Cập nhật số lượng thành công!']);
     }
+
 
 
     public function update(Request $request, $id)

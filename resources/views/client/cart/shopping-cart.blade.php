@@ -62,6 +62,7 @@
                                             <th scope="col" class="cart-table-title">Sản phẩm</th>
                                             <th scope="col" class="cart-table-title">Giá</th>
                                             <th scope="col" class="cart-table-title">Số lượng</th>
+                                            <th scope="col" class="cart-table-title">Màu & size</th>
                                             <th scope="col" class="cart-table-title">Thành tiền</th>
                                         </tr>
                                     </thead>
@@ -101,19 +102,20 @@
                                                         @method('PUT')
                                                         <div class="counter-btn-wrapper">
                                                             <button type="button" class="counter-btn-dec counter-btn"
-                                                                onclick="updateQuantity(this, -1, {{ $cartItem->id }})">
+                                                                onclick="updateQuantity(this, -1, {{ $cartItem->id }}, {{ $cartItem->product->quantity }})">
                                                                 -
                                                             </button>
                                                             <input type="number" name="quantity"
                                                                 class="counter-btn-counter" min="1"
                                                                 value="{{ $cartItem->quantity }}" />
                                                             <button type="button" class="counter-btn-inc counter-btn"
-                                                                onclick="updateQuantity(this, 1, {{ $cartItem->id }})">
+                                                                onclick="updateQuantity(this, 1, {{ $cartItem->id }}, {{ $cartItem->product->quantity }})">
                                                                 +
                                                             </button>
                                                         </div>
                                                     </form>
                                                 </td>
+
                                                 <td class="cart-table-item align-middle">
                                                     <form method="POST" id="updateCartForm_{{ $cartItem->id }}"
                                                         action="{{ route('cart.item.update', $cartItem->id) }}">
@@ -138,6 +140,7 @@
                                                                 <select name="color_id" id="color_{{ $cartItem->id }}"
                                                                     class="form-control"
                                                                     onchange="updateCartItem({{ $cartItem->id }})">
+                                                                    <option value="">Chọn màu</option>
                                                                     @foreach ($colors as $color)
                                                                         <option value="{{ $color->id }}"
                                                                             {{ $cartItem->productDetails->color_id == $color->id ? 'selected' : '' }}>
@@ -168,6 +171,7 @@
                                                                 <select name="size_id" id="size_{{ $cartItem->id }}"
                                                                     class="form-control"
                                                                     onchange="updateCartItem({{ $cartItem->id }})">
+                                                                    <option value="">Chọn size</option>
                                                                     @foreach ($sizes as $size)
                                                                         <option value="{{ $size->id }}"
                                                                             {{ $cartItem->productDetails->size_id == $size->id ? 'selected' : '' }}>
@@ -310,7 +314,7 @@
         }
     </script>
     <script>
-        function updateQuantity(button, change, cartItemId) {
+        function updateQuantity(button, change, cartItemId, maxQuantity) {
             // Lấy input số lượng liên quan đến button
             const inputField = button.closest('.counter-btn-wrapper').querySelector('input[name="quantity"]');
 
@@ -318,33 +322,40 @@
             let currentQuantity = parseInt(inputField.value);
             const newQuantity = currentQuantity + change;
 
-            // Đảm bảo số lượng mới không nhỏ hơn 1
-            if (newQuantity >= 1) {
+            // Đảm bảo số lượng mới không nhỏ hơn 1 và không vượt quá tồn kho
+            if (newQuantity >= 1 && newQuantity <= maxQuantity) {
                 inputField.value = newQuantity;
 
-                // Gửi form bằng AJAX
+                // Lấy form liên quan đến cart item
                 const form = document.getElementById('cart-form-' + cartItemId);
                 const formData = new FormData(form);
 
+                // Gửi yêu cầu AJAX
                 fetch(form.action, {
                         method: 'POST',
                         body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest', // Xác định đây là yêu cầu AJAX
+                        },
                     })
-                    .then(response => response.json()) // assuming server returns a JSON response
+                    .then(response => response.json()) // Parse JSON từ server
                     .then(data => {
                         if (data.success) {
-                            // Update the quantity on the page if needed
                             console.log('Quantity updated');
-                            // You can also update the cart total or display a success message here
-                        } else {
-                            console.log('Error: ' + data.error);
-                            // Optionally, alert the user about the error
+                            alert('Cập nhật số lượng thành công!');
+                            // Bạn có thể cập nhật lại tổng tiền giỏ hàng nếu cần
+                        } else if (data.error) {
+                            console.error('Error: ' + data.error);
+                            alert(data.error); // Hiển thị thông báo lỗi từ server
                         }
                     })
                     .catch(error => {
-                        console.log('Error:', error);
-                        // Optionally, alert the user about the network error
+                        console.error('Error:', error);
+                        alert('Có lỗi xảy ra khi cập nhật. Vui lòng thử lại.');
                     });
+            } else if (newQuantity > maxQuantity) {
+                // Nếu số lượng vượt quá tồn kho, hiển thị thông báo lỗi
+                alert('Số lượng bạn chọn vượt quá tồn kho.');
             }
         }
     </script>

@@ -1,3 +1,8 @@
+@if (session('success'))
+    <button class="alert alert-success" id="success-message">
+        {{ session('success') }}
+    </button>
+@endif
 @extends('layouts.client')
 @section('title', 'Chi Tiết Sản Phẩm | Synergy 4.0')
 @section('css')
@@ -671,6 +676,37 @@
 </section>
 <!-- Products Tabs End  -->
 
+<!-- Đánh Giá  -->
+@if($hasPurchased)
+<section class="section section--xl related pt-0">
+    <div class="container">
+        <div class="section__head justify-content-center">
+            <h2 class="section--title-four font-title--sm">Bình Luận Và Đánh Giá Sản Phẩm</h2>
+        </div>
+            <form action="{{ route('product.comment', $product->slug) }}" method="POST"  enctype="multipart/form-data">
+                @csrf
+                <div class="form-group">
+                    <label for="content">Bình Luận:</label>
+                    <textarea name="content" id="content" class="form-control" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="rating">Đánh giá:</label>
+                    <select name="rating" id="rating" class="form-control" required>
+                        @for ($i = 5; $i >= 1; $i--)
+                            <option value="{{ $i }}">{{ $i }} Sao</option>
+                        @endfor
+                    </select>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary">Gửi bình luận</button>
+            </form>
+        </div>
+    </div>
+</section>
+@else
+@endif
+<!-- Đánh Giá End  -->
+
 <!-- Related Product Section   Start  -->
 <section class="section section--xl related pt-0">
     <div class="container">
@@ -1301,9 +1337,18 @@
     });
 </script>
 <script>
+
     $(document).on('click', '.button-fav', function (e) {
         e.preventDefault();
         let productId = $(this).data('product-id'); // Lấy ID sản phẩm từ nút
+
+    @if (session('success'))
+        setTimeout(function() {
+            document.getElementById('success-message').style.display = 'none';
+        }, 3000);
+    @endif
+</script>
+
 
         $.ajax({
             url: `/cart/toggle-favorite/${productId}`, // Đảm bảo đường dẫn khớp với route

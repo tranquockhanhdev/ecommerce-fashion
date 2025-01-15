@@ -3,14 +3,20 @@
 namespace App\Http\Controllers\client;
 
 use App\Models\Product;
+
 use App\Models\Account;
 use App\Models\Comment;
 use App\Models\FavoriteProduct;
+
+use App\Models\Order;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ProductDetail;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+
+
 class ShopController extends Controller
 {
     // Controller
@@ -48,6 +54,7 @@ class ShopController extends Controller
         $product = Product::where('slug', $id)->firstOrFail();
         $imageProduct = $product->images->pluck('link');
         $productDetail = ProductDetail::where('product_id', $product->id)->get();
+
         $commentCount = $product->comments()->count(); // Đếm số lượt bình luận trong bảng comment
         $product->increment('view'); // Tăng số lượt xem lên 1
         $rating = $product->comments()->avg('rating'); // Lấy rating trung bình từ bảng comment
@@ -65,6 +72,19 @@ class ShopController extends Controller
         }
         // dd($comments);
         return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetail', 'rating', 'commentCount', 'comments', 'isFavourite'));
+
+
+        $accountId = Auth::id();
+        $hasPurchased = Order::whereHas('orderCustomer', function ($query) use ($accountId) {
+            $query->where('account_id', $accountId);
+        })
+        ->where('status_payment', 2)
+        ->whereHas('orderItems', function ($query) use ($product) {
+            $query->where('product_id', $product->id);
+        })
+        ->exists();
+        return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetail','hasPurchased'));
+
     }
     public function getViews($id)
     {

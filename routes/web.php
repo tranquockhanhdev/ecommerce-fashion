@@ -134,7 +134,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::prefix('shop')->group(function () {
     Route::get('/shop', [ShopController::class, 'index'])->name('client.shop.shop');
-    Route::get('/shop/{id}', [ShopController::class, 'show'])->name('client.shop.shopdetails');
+    Route::get('/{id}', [ShopController::class, 'show'])->name('client.shop.shopdetails');
+    Route::get('/{slug}/quantity', [ShopController::class, 'getProductQuantity']);
     Route::get('/product-details', function () {
         return view('client.shop.product-details');
     })->name('client.shop.product-details');

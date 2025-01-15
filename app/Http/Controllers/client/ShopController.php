@@ -58,4 +58,12 @@ class ShopController extends Controller
         ->exists();
         return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetail','hasPurchased'));
     }
+    public function getProductQuantity($slug)
+    {
+        // Tìm sản phẩm theo slug thay vì id
+        $product = Product::where('slug', $slug)->firstOrFail();
+    
+        // Trả về số lượng sản phẩm dưới dạng JSON
+        return response()->json(['quantity' => $product->quantity]);
+    }
 }

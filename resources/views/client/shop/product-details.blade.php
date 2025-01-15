@@ -125,6 +125,12 @@
                         </h5>
                     </div>
 
+                    <div class="">
+                        <h5>
+                            Số lượng: <span id="product-quantity">{{ number_format($product->quantity) }}</span>
+                        </h5>
+                    </div>
+
                     <div class="products__content-price">
                         <h2 class="font-body--xxxl-500">
                             {{ number_format($product->price, 0, ',', '.') . ' VND' }}
@@ -1468,6 +1474,19 @@
             document.getElementById('success-message').style.display = 'none';
         }, 3000); 
     @endif
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function updateQuantity() {
+        // Gọi AJAX với slug thay vì id
+        $.get(`/shop/{{ $product->slug }}/quantity`, function(data) {
+            $('#product-quantity').text(data.quantity); // Cập nhật số lượng trên giao diện
+        });
+    }
+
+    // Gọi hàm mỗi 3 giây để cập nhật số lượng
+    setInterval(updateQuantity, 3000);
 </script>
 
 @endsection

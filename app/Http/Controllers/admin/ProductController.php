@@ -194,7 +194,12 @@ class ProductController extends Controller
             'color_ids.*' => 'exists:color_product,id',
             'size_ids' => 'nullable|array',
             'size_ids.*' => 'exists:size_product,id',
+        ], [
+            // Custom error messages for specific fields
+            'name.unique' => 'Tên sản phẩm này đã tồn tại, vui lòng chọn tên khác.',
+            'slug.unique' => 'Slug sản phẩm này đã tồn tại, vui lòng chọn slug khác.',
         ]);
+
 
         // Lấy sản phẩm cần cập nhật
         $product = Product::findOrFail($id);

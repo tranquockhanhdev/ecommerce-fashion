@@ -10,7 +10,7 @@ class CartItem extends Model
     use HasFactory;
 
     protected $table = 'cart_item';
-    protected $fillable = ['cart_id', 'product_id', 'quantity', 'price'];
+    protected $fillable = ['cart_id', 'product_id', 'quantity', 'price', 'product_detail_id',];
     public $timestamps = false;  // Tắt tính năng timestamps
     // Quan hệ n-1: Mục giỏ hàng thuộc về một giỏ hàng
     public function cart()
@@ -22,5 +22,9 @@ class CartItem extends Model
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id');
+    }
+    public function productDetails()
+    {
+        return $this->hasOne(ProductDetail::class);
     }
 }

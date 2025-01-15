@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
+use App\Models\ProductDetail;
 use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
@@ -39,55 +40,37 @@ class CartController extends Controller
         return view('client.cart.shopping-cart', compact('cart', 'cartItems', 'total', 'products'));
     }
 
-    // Thêm sản phẩm vào giỏ hàng
-    public function addToCart(Request $request, $productId)
-    {
-        // Lấy thông tin sản phẩm từ cơ sở dữ liệu
-        $product = Product::findOrFail($productId);
-
-        // Kiểm tra giỏ hàng của người dùng (giả sử bạn có một model Cart liên kết với user)
-        $cart = Cart::firstOrCreate(['account_id' => Auth::id()]); // Tạo hoặc lấy giỏ hàng của người dùng
-
-        // Lấy số lượng người dùng chọn từ form, mặc định là 1 nếu không có giá trị
-        $quantity = $request->input('quantity', 1);
-
-        // Tính tổng giá cho sản phẩm (giá * số lượng)
-        $totalPrice = $product->price * $quantity;
-
-        // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
-        $cartItem = $cart->cartItems()->where('product_id', $productId)->first();
-
-        if ($cartItem) {
-            // Nếu sản phẩm đã có trong giỏ hàng, cập nhật số lượng và tổng giá
-            $cartItem->quantity += $quantity;
-            $cartItem->price = $cartItem->quantity * $product->price; // Cập nhật giá tổng (quantity * price)
-            $cartItem->save();
-        } else {
-            // Nếu sản phẩm chưa có trong giỏ hàng, thêm mới
-            $cart->cartItems()->create([
-                'product_id' => $productId,
-                'quantity' => $quantity,
-                'price' => $totalPrice, // Lưu tổng giá (quantity * product price)
-            ]);
-        }
-
-        // Quay lại giỏ hàng
-        // Gửi thông báo thành công
-        return redirect()->back()->with('success', 'Sản phẩm đã được thêm vào giỏ hàng thành công!');
-    }
     public function addToCartJS(Request $request, $productId)
     {
         // Lấy thông tin sản phẩm từ cơ sở dữ liệu
         $product = Product::findOrFail($productId);
 
-        // Kiểm tra giỏ hàng của người dùng (giả sử bạn có một model Cart liên kết với user)
+        // Lấy thông tin màu sắc và kích thước từ request
+        $colorId = $request->input('color_id');
+        $sizeId = $request->input('size_id');
+        $quantity = $request->input('quantity', 1); // Số lượng mặc định là 1 nếu không có
+
+        // Kiểm tra xem có tồn tại productdetail với color_id và size_id không
+        $productDetail = ProductDetail::where('product_id', $productId)
+            ->where('colorproduct_id', $colorId)
+            ->where('sizeproduct_id', $sizeId)
+            ->first();
+
+        // Kiểm tra nếu không tìm thấy productdetail
+        if (!$productDetail) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Không tìm thấy chi tiết sản phẩm với màu sắc và kích thước này!'
+            ]);
+        }
+
+        // Kiểm tra giỏ hàng của người dùng
         $cart = Cart::firstOrCreate(['account_id' => Auth::id()]); // Tạo hoặc lấy giỏ hàng của người dùng
 
-        // Lấy số lượng người dùng chọn từ request, mặc định là 1 nếu không có giá trị
-        $quantity = $request->input('quantity', 1);
-
-        // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
-        $cartItem = $cart->cartItems()->where('product_id', $productId)->first();
+        // Kiểm tra giỏ hàng đã có sản phẩm với product_detail_id này chưa
+        $cartItem = $cart->cartItems()->where('product_id', $productId)
+            ->where('product_detail_id', $productDetail->id)
+            ->first();
 
         if ($cartItem) {
             // Nếu sản phẩm đã có trong giỏ hàng, cập nhật số lượng và tổng giá
@@ -100,6 +83,7 @@ class CartController extends Controller
                 'product_id' => $productId,
                 'quantity' => $quantity,
                 'price' => $product->price * $quantity, // Lưu tổng giá (quantity * product price)
+                'product_detail_id' => $productDetail->id, // Lưu product_detail_id
             ]);
         }
 
@@ -109,6 +93,9 @@ class CartController extends Controller
             'message' => 'Sản phẩm đã được thêm vào giỏ hàng thành công!'
         ]);
     }
+
+
+
 
     // Xóa sản phẩm khỏi giỏ hàng
     public function updateQuantity(Request $request, $cartItemId)

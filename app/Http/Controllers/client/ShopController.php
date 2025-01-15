@@ -13,7 +13,9 @@ class ShopController extends Controller
     public function index()
     {
         // Lấy danh sách sản phẩm cùng thông tin hình ảnh và bình luận (phân trang)
-        $products = Product::with(['images', 'comments'])->paginate(10);
+        $products = Product::where('status', 1) // Chỉ lấy sản phẩm có trạng thái là 1 (hiển thị)
+            ->with(['images', 'comments'])
+            ->paginate(10);
 
         // Biến đổi dữ liệu để chỉ lấy những thông tin cần thiết (name, price, image, rating)
         $productData = collect($products->items())->map(function ($product) {
@@ -41,9 +43,21 @@ class ShopController extends Controller
     }
     public function show($id)
     {
-        $product = Product::where('slug', $id)->firstOrFail();
+        // Lấy thông tin sản phẩm theo slug
+        $product = Product::with('images')->where('slug', $id)->firstOrFail();
+
+        // Lấy danh sách hình ảnh sản phẩm
         $imageProduct = $product->images->pluck('link');
-        $productDetail = ProductDetail::where('product_id', $product->id)->get();
-        return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetail'));
+
+        // Lấy thông tin chi tiết sản phẩm
+        $productDetails = ProductDetail::with('color', 'size')
+            ->where('product_id', $product->id)
+            ->get();
+
+        // Lọc danh sách màu sắc và kích thước duy nhất
+        $colors = $productDetails->unique('colorproduct_id')->pluck('color');
+        $sizes = $productDetails->unique('sizeproduct_id')->pluck('size');
+
+        return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetails', 'colors', 'sizes'));
     }
 }

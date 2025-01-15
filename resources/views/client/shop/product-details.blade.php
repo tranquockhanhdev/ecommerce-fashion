@@ -491,10 +491,9 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div class="user-published__info">
-                                                <p>{{ $comment->created_at->timezone('Asia/Ho_Chi_Minh')->diffForHumans() }}
-                                                </p>
-                                            </div>
+                                            <!-- <div class="user-published__info">
+                                                <p>{{ $comment->created_at->timezone('Asia/Ho_Chi_Minh')->diffForHumans() }}</p>
+                                            </div> -->
                                             <script>
                                                 document.addEventListener('DOMContentLoaded', function () {
                                                     const productId = 1; // Replace with dynamic product ID
@@ -549,35 +548,6 @@
 
                                                     loadComments();
                                                 });
-                                                function timeAgo(publishedDate) {
-                                                    const now = new Date();
-                                                    const published = new Date(publishedDate);
-                                                    const diffInSeconds = Math.floor((now - published) / 1000);
-
-                                                    if (diffInSeconds < 60) {
-                                                        return `${diffInSeconds} seconds ago`;
-                                                    } else if (diffInSeconds < 3600) {
-                                                        const minutes = Math.floor(diffInSeconds / 60);
-                                                        return `${minutes} min${minutes > 1 ? 's' : ''} ago`;
-                                                    } else if (diffInSeconds < 86400) {
-                                                        const hours = Math.floor(diffInSeconds / 3600);
-                                                        return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-                                                    } else {
-                                                        const days = Math.floor(diffInSeconds / 86400);
-                                                        return `${days} day${days > 1 ? 's' : ''} ago`;
-                                                    }
-                                                }
-
-                                                function updateTimeAgo() {
-                                                    const elements = document.querySelectorAll('.user-published__info p[data-published]');
-                                                    elements.forEach((el) => {
-                                                        const publishedDate = el.getAttribute('data-published');
-                                                        el.textContent = timeAgo(publishedDate);
-                                                    });
-                                                }
-
-                                                setInterval(updateTimeAgo, 60000);
-                                                updateTimeAgo();
                                             </script>
                                         </div>
                                         <p class="products-tab__feedback-comments">
@@ -676,36 +646,7 @@
 </section>
 <!-- Products Tabs End  -->
 
-<!-- Đánh Giá  -->
-@if($hasPurchased)
-<section class="section section--xl related pt-0">
-    <div class="container">
-        <div class="section__head justify-content-center">
-            <h2 class="section--title-four font-title--sm">Bình Luận Và Đánh Giá Sản Phẩm</h2>
-        </div>
-            <form action="{{ route('product.comment', $product->slug) }}" method="POST"  enctype="multipart/form-data">
-                @csrf
-                <div class="form-group">
-                    <label for="content">Bình Luận:</label>
-                    <textarea name="content" id="content" class="form-control" rows="4" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="rating">Đánh giá:</label>
-                    <select name="rating" id="rating" class="form-control" required>
-                        @for ($i = 5; $i >= 1; $i--)
-                            <option value="{{ $i }}">{{ $i }} Sao</option>
-                        @endfor
-                    </select>
-                </div>
-                <br>
-                <button type="submit" class="btn btn-primary">Gửi bình luận</button>
-            </form>
-        </div>
-    </div>
-</section>
-@else
-@endif
-<!-- Đánh Giá End  -->
+
 
 <!-- Related Product Section   Start  -->
 <section class="section section--xl related pt-0">
@@ -1347,9 +1288,6 @@
             document.getElementById('success-message').style.display = 'none';
         }, 3000);
     @endif
-</script>
-
-
         $.ajax({
             url: `/cart/toggle-favorite/${productId}`, // Đảm bảo đường dẫn khớp với route
             type: 'POST',

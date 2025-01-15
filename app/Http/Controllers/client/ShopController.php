@@ -70,20 +70,9 @@ class ShopController extends Controller
                 ->where('product_id', $product->id)
                 ->exists();
         }
+
         // dd($comments);
         return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetail', 'rating', 'commentCount', 'comments', 'isFavourite'));
-
-
-        $accountId = Auth::id();
-        $hasPurchased = Order::whereHas('orderCustomer', function ($query) use ($accountId) {
-            $query->where('account_id', $accountId);
-        })
-        ->where('status_payment', 2)
-        ->whereHas('orderItems', function ($query) use ($product) {
-            $query->where('product_id', $product->id);
-        })
-        ->exists();
-        return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetail','hasPurchased'));
 
     }
     public function getViews($id)

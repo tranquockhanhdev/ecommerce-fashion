@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\client;
 
 use App\Models\Product;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ProductDetail;
+use Illuminate\Support\Facades\Auth;
 
 class ShopController extends Controller
 {
@@ -44,6 +46,16 @@ class ShopController extends Controller
         $product = Product::where('slug', $id)->firstOrFail();
         $imageProduct = $product->images->pluck('link');
         $productDetail = ProductDetail::where('product_id', $product->id)->get();
-        return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetail'));
+        
+        $accountId = Auth::id();
+        $hasPurchased = Order::whereHas('orderCustomer', function ($query) use ($accountId) {
+            $query->where('account_id', $accountId);
+        })
+        ->where('status_payment', 2)
+        ->whereHas('orderItems', function ($query) use ($product) {
+            $query->where('product_id', $product->id);
+        })
+        ->exists();
+        return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetail','hasPurchased'));
     }
 }

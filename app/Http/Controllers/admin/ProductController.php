@@ -235,8 +235,8 @@ class ProductController extends Controller
             $colorIds = $request->has('color_ids') ? array_unique($request->color_ids) : [null];
             $sizeIds = $request->has('size_ids') ? array_unique($request->size_ids) : [null];
 
-            // Xóa các chi tiết cũ không thuộc lựa chọn mới
-            ProductDetail::where('product_id', $product->id)->delete();
+            // // Xóa các chi tiết cũ không thuộc lựa chọn mới
+            // ProductDetail::where('product_id', $product->id)->delete();
 
             // Thêm các kết hợp mới
             foreach ($colorIds as $colorId) {

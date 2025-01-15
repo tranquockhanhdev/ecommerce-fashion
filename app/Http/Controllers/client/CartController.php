@@ -34,29 +34,13 @@ class CartController extends Controller
             })
             ->paginate(5);
 
-        // Gán thêm màu sắc và kích cỡ cho từng cartItem
-        foreach ($cartItems as $cartItem) {
-            // Lấy màu sắc (chỉ lấy màu sắc hợp lệ)
-            $cartItem->colors = $cartItem->product->details
-                ->pluck('color')
-                ->filter(function ($color) {
-                    return !is_null($color) && $color !== '';
-                })
-                ->unique('id');
 
-            // Lấy kích cỡ (chỉ lấy kích cỡ hợp lệ)
-            $cartItem->sizes = $cartItem->product->details
-                ->pluck('size')
-                ->filter(function ($size) {
-                    return !is_null($size) && $size !== '';
-                })
-                ->unique('id');
-        }
 
         // Cập nhật lại giá sản phẩm trong giỏ hàng nếu có thay đổi
         foreach ($cartItems as $cartItem) {
             // Cập nhật giá sản phẩm từ bảng product
             $cartItem->price = $cartItem->product->price * $cartItem->quantity; // Cập nhật giá mới nhất
+            $cartItem->save();
         }
 
         // Tính tổng giỏ hàng
@@ -66,6 +50,7 @@ class CartController extends Controller
 
         return view('client.cart.shopping-cart', compact('cart', 'cartItems', 'total'));
     }
+
 
 
 

@@ -3,7 +3,6 @@
 
 use App\Http\Controllers\client\AccountSettingController;
 use App\Http\Controllers\client\AccountDashboardController;
-use App\Http\Controllers\client\ArticleController;
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ColorController;
@@ -12,6 +11,7 @@ use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\ContactController;
 use App\Http\Controllers\client\ShopController;
 use App\Http\Controllers\client\CartController;
+use App\Http\Controllers\client\CheckoutController;
 use App\Http\Controllers\admin\CommentController;
 use App\Http\Controllers\admin\CategoryController;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +28,9 @@ Auth::routes([
     'verify' => false,     // Tắt route xác minh email
     'confirm' => false     // Tắt route xác minh email
 ]);
+
+
+
 Route::fallback(function () {
     return response()->view('errors.404', [], 404);
 });
@@ -49,7 +52,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('qldanhmuc', CategoryController::class);
 
         // Quản lý sản phẩm
-        Route::get('/qlsanpham', [ProductController::class, 'index'])->name('qlsanpham.index');
+        Route::get('qlsanpham', [ProductController::class, 'index'])->name('qlsanpham.index');
         Route::resource('products', ProductController::class);
         Route::post('products/{id}/toggle-status', [ProductController::class, 'toggleStatus'])->name('products.toggleStatus');
         Route::delete('delete-image/{imageId}', [ProductController::class, 'deleteImage'])->name('deleteImage');
@@ -61,7 +64,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-    // Trang nhân viên chỉ dành cho nhân viên và admin
+    // Trang nhân viên chỉ dành cho nhân viên và admins
     Route::middleware(['role:admin,staff'])->group(function () {
         Route::get('/staff', function () {
             return view('staff.home.index');
@@ -82,30 +85,29 @@ Route::middleware(['auth'])->group(function () {
         });
         Route::prefix('order')->group(function () {
             Route::get('/history', [AccountOrderController::class, 'index'])->name('client.user.order-history');
-            Route::get('/details/{id}', [AccountOrderController::class, 'details'])->name('client.user.order-details');
+            Route::get('/{id}', [AccountOrderController::class, 'details'])->name('client.user.order-details');
             Route::put('/{id}', [AccountOrderController::class, 'cancelOrder'])->name('client.user.cancel-order');
-            Route::get('/product/{slug}', [AccountOrderController::class, 'product_details'])->name('client.user.product_details');
-            Route::post('/product/{slug}/comment', [AccountOrderController::class, 'comment'])->name('product.comment');
         });
     });
     Route::get('/bought', [CommentClientController::class, 'index'])->name('client.user.bought');
     // Cart routes
     Route::prefix('cart')->group(function () {
-        Route::get('/checkout', function () {
-            return view('client.cart.checkout');
-        })->name('client.cart.checkout');
-        Route::middleware('auth')->group(function () {
-            Route::get('/wishlist', [wishlistController::class, 'index'])->name('wishlist.index');
-            Route::post('/toggle-favorite/{productId}', [wishlistController::class, 'toggleFavorite'])->name('wishlist.toggle-favorite');
-        });
+        Route::get('/checkout/{id}', [CheckoutController::class, 'index'])->name('client.cart.checkout');
+        Route::post('/checkout/{cart}', [CheckoutController::class, 'processCheckout'])->name('checkout');
+        Route::resource('/wishlist', wishlistController::class);
         // Route hiển thị giỏ hàng
         Route::get('/shopping-cart', [CartController::class, 'showCart'])->name('client.cart.shopping-cart');
 
         // Route thêm sản phẩm vào giỏ hàng
         Route::post('/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
         Route::post('/addjs/{productId}', [CartController::class, 'addToCartJS'])->name('cart.addjs');
-        Route::put('/update/{cartItemId}', [CartController::class, 'updateQuantity'])->name('cart.update');
 
+
+        Route::put('/update/{cartItemId}', [CartController::class, 'updateQuantity'])->name('cart.update');
+        Route::patch('/cart/item/update/{cartItem}', [CartController::class, 'update'])->name('cart.item.update');
+
+        Route::get('/cart-data', [CartController::class, 'getCartData'])->name('cart.data');
+        Route::delete('/cart/remove/{cartItemId}', [CartController::class, 'removeCart']);
 
         // Route xóa sản phẩm khỏi giỏ hàng
         Route::delete('/remove/{cartItemId}', [CartController::class, 'removeFromCart'])->name('cart.remove');
@@ -139,16 +141,23 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::prefix('shop')->group(function () {
     Route::get('/shop', [ShopController::class, 'index'])->name('client.shop.shop');
     Route::get('/shop/{id}', [ShopController::class, 'show'])->name('client.shop.shopdetails');
+    Route::get('/search_results', [ProductController::class, 'filterAndSearch'])->name('search');
     Route::get('/product-details', function () {
-        return view('client.shop.product-details');})->name('client.shop.product-details');
+        return view('client.shop.product-details');
+    })->name('client.shop.product-details');
+    // Route lọc sản phẩm
+    // Route::get('/filter', [ShopController::class, 'filter'])->name('client.shop.filter');
 });
 
 // Blog routes
 Route::prefix('blog')->group(function () {
-    Route::get('/list', [ArticleController::class, 'index'])->name('client.blog.blog-list');
-    Route::get('/list/{id}', [ArticleController::class, 'show'])->name('article.show');
-    Route::get('/blog/search', [ArticleController::class, 'search'])->name('client.blog.search');
-    Route::get('/category/{id}', [CategoryController::class, 'show'])->name('category.articles');
+    Route::get('/list', function () {
+        return view('client.blog.blog-list');
+    })->name('client.blog.blog-list');
+
+    Route::get('/single', function () {
+        return view('client.blog.single-blog');
+    })->name('client.blog.single-blog');
 });
 
 // Static pages
@@ -161,4 +170,5 @@ Route::prefix('pages')->group(function () {
         return view('client.pages.contact');
     })->name('client.pages.contact');
 });
-
+//trang thanh toán
+Route::get('vnpay_return', [CheckoutController::class, 'vnpay_return'])->name('vnpay.return');

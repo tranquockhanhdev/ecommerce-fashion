@@ -238,16 +238,16 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="dashboard__order-history-table-title">
-                                    Product
+                                    Tên Sản phẩm
                                 </th>
                                 <th scope="col" class="dashboard__order-history-table-title">
-                                    Price
+                                    Giá
                                 </th>
                                 <th scope="col" class="dashboard__order-history-table-title">
-                                    quantity
+                                    Số lượng
                                 </th>
                                 <th scope="col" class="dashboard__order-history-table-title">
-                                    Subtotal
+                                    Tổng cộng
                                 </th>
                             </tr>
                         </thead>

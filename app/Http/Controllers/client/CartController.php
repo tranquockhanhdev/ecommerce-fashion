@@ -75,6 +75,41 @@ class CartController extends Controller
         // Gửi thông báo thành công
         return redirect()->back()->with('success', 'Sản phẩm đã được thêm vào giỏ hàng thành công!');
     }
+    public function addToCartJS(Request $request, $productId)
+    {
+        // Lấy thông tin sản phẩm từ cơ sở dữ liệu
+        $product = Product::findOrFail($productId);
+
+        // Kiểm tra giỏ hàng của người dùng (giả sử bạn có một model Cart liên kết với user)
+        $cart = Cart::firstOrCreate(['account_id' => Auth::id()]); // Tạo hoặc lấy giỏ hàng của người dùng
+
+        // Lấy số lượng người dùng chọn từ request, mặc định là 1 nếu không có giá trị
+        $quantity = $request->input('quantity', 1);
+
+        // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+        $cartItem = $cart->cartItems()->where('product_id', $productId)->first();
+
+        if ($cartItem) {
+            // Nếu sản phẩm đã có trong giỏ hàng, cập nhật số lượng và tổng giá
+            $cartItem->quantity += $quantity;
+            $cartItem->price = $cartItem->quantity * $product->price; // Cập nhật giá tổng (quantity * price)
+            $cartItem->save();
+        } else {
+            // Nếu sản phẩm chưa có trong giỏ hàng, thêm mới
+            $cart->cartItems()->create([
+                'product_id' => $productId,
+                'quantity' => $quantity,
+                'price' => $product->price * $quantity, // Lưu tổng giá (quantity * product price)
+            ]);
+        }
+
+        // Trả về phản hồi JSON
+        return response()->json([
+            'success' => true,
+            'message' => 'Sản phẩm đã được thêm vào giỏ hàng thành công!'
+        ]);
+    }
+
     // Xóa sản phẩm khỏi giỏ hàng
     public function updateQuantity(Request $request, $cartItemId)
     {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\client;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\ProductDetail;
 
 class ShopController extends Controller
 {
@@ -25,6 +26,7 @@ class ShopController extends Controller
             return [
                 'id' => $product->id,
                 'name' => $product->name,
+                'slug' => $product->slug,
                 'price' => $product->price,
                 'image' => $imageLink,
                 'rating' => $averageRating,
@@ -36,5 +38,12 @@ class ShopController extends Controller
             'productData' => $productData,
             'products' => $products, // Để dùng đối tượng phân trang trong view
         ]);
+    }
+    public function show($id)
+    {
+        $product = Product::where('slug', $id)->firstOrFail();
+        $imageProduct = $product->images->pluck('link');
+        $productDetail = ProductDetail::where('product_id', $product->id)->get();
+        return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetail'));
     }
 }

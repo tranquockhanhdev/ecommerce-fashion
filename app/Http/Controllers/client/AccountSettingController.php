@@ -4,11 +4,13 @@ namespace App\Http\Controllers\client;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use Exception;
 use App\Models\Account;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
 
 class AccountSettingController extends Controller
 {
@@ -66,13 +68,58 @@ class AccountSettingController extends Controller
             'address' => 'required|string|max:255',
             'phone' => 'required|numeric',
         ]);
+
+        // Gọi hàm lấy tọa độ
+        $coordinates = $this->getCoordinates($request->input('address'));
+
+        // Kiểm tra nếu không tìm được tọa độ
+        if (!$coordinates) {
+            return redirect()->back()->withErrors(['address' => 'Địa chỉ không tồn tại. Vui lòng kiểm tra lại.']);
+        }
+
+        // Cập nhật thông tin nếu địa chỉ hợp lệ
         $website = Account::find(Auth::user()->id);
         $website->address = $request->input('address');
         $website->phone = $request->input('phone');
         $website->save();
 
         // Quay lại trang trước đó với thông báo thành công
-        return redirect()->back()->with('successs', 'Thông tin đã được cập nhật!');
+        return redirect()->back()->with('success', 'Thông tin đã được cập nhật!');
+    }
+
+    private function getCoordinates($address)
+    {
+        try {
+            // Gửi yêu cầu đến API Nominatim
+            $response = Http::withHeaders([
+                'User-Agent' => 'YourAppName/1.0 (your-email@example.com)', // Thêm thông tin User-Agent
+            ])->get("https://nominatim.openstreetmap.org/search", [
+                'q' => $address,
+                'format' => 'jsonv2',
+            ]);
+
+            // Kiểm tra nếu yêu cầu không thành công
+            if ($response->failed()) {
+                throw new Exception("Lỗi khi gọi API Nominatim.");
+            }
+
+            // Parse dữ liệu trả về
+            $data = $response->json();
+
+            // Kiểm tra dữ liệu trả về có hợp lệ không
+            if (!empty($data)) {
+                $latitude = $data[0]['lat'];
+                $longitude = $data[0]['lon'];
+                return ['lat' => $latitude, 'lon' => $longitude];
+            }
+
+            // Trả về null nếu không tìm thấy kết quả
+            return null;
+        } catch (Exception $e) {
+            // Xử lý ngoại lệ và ghi log nếu cần
+            Log::error("Lỗi khi lấy tọa độ: " . $e->getMessage());
+            return null;
+        }
     }
     public function changeInfo(Request $request)
     {

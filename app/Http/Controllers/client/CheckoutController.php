@@ -139,6 +139,7 @@ class CheckoutController extends Controller
         if ($cart) {
             CartItem::where('cart_id', $cart->id)->delete(); // Xóa các mục trong giỏ hàng
         }
+
         // Kiểm tra phương thức thanh toán và xử lý
         if ($payment_method_id == 1) {
             // Thanh toán VNPay: Chuyển hướng tới cổng thanh toán VNPay
@@ -156,6 +157,7 @@ class CheckoutController extends Controller
         $vnpay = new VNPayService();  // Giả sử bạn đã có class VNPayService để xử lý thanh toán VNPay
         $vnpay->setOrderDetails($order);  // Cài đặt các chi tiết đơn hàng như tổng tiền, số lượng, sản phẩm, etc.
         $vnpay->initPayment();  // Khởi tạo yêu cầu thanh toán
+
         // Chuyển hướng tới VNPay
         return $vnpay->redirectToVNPay();
     }
@@ -210,6 +212,7 @@ class CheckoutController extends Controller
                 if ($cart) {
                     CartItem::where('cart_id', $cart->id)->delete(); // Xóa các mục trong giỏ hàng
                 }
+
                 // Chuyển hướng và thông báo lỗi
                 return redirect()->route('client.user.order-history')->with('error', 'Thanh toán thất bại!');
             }

@@ -464,6 +464,7 @@
     'wishlist.index',
     'client.cart.checkout',
     'client.cart.shopping-cart',
+    'client.user.bought',
     ]))
     <!-- breedcrumb section start -->
     <div class="section breedcrumb">
@@ -590,6 +591,7 @@
     'client.user.order-history',
     'client.user.account-setting',
     'client.user.order-details',
+    'client.user.bought',
     ]))
     <div class="dashboard section">
         <div class="container">

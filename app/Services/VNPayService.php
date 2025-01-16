@@ -39,7 +39,7 @@ class VNPayService
         $vnp_CreateDate = Carbon::now('Asia/Ho_Chi_Minh')->format('YmdHis');
         $vnp_OrderType = 'billpayment';
         // Thời gian hết hạn (15 phút sau) theo múi giờ VN
-        $vnp_ExpireDate = Carbon::now('Asia/Ho_Chi_Minh')->addMinutes(15)->format('YmdHis');
+        $vnp_ExpireDate = Carbon::now('Asia/Ho_Chi_Minh')->addMinutes(10)->format('YmdHis');
 
         // Tạo dữ liệu thanh toán
         $inputData = [

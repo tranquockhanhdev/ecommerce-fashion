@@ -36,7 +36,12 @@
                             <!-- Phần Sắp Xếp -->
                             <div class="sort-list">
                                 <label for="sort">Sắp Xếp Theo:</label>
-                                <form action="{{ route('client.shop.shop') }}" method="get" class="d-inline">
+                                <form action="{{ route('search') }}" method="get" class="d-inline">
+                                    <!-- Giữ lại tất cả tham số hiện tại -->
+                                    @foreach (request()->except('sort') as $key => $value)
+                                        <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                                    @endforeach
+
                                     <select id="sort" name="sort" class="sort-list__dropmenu"
                                         onchange="this.form.submit()">
                                         <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Mới Nhất
@@ -46,11 +51,11 @@
                                         <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Giá
                                             Thấp -> Cao</option>
                                         <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>
-                                            Giá
-                                            Cao -> Thấp</option>
+                                            Giá Cao -> Thấp</option>
                                     </select>
                                 </form>
                             </div>
+
 
                             <!-- Phần Kết Quả Tìm Thấy -->
                             <div class="result-found">
@@ -334,7 +339,7 @@
                                 <div class="col-xl-4 col-md-6">
                                     <div class="cards-md cards-md--four w-100">
                                         <div class="cards-md__img-wrapper">
-                                            <a href="product-details.html">
+                                            <a href="{{ route('client.shop.shopdetails', $product['slug']) }}">
                                                 <img src="{{ asset('' . $product->images->first()->link) }}"
                                                     alt="{{ $product->name }}" width="100" height="100">
                                             </a>
@@ -366,7 +371,8 @@
                                         </div>
 
                                         <div class="cards-md__info d-flex justify-content-between align-items-center">
-                                            <a href="product-details.html" class="cards-md__info-left">
+                                            <a href="{{ route('client.shop.shopdetails', $product['slug']) }}"
+                                                class="cards-md__info-left">
                                                 <h6 class="font-body--md-400">
                                                     {{ \Illuminate\Support\Str::limit($product['name'], 50, '...') }}
                                                 </h6>
@@ -390,27 +396,6 @@
                                                 </ul>
 
                                             </a>
-                                            <div class="cards-md__info-right">
-                                                <span class="action-btn">
-                                                    <!-- Button thêm vào giỏ hàng -->
-
-                                                    <form action="{{ route('cart.add', $product['id']) }}"
-                                                        method="POST">
-                                                        @csrf
-
-                                                        <button type="submit" class="btn btn-primary">
-                                                            <svg width="20" height="21" viewBox="0 0 20 21"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M6.66667 8.83333H4.16667L2.5 18H17.5L15.8333 8.83333H13.3333M6.66667 8.83333V6.33333C6.66667 4.49239 8.15905 3 10 3V3C11.8409 3 13.3333 4.49238 13.3333 6.33333V8.83333M6.66667 8.83333H13.3333M6.66667 8.83333V11.3333M13.3333 8.83333V11.3333"
-                                                                    stroke="currentColor" stroke-width="1.3"
-                                                                    stroke-linecap="round" stroke-linejoin="round">
-                                                                </path>
-                                                            </svg>
-                                                        </button>
-                                                    </form>
-                                                </span>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>

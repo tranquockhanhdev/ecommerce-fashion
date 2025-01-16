@@ -14,10 +14,6 @@ class ShopController extends Controller
     public function index(Request $request)
     {
 
-        // Lấy danh sách sản phẩm cùng thông tin hình ảnh và bình luận (phân trang)
-        // $products = Product::where('status', 1) // Chỉ lấy sản phẩm có trạng thái là 1 (hiển thị)
-        //     ->with(['images', 'comments'])
-        //     ->paginate(10);
 
         // Lấy dữ liệu lọc từ request
         $categoryFilter = $request->input('category');

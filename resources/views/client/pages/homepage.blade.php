@@ -29,7 +29,7 @@
                                     <p class="font-body--md-400">
                                         Ưu đãi đặc biệt: Săn ngay deal cực hời, số lượng có hạn!
                                     </p>
-                                    <a href="#" class="button button--md">
+                                    <a href="{{ route('client.shop.shop') }}" class="button button--md">
                                         Mua ngay
                                         <span>
                                             <svg width="17" height="15" viewBox="0 0 17 15" fill="none"
@@ -70,7 +70,7 @@
                                     <p class="font-body--md-400">
                                         Sẵn sàng làm mới tủ đồ của bạn với New Collection!
                                     </p>
-                                    <a href="#" class="button button--md">
+                                    <a href="{{ route('client.shop.shop') }}" class="button button--md">
                                         Mua ngay
                                         <span>
                                             <svg width="17" height="15" viewBox="0 0 17 15" fill="none"
@@ -111,7 +111,7 @@
                                     <p class="font-body--md-400">
                                         Ưu đãi khủng cuối năm - Giảm đến 30%, giao hàng miễn phí!
                                     </p>
-                                    <a href="#" class="button button--md">
+                                    <a href="{{ route('client.shop.shop') }}" class="button button--md">
                                         Mua ngay
                                         <span>
                                             <svg width="17" height="15" viewBox="0 0 17 15" fill="none"
@@ -2259,8 +2259,9 @@
                                         Phong Cách Thời Trang Hiện Đại.
                                     </h5>
                                     <p class="font-body--md-400">
-                                        Cửa hàng của chúng tôi mang đến những bộ sưu tập thời trang độc đáo, giúp bạn tự tin thể hiện phong cách riêng. 
-                                         Synergy 4.0 luôn cam kết mang đến sự thoải mái và phong cách cho khách hàng.
+                                        Cửa hàng của chúng tôi mang đến những bộ sưu tập thời trang độc đáo, giúp bạn tự tin
+                                        thể hiện phong cách riêng.
+                                        Synergy 4.0 luôn cam kết mang đến sự thoải mái và phong cách cho khách hàng.
                                     </p>
                                 </div>
                             </li>
@@ -2277,8 +2278,10 @@
                                         Chất Lượng Đảm Bảo Với Giá Thành Hợp Lý.
                                     </h5>
                                     <p class="font-body--md-400">
-                                        Tại Synergy 4.0, chúng tôi luôn đặt chất lượng lên hàng đầu. Các sản phẩm được làm từ chất liệu cao cấp,
-                                         bền bỉ theo thời gian, nhưng vẫn giữ được giá cả hợp lý. Đảm bảo khách hàng luôn hài lòng với sự lựa chọn của mình.
+                                        Tại Synergy 4.0, chúng tôi luôn đặt chất lượng lên hàng đầu. Các sản phẩm được làm
+                                        từ chất liệu cao cấp,
+                                        bền bỉ theo thời gian, nhưng vẫn giữ được giá cả hợp lý. Đảm bảo khách hàng luôn hài
+                                        lòng với sự lựa chọn của mình.
                                     </p>
                                 </div>
                             </li>
@@ -2299,7 +2302,7 @@
                 </div>
             </div>
         </div>
-        </div>
+    </div>
     </div>
     <!-- Food Store section  end  -->
 

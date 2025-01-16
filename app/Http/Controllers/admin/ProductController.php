@@ -313,33 +313,54 @@ class ProductController extends Controller
         $minPrice = $request->input('min_price'); // Lọc theo giá từ
         $maxPrice = $request->input('max_price'); // Lọc theo giá đến
         $ratings = $request->input('ratings', []); // Lọc theo đánh giá (mảng các sao)
+        $sort = $request->input('sort'); // Giá trị sắp xếp
 
-        // Loại bỏ tất cả ký tự đặc biệt khỏi từ khóa tìm kiếm
+        // Loại bỏ ký tự đặc biệt, giữ lại Unicode, chữ cái, số và khoảng trắng
         if ($query) {
-            $query = preg_replace('/[^a-zA-Z0-9\s]/', '', $query); // Chỉ giữ lại chữ cái, số và khoảng trắng
+            $query = preg_replace('/[^\p{L}\p{N}\s]/u', '', $query); // Hỗ trợ Unicode
+            $query = strtolower($query); // Chuyển thành chữ thường để đồng nhất với cơ sở dữ liệu
         }
 
         // Truy vấn sản phẩm kết hợp tìm kiếm, lọc theo danh mục, lọc theo giá và lọc theo đánh giá
         $products = Product::with(['images', 'comments'])
-            ->when($query, function ($queryBuilder) use ($query) {
-                return $queryBuilder->where('name', 'like', '%' . $query . '%')
-                    ->orWhere('description', 'like', '%' . $query . '%'); // Tìm kiếm theo từ khóa
-            })
-            ->when($categoryFilter, function ($queryBuilder) use ($categoryFilter) {
-                return $queryBuilder->where('category_id', $categoryFilter); // Lọc theo danh mục
-            })
-            ->when($minPrice, function ($queryBuilder) use ($minPrice) {
-                return $queryBuilder->where('price', '>=', $minPrice); // Lọc theo giá từ
-            })
-            ->when($maxPrice, function ($queryBuilder) use ($maxPrice) {
-                return $queryBuilder->where('price', '<=', $maxPrice); // Lọc theo giá đến
-            })
-            ->when($ratings, function ($queryBuilder) use ($ratings) {
-                return $queryBuilder->whereHas('comments', function ($query) use ($ratings) {
-                    return $query->whereIn('rating', $ratings); // Lọc theo đánh giá sao
+            ->when(!empty($query), function ($queryBuilder) use ($query) {
+                // Sử dụng LIKE để tìm kiếm chính xác từ khóa, ví dụ: "áo"
+                return $queryBuilder->where(function ($queryBuilder) use ($query) {
+                    $queryBuilder->whereRaw('name RLIKE ?', ["{$query}"])
+                        ->orWhereRaw('description RLIKE ?', ["{$query}"]);
                 });
             })
-            ->paginate(12); // Phân trang
+            ->when(!empty($categoryFilter), function ($queryBuilder) use ($categoryFilter) {
+                // Lọc theo danh mục
+                return $queryBuilder->where('category_id', $categoryFilter);
+            })
+            ->when(!empty($minPrice), function ($queryBuilder) use ($minPrice) {
+                // Lọc theo giá từ
+                return $queryBuilder->where('price', '>=', $minPrice);
+            })
+            ->when(!empty($maxPrice), function ($queryBuilder) use ($maxPrice) {
+                // Lọc theo giá đến
+                return $queryBuilder->where('price', '<=', $maxPrice);
+            })
+            ->when(!empty($ratings), function ($queryBuilder) use ($ratings) {
+                // Lọc theo đánh giá
+                return $queryBuilder->whereHas('comments', function ($query) use ($ratings) {
+                    return $query->whereIn('rating', $ratings);
+                });
+            })
+            ->when(!empty($sort), function ($queryBuilder) use ($sort) {
+                // Thêm điều kiện sắp xếp
+                if ($sort === 'latest') {
+                    return $queryBuilder->orderBy('created_at', 'desc'); // Sản phẩm mới nhất
+                } elseif ($sort === 'oldest') {
+                    return $queryBuilder->orderBy('created_at', 'asc'); // Sản phẩm cũ nhất
+                } elseif ($sort === 'price_asc') {
+                    return $queryBuilder->orderBy('price', 'asc'); // Giá thấp -> cao
+                } elseif ($sort === 'price_desc') {
+                    return $queryBuilder->orderBy('price', 'desc'); // Giá cao -> thấp
+                }
+            })
+            ->paginate(12);
 
         // Lấy tất cả danh mục
         $categories = Category::all();
@@ -353,6 +374,7 @@ class ProductController extends Controller
             'minPrice' => $minPrice, // Truyền giá từ
             'maxPrice' => $maxPrice, // Truyền giá đến
             'ratings' => $ratings, // Truyền các đánh giá đã chọn
+            'sort' => $sort, // Truyền giá trị sắp xếp
         ]);
     }
 }

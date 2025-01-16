@@ -1229,12 +1229,19 @@
                 <span class="product-price font-body--lg-500">₫0.00</span> <!-- Tổng giá trị sẽ được cập nhật -->
             </div>
 
-            <form action="#">
-                <button class="button button--lg w-100">Thanh Toán</button>
-                <button class="button button--lg button--disable w-100">
+            <form action="{{ route('client.cart.checkout') }}" method="get">
+                <button class="button button--lg w-100" type="submit">
+                    Thanh Toán
+                </button>
+            </form>
+
+            <form action="{{ route('client.cart.shopping-cart') }}" method="get">
+                <button class="button button--lg w-100" type="submit"
+                    style="background-color: #f5f5f5; color: #333; border: 1px solid #ccc;">
                     Đi đến giỏ hàng
                 </button>
             </form>
+
         </div>
     </div>
     <!-- Shopping Cart Sidebar End -->

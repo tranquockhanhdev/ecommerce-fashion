@@ -33,6 +33,10 @@ class Category extends Model
     {
         return $this->belongsTo(Category::class, 'parent_id');
     }
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
 
     // public function parent()
     // {
@@ -56,7 +60,3 @@ class Category extends Model
     // protected $fillable = [
     //    'id','parent_id','name','slug','image','status','created_at','update_at'
     // ];
-
-   
-
-

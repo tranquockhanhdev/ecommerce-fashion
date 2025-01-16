@@ -8,40 +8,22 @@
         <!-- Chọn tài khoản -->
         <div class="form-group">
             <label for="order_customer_id">Tài Khoản</label>
-            <select class="form-control" name="order_customer_id" required>
-                @foreach ($orderCustomers as $orderCustomer)
-                    <option value="{{ $orderCustomer->id }}"
-                        {{ $order->order_customer_id == $orderCustomer->id ? 'selected' : '' }}>
-                        {{ $orderCustomer->lastname }} {{ $orderCustomer->firstname }}
-                    </option>
-                @endforeach
-            </select>
+            <input type="text" class="form-control" value="{{ $order->orderCustomer->lastname }} {{ $order->orderCustomer->firstname }}"readonly>
         </div>
+        <input type="hidden" name="ordercustomer_id" value="{{ $order->ordercustomer_id }}">
 
         <!-- Địa chỉ -->
         <div class="form-group">
-            <label for="address">Địa Chỉ</label>
-            <select class="form-control" name="address" required>
-                @foreach ($orderCustomers as $orderCustomer)
-                    <option value="{{ $orderCustomer->address }}"
-                        {{ $order->address == $orderCustomer->address ? 'selected' : '' }}>
-                        {{ $orderCustomer->address }}
-                    </option>
-                @endforeach
-            </select>
+            <label for="address">Địa chỉ (Address)</label>
+            <input type="text" id="address" name="address" class="form-control"
+                   value="{{ old('address', $order->orderCustomer->address) }}" required>
         </div>
 
         <!-- Số điện thoại -->
         <div class="form-group">
-            <label for="phone">Số Điện Thoại</label>
-            <select class="form-control" name="phone" required>
-                @foreach ($orderCustomers as $orderCustomer)
-                    <option value="{{ $orderCustomer->phone }}"
-                        {{ $order->phone == $orderCustomer->phone ? 'selected' : '' }}>
-                        {{ $orderCustomer->phone }}
-                    </option>
-                @endforeach
-            </select>
+            <label for="phone">Số điện thoại (Phone)</label>
+            <input type="text" id="phone" name="phone" class="form-control"
+                   value="{{ old('phone', $order->orderCustomer->phone) }}" required>
         </div>
 
         <!-- Phương thức thanh toán -->
@@ -60,8 +42,9 @@
         <!-- Trạng thái đơn hàng -->
         <div class="form-group">
             <label for="status">Trạng Thái</label>
-            <select class="form-control" name="status" required>
-                <option value="Đang xử lý" {{ $order->status == 'Đang xử lý' ? 'selected' : '' }}>Đang xử lý</option>
+                <select class="form-control" name="status" required>
+                <option value="Đã nhận đơn" {{ $order->status == 'Đã nhận đơn' ? 'selected' : '' }}>Đã nhận đơn</option>
+                <option value="Đang vận chuyển" {{ $order->status == 'Đang vận chuyển' ? 'selected' : '' }}>Đang vận chuyển</option>
                 <option value="Đã giao" {{ $order->status == 'Đã giao' ? 'selected' : '' }}>Đã giao</option>
                 <option value="Đã hủy" {{ $order->status == 'Đã hủy' ? 'selected' : '' }}>Đã hủy</option>
             </select>
@@ -71,11 +54,9 @@
         <div class="form-group">
             <label for="status_payment">Trạng Thái Thanh Toán</label>
             <select class="form-control" name="status_payment" required>
-                <option value="Thanh toán thành công"
-                    {{ $order->status_payment == 'Thanh toán thành công' ? 'selected' : '' }}>Thanh toán thành công
-                </option>
-                <option value="Thanh toán thất bại"
-                    {{ $order->status_payment == 'Thanh toán thất bại' ? 'selected' : '' }}>Thanh toán thất bại</option>
+                <option value="Đang xử lí" {{ $order->status_payment == 'Đang xử lí' ? 'selected' : '' }}>Đang xử lí</option>
+                <option value="Thành công" {{ $order->status_payment == 'Thành công' ? 'selected' : '' }}>Thanh toán thành công</option>
+                <option value="Thất bại" {{ $order->status_payment == 'Thất bại' ? 'selected' : '' }}>Thanh toán thất bại</option>
             </select>
         </div>
 
@@ -88,9 +69,8 @@
 
         <!-- Tổng -->
         <div class="form-group">
-            <label for="total">Tổng</label>
-            <input type="number" step="0.01" name="total" class="form-control"
-                value="{{ old('total', $order->total) }}" required>
+            <label for="total">Tổng cộng (Total)</label>
+            <input type="text" id="total" class="form-control" value="{{ $order->total }}" readonly>
         </div>
 
         <!-- Nút cập nhật -->

@@ -3,12 +3,6 @@
     <h1 class="h3 mb-0 text-gray-800">Quản lí Đơn Hàng</h1>
     <hr>
     <div class="d-flex justify-content-between">
-        <a href="#" class="btn btn-success btn-icon-split mb-3">
-            <span class="icon text-white-50">
-                <i class="fas fa-plus"></i>
-            </span>
-            <span class="text">Thêm đơn hàng</span>
-        </a>
         <a href="#" class="btn btn-success btn-icon-split mb-3 ">
             <span class="icon text-white-50">
                 <i class="fas fa-print"></i>
@@ -16,7 +10,17 @@
             <span class="text">In Danh Sách</span>
         </a>
     </div>
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Bảng Đơn Hàng</h6>
@@ -31,7 +35,7 @@
                             <th>Địa chỉ</th>
                             <th>Số điện thoại</th>
                             <th>Phương thức thanh toán</th>
-                            <th>Trạng Thái</th>
+                            <th>Trạng Thái Đơn Hàng</th>
                             <th>Trạng Thái Thanh Toán</th>
                             <th>Phí vận chuyển</th>
                             <th>Tổng</th>
@@ -39,7 +43,7 @@
                             <th>Thời Gian Vận Chuyển</th>
                             <th>Thời Gian Hoàn Thành</th>
                             <th>Thời Gian Hủy</th>
-                            <th>Hành Động</th>
+                            <th>Thao Tác</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,12 +54,19 @@
                                 <td>{{ $order->orderCustomer->address ?? 'N/A' }}</td>
                                 <td>{{ $order->orderCustomer->phone ?? 'N/A' }}</td>
                                 <td>{{ $order->paymentMethod->method ?? 'N/A' }}</td>
-                                <td>{{ $order->status == 0 ? 'Đang xử lý' : ($order->status == 1 ? 'Đã giao' : 'Đã hủy') }}
+                                <td>
+                                    @switch($order->status)
+                                        @case(1) Đã nhận đơn @break
+                                        @case(2) Đang vận chuyển @break
+                                        @case(3) Đã giao @break
+                                        @case(0) Đã hủy @break
+                                        @default
+                                            Không xác định
+                                    @endswitch
                                 </td>
-                                <td>{{ $order->status_payment == 0 ? 'Thanh toán thành công' : 'Thanh toán thất bại' }}</td>
+                                <td>{{ $order->status_payment == 0 ? 'Thất bại' : ($order->status_payment == 1 ? 'Đang xử lí' : 'Thành công') }}</td>
                                 <td>{{ number_format($order->shipping_fee, 0, ',', '.') }} VNĐ</td>
-                                <td>{{ number_format($order->orderItems->sum(function ($item) {return $item->quantity * $item->price;}) + $order->shipping_fee,0,',','.') }}
-                                    VNĐ</td>
+                                <td>{{ number_format($order->orderItems->sum(function ($item) {return $item->quantity * $item->price;}) + $order->shipping_fee,0,',','.') }}VNĐ</td>
                                 <td>{{ $order->created_at }}</td>
                                 <td>{{ $order->delivery_at }}</td>
                                 <td>{{ $order->completed_at }}</td>
@@ -73,7 +84,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-icon-split mr-2"
-                                                onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">
+                                                onclick="return confirm('Bạn có chắc muốn xóa đơn hàng này không?')">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-trash"></i> Xóa
                                                 </span>

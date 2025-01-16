@@ -259,6 +259,9 @@
                                 <th scope="col" class="dashboard__order-history-table-title">
                                     Tổng cộng
                                 </th>
+                                <th scope="col" class="dashboard__order-history-table-title">
+                                    chi tiết
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -318,6 +321,17 @@
                     "
                                     style="text-align: left">
                                     <p class="font-body--md-500"> {{ number_format($orderItem->price * $orderItem->quantity, 0, ',', '.') }} VND</p>
+                                </td>
+                                <!-- Chi tiết sản phẩm  -->
+                                <td class="
+                      dashboard__order-history-table-item
+                      order-status
+                      align-middle
+                    "
+                                    style="text-align: left">
+                                    @foreach ($productData as $product)
+                                    <a href="{{ route('client.user.product_details', $product['slug']) }}">Chi tiết</a>
+                                    @endforeach
                                 </td>
                             </tr>
                             @endforeach

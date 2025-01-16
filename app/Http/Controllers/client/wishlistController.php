@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Account;
 use App\Models\FavoriteProduct;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -19,23 +20,41 @@ class wishlistController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $listWishlist = $user->favoriteProducts;
-        foreach ($listWishlist as $wishlistItem) {
-            $product = $wishlistItem->product;
-
-            // If product quantity is 0 or status is 0, update the favorite status to 0
-            if ($product->quantity == 0 || $product->status == 0) {
-                $wishlistItem->update(['status' => 0]);
-            }
-            // If product quantity is greater than 0 and status is 1, update the favorite status to 1
-            else if ($product->quantity > 0 && $product->status == 1) {
-                $wishlistItem->update(['status' => 1]);
-            }
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để xem sản phẩm yêu thích.');
         }
+
+        $listWishlist = FavoriteProduct::with('product')
+            ->where('account_id', $user->id)
+            ->where('status', 1)
+            ->get();
 
         return view('client.cart.wishlist', compact('listWishlist'));
     }
 
+    public function toggleFavorite($productId)
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['error' => 'Vui lòng đăng nhập để thêm sản phẩm yêu thích.'], 401);
+        }
+
+        $favorite = FavoriteProduct::where('account_id', $user->id)
+            ->where('product_id', $productId)
+            ->first();
+
+        if ($favorite) {
+            $favorite->delete();
+            return response()->json(['message' => 'Đã xóa sản phẩm khỏi danh sách yêu thích.']);
+        } else {
+            FavoriteProduct::create([
+                'account_id' => $user->id,
+                'product_id' => $productId,
+                'status' => 1,
+            ]);
+            return response()->json(['message' => 'Đã thêm sản phẩm vào danh sách yêu thích.']);
+        }
+    }
     /**
      * Show the form for creating a new resource.
      */

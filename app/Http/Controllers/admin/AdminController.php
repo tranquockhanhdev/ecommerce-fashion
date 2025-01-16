@@ -3,9 +3,16 @@
 namespace App\Http\Controllers\admin;
 
 use App\Models\WebsiteInfo;
+use App\Models\Order;
+use App\Models\Contact;
+use App\Models\Account;
+use App\Models\Product;
 use App\Http\Controllers\Controller;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
@@ -16,7 +23,61 @@ class AdminController extends Controller
     {
         $id = 1;
         $website = WebsiteInfo::findOrFail($id);
-        return view('admin.home.index', compact('website'));
+
+        // Các khoảng thời gian chung cho tháng, tuần và ngày hiện tại
+        $dauThang = now()->startOfMonth();
+        $cuoiThang = now()->endOfMonth();
+        $dauTuan = now()->startOfWeek();
+        $cuoiTuan = now()->endOfWeek();
+        $today = today();
+
+        // Đơn hàng có trạng thái 3
+        $ordered = Order::where('status', 3);
+        $orderedMonth = $ordered->whereBetween('created_at', [$dauThang, $cuoiThang])->sum('total');
+        $productsSoldMonth = $ordered->whereBetween('created_at', [$dauThang, $cuoiThang])->count();
+        $orderedWeek = $ordered->whereBetween('created_at', [$dauTuan, $cuoiTuan])->sum('total');
+        $productsSoldWeek = $ordered->whereBetween('created_at', [$dauTuan, $cuoiTuan])->count();
+        $orderedDay = $ordered->whereDate('created_at', $today)->sum('total');
+        $productsSoldDay = $ordered->whereDate('created_at', $today)->count();
+
+        // Số lượng tài khoản
+        $contacted = Contact::count();
+        $customer = Account::where('role', 'customer')->count();
+        $newCustomersMonth = Account::where('role', 'customer')->whereBetween('created_at', [$dauThang, $cuoiThang])->count();
+        $newCustomersWeek = Account::where('role', 'customer')->whereBetween('created_at', [$dauTuan, $cuoiTuan])->count();
+        $newCustomersDay = Account::where('role', 'customer')->whereDate('created_at', $today)->count();
+
+
+        // Lấy doanh thu theo từng tháng trong năm
+        $monthlyRevenue = Order::where('status', 3)
+            ->whereYear('created_at', now()->year)
+            ->selectRaw('MONTH(created_at) as month, sum(total) as revenue')
+            ->groupBy('month')
+            ->orderBy('month', 'asc')
+            ->get();
+
+        // Lấy ngày bắt đầu và kết thúc của tuần hiện tại
+        $startOfWeek = Carbon::now()->startOfWeek(); // Lấy ngày bắt đầu tuần (Chủ nhật)
+        $endOfWeek = Carbon::now()->endOfWeek(); // Lấy ngày kết thúc tuần (Thứ 7)
+
+        // Truy vấn sử dụng Eloquent để lấy sản phẩm bán chạy trong tuần
+        $topSellingProducts = OrderItem::select('product_id', DB::raw('SUM(quantity) as total_quantity_sold'))
+            ->whereBetween('created_at', [$startOfWeek, $endOfWeek])  // Lọc đơn hàng trong tuần
+            ->groupBy('product_id')  // Nhóm theo product_id
+            ->orderByDesc('total_quantity_sold')  // Sắp xếp theo số lượng bán ra giảm dần
+            ->limit(10)  // Giới hạn kết quả lấy 10 sản phẩm bán chạy nhất
+            ->get();
+
+        // Lấy tên sản phẩm từ bảng products
+        $products = $topSellingProducts->map(function ($orderDetail) {
+            $product = Product::find($orderDetail->product_id);
+            $orderDetail->product_name = $product ? $product->name : 'Unknown Product';
+            return $orderDetail;
+        });
+        // Tạo mảng dữ liệu cho biểu đồ
+        $months = $monthlyRevenue->pluck('month')->toArray();
+        $revenues = $monthlyRevenue->pluck('revenue')->toArray();
+        return view('admin.home.index', compact('website', 'ordered', 'contacted', 'customer', 'orderedMonth', 'productsSoldMonth', 'newCustomersMonth', 'orderedWeek', 'productsSoldWeek', 'newCustomersWeek', 'orderedDay', 'productsSoldDay', 'newCustomersDay', 'months', 'revenues', 'products'));
     }
 
     /**

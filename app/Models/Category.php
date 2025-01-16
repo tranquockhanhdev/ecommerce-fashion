@@ -28,8 +28,9 @@ class Category extends Model
     {
         return $this->belongsTo(Category::class, 'parent_id');
     }
+    // Một danh mục có thể có nhiều sản phẩm
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }
-
-   
-
-

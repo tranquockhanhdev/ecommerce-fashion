@@ -49,6 +49,7 @@ class AccountOrderController extends Controller
     }
     public function details(string $id)
     {
+
         // Tìm đơn hàng theo ID
         $orders = Order::findOrFail($id);
         // Tìm thông tin khách hàng của đơn hàng
@@ -56,7 +57,8 @@ class AccountOrderController extends Controller
         // Tìm phương thức thanh toán của đơn hàng
         $paymentMethod = PaymentMethod::findOrFail($orders->payment_method_id);
         // Tìm các sản phẩm trong đơn hàng
-        $orderItems = OrderItem::where('order_id',  $orders->id)->get();
+$orderItems = OrderItem::with('product_detail.color', 'product_detail.size')->where('order_id', $orders->id)->get();
+
         // Format tiền theo định dạng Việt Nam Đồng
         $orders->formatted_total = number_format($orders->total, 0, ',', '.') . ' VND';
         $orders->formatted_shipping = number_format($orders->shipping_fee, 0, ',', '.') . ' VND';
@@ -77,6 +79,7 @@ class AccountOrderController extends Controller
 
         // Cập nhật trạng thái đơn hàng thành hủy
         $order->status = 0; // Giả sử 0 là trạng thái hủy
+        $order->status_payment = 0; // Giả sử 0 là trạng thái hủy
         $order->save();
 
         return redirect()->route('client.user.order-history')->with('success', 'Đơn hàng đã được hủy thành công!');

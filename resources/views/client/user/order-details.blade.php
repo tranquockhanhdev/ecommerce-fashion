@@ -9,6 +9,7 @@
                 <h2 class="font-body--xxl-500">Chi Tiết Đơn Hàng</h2>
                 <a href="{{route('client.user.order-history')}}">quay lại</a>
             </div>
+
             @if($orders->status == 1)
             <div class="alert alert-danger " role="alert">
                 <!-- Nút hủy đơn hàng -->
@@ -19,6 +20,12 @@
                         Hủy đơn hàng
                     </button>
                 </form>
+            </div>
+            @endif
+            @if ($orders->status == 1 && $orders->status_payment == 1 && $orders->payment_method_id == 1)
+            <div class="alert alert-warning  " role="alert">
+                <p>Đơn hàng này chưa thanh toán.</p>
+                <a href="{{ $orders->url }}" class="btn btn-warning" target="_blank">Thanh toán tại đây</a>
             </div>
             @endif
 
@@ -238,16 +245,19 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="dashboard__order-history-table-title">
-                                    Product
+                                    Tên Sản phẩm
                                 </th>
                                 <th scope="col" class="dashboard__order-history-table-title">
-                                    Price
+                                    Giá
                                 </th>
                                 <th scope="col" class="dashboard__order-history-table-title">
-                                    quantity
+                                    Số lượng
                                 </th>
                                 <th scope="col" class="dashboard__order-history-table-title">
-                                    Subtotal
+                                    Size Và Màu Sắc
+                                </th>
+                                <th scope="col" class="dashboard__order-history-table-title">
+                                    Tổng cộng
                                 </th>
                             </tr>
                         </thead>
@@ -260,13 +270,13 @@
                       dashboard__order-history-table-item
                       align-middle
                     ">
-                                    <a href="product-details.html" class="dashboard__product-item">
+                                    <div class="dashboard__product-item">
                                         <div class="dashboard__product-item-img">
                                             <img src="{{ asset($orderItem->product->images->first()->link) }}" alt="product" />
 
                                         </div>
                                         <h5 class="font-body--md-400"> {{$orderItem->name}}</h5>
-                                    </a>
+                                    </div>
                                 </td>
                                 <!-- Price  -->
                                 <td
@@ -286,6 +296,20 @@
                     ">
                                     <p class="order-total-price"> {{$orderItem->quantity}}</p>
                                 </td>
+                               <td
+    class="
+        dashboard__order-history-table-item
+        order-total
+        align-middle
+    ">
+    <p style="white-space: nowrap;" class="order-total-price">
+        Size: {{ $orderItem->product_detail->size->size_name ?? 'Không có size' }} 
+       
+    </p>
+    <p style="white-space: nowrap;"> Màu sắc: {{ $orderItem->product_detail->color->color_name ?? 'Không có màu' }}</p>
+</td>
+
+
                                 <!-- Subtotal  -->
                                 <td class="
                       dashboard__order-history-table-item

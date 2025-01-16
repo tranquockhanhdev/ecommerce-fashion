@@ -11,6 +11,7 @@ use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\ContactController;
 use App\Http\Controllers\client\ShopController;
 use App\Http\Controllers\client\CartController;
+use App\Http\Controllers\client\CheckoutController;
 use App\Http\Controllers\admin\CommentController;
 use App\Http\Controllers\admin\CategoryController;
 use Illuminate\Support\Facades\Route;
@@ -20,12 +21,16 @@ use App\Http\Controllers\Auth\SecretController;
 use App\Http\Controllers\client\AccountOrderController;
 use App\Http\Controllers\client\CommentClientController;
 use App\Http\Controllers\client\wishlistController;
+use App\Http\Controllers\VNPayController;
 
 Auth::routes([
     'reset' => false,     // Tắt route reset mật khẩu
     'verify' => false,     // Tắt route xác minh email
     'confirm' => false     // Tắt route xác minh email
 ]);
+
+
+
 Route::fallback(function () {
     return response()->view('errors.404', [], 404);
 });
@@ -59,7 +64,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-    // Trang nhân viên chỉ dành cho nhân viên và admin
+    // Trang nhân viên chỉ dành cho nhân viên và admins
     Route::middleware(['role:admin,staff'])->group(function () {
         Route::get('/staff', function () {
             return view('staff.home.index');
@@ -82,23 +87,27 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/history', [AccountOrderController::class, 'index'])->name('client.user.order-history');
             Route::get('/{id}', [AccountOrderController::class, 'details'])->name('client.user.order-details');
             Route::put('/{id}', [AccountOrderController::class, 'cancelOrder'])->name('client.user.cancel-order');
-            Route::put('/bought', [CommentClientController::class, 'index'])->name('client.user.bought');
         });
     });
-
+    Route::get('/bought', [CommentClientController::class, 'index'])->name('client.user.bought');
     // Cart routes
     Route::prefix('cart')->group(function () {
-        Route::get('/checkout', function () {
-            return view('client.cart.checkout');
-        })->name('client.cart.checkout');
+        Route::get('/checkout/{id}', [CheckoutController::class, 'index'])->name('client.cart.checkout');
+        Route::post('/checkout/{cart}', [CheckoutController::class, 'processCheckout'])->name('checkout');
         Route::resource('/wishlist', wishlistController::class);
         // Route hiển thị giỏ hàng
         Route::get('/shopping-cart', [CartController::class, 'showCart'])->name('client.cart.shopping-cart');
 
         // Route thêm sản phẩm vào giỏ hàng
         Route::post('/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
-        Route::put('/update/{cartItemId}', [CartController::class, 'updateQuantity'])->name('cart.update');
+        Route::post('/addjs/{productId}', [CartController::class, 'addToCartJS'])->name('cart.addjs');
 
+
+        Route::put('/update/{cartItemId}', [CartController::class, 'updateQuantity'])->name('cart.update');
+        Route::patch('/cart/item/update/{cartItem}', [CartController::class, 'update'])->name('cart.item.update');
+
+        Route::get('/cart-data', [CartController::class, 'getCartData'])->name('cart.data');
+        Route::delete('/cart/remove/{cartItemId}', [CartController::class, 'removeCart']);
 
         // Route xóa sản phẩm khỏi giỏ hàng
         Route::delete('/remove/{cartItemId}', [CartController::class, 'removeFromCart'])->name('cart.remove');
@@ -127,16 +136,17 @@ Route::prefix('auth')->name('auth.')->group(function () {
 Route::get('/', function () {
     return view('client.pages.homepage');
 })->name('client.pages.homepage');
-
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::prefix('shop')->group(function () {
     Route::get('/shop', [ShopController::class, 'index'])->name('client.shop.shop');
-
+    Route::get('/shop/{id}', [ShopController::class, 'show'])->name('client.shop.shopdetails');
+    Route::get('/search_results', [ProductController::class, 'filterAndSearch'])->name('search');
     Route::get('/product-details', function () {
         return view('client.shop.product-details');
     })->name('client.shop.product-details');
+    // Route lọc sản phẩm
+    // Route::get('/filter', [ShopController::class, 'filter'])->name('client.shop.filter');
 });
 
 // Blog routes
@@ -160,3 +170,5 @@ Route::prefix('pages')->group(function () {
         return view('client.pages.contact');
     })->name('client.pages.contact');
 });
+//trang thanh toán
+Route::get('vnpay_return', [CheckoutController::class, 'vnpay_return'])->name('vnpay.return');

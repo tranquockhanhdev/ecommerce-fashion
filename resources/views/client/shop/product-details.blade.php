@@ -14,18 +14,11 @@
                         <div class="gallery-items">
                             <div class="swiper-container gallery-items-slider">
                                 <div class="swiper-wrapper">
-                                    <div class="gallery-item swiper-slide">
-                                        <img src="{{ asset('client/images/product-details/img-01.png') }}" alt="Slide 01" />
-                                    </div>
-                                    <div class="gallery-item swiper-slide">
-                                        <img src="{{ asset('client/images/product-details/img-02.png') }}" alt="Slide 02" />
-                                    </div>
-                                    <div class="gallery-item swiper-slide">
-                                        <img src="{{ asset('client/images/product-details/img-03.png') }}" alt="Slide 03" />
-                                    </div>
-                                    <div class="gallery-item swiper-slide">
-                                        <img src="{{ asset('client/images/product-details/img-04.png') }}" alt="Slide 04" />
-                                    </div>
+                                    @foreach ($imageProduct as $imageProduct)
+                                        <div class="gallery-item swiper-slide">
+                                            <img src="{{ asset($imageProduct) }}" alt="Slide 01" />
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
                             <div class="gallery-prev-item">
@@ -49,8 +42,7 @@
                         </div>
 
                         <div class="gallery-main-image products__gallery-img--lg">
-                            <img class="product-main-image" src="{{ asset('client/images/product-details/img-01.png') }}"
-                                alt="Slide 01" />
+                            <img class="product-main-image" src="{{ asset($imageProduct) }}" alt="Slide 01" />
                         </div>
                     </div>
                 </div>
@@ -58,9 +50,13 @@
                     <!-- Products information -->
                     <div class="products__content">
                         <div class="products__content-title">
-                            <h2 class="font-title--md">Chinese Cabbage</h2>
-                            <span class="label stock-in">in Stock</span>
-                            <!-- <span class="label stock-out">Stock out</span> -->
+                            <h2 class="font-title--md">{{ $product->name }}</h2>
+                            @if ($product->quantity <= 0 || $product->status == 0)
+                                <span class="label stock-out">Stock Out</span>
+                            @else
+                                <span class="label stock-in">In Stock</span>
+                            @endif
+
                         </div>
                         <div class="products__content-info">
                             <ul class="ratings">
@@ -124,19 +120,15 @@
                         </div>
 
                         <div class="products__content-price">
-                            <h2 class="font-body--xxxl-500"><del class="font-body--xxl-400">$48.00</del> $17.28</h2>
-                            <span class="label sale-off"> 64% off </span>
+                            <h2 class="font-body--xxxl-500">
+                                {{ number_format($product->price, 0, ',', '.') . ' VND' }}
+                            </h2>
                         </div>
                     </div>
                     <!-- brand  -->
                     <div class="products__content">
                         <div class="products__content-brand">
-                            <div class="brand-name">
-                                <h2 class="font-body--md-400">Brand:</h2>
-                                <a href="#" class="brand-name-logo">
-                                    <img src="{{ asset('client/images/brand-icon/brand-img.png') }}" alt="brand-img" />
-                                </a>
-                            </div>
+
                             <div class="social-site">
                                 <h2 class="font-body--md-400">Chia Sẽ:</h2>
                                 <ul class="social-icon">
@@ -183,12 +175,47 @@
                                 </ul>
                             </div>
                         </div>
-                        <p class="products__content-brand-info font-body--md-400">
-                            Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
-                            Nulla nibh diam, blandit vel consequat nec, ultrices et ipsum. Nulla varius magna a consequat
-                            pulvinar.
-                        </p>
                     </div>
+                    <div class="products__content">
+                        <div class="products__content-action">
+                            <!-- Select color -->
+                            <div class="select-wrapper products__content-action-item">
+                                <label class="products__content-category font-body--md-500">Chọn màu:</label>
+                                <select id="color-select" class="select-input">
+                                    <option value="">Chọn màu</option>
+                                    @if ($colors->isEmpty() || $colors->filter(fn($color) => $color !== null)->isEmpty())
+                                        <option value="">Không có màu</option>
+                                    @else
+                                        @foreach ($colors as $color)
+                                            @if ($color !== null)
+                                                <option value="{{ $color->id }}">{{ $color->color_name }}</option>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+
+                            <!-- Select size -->
+                            <div class="select-wrapper products__content-action-item">
+                                <label class="products__content-category font-body--md-500">Chọn kích thước:</label>
+                                <select id="size-select" class="select-input">
+                                    <option value="">Chọn kích thước</option>
+                                    @if ($sizes->isEmpty() || $sizes->filter(fn($size) => $size !== null)->isEmpty())
+                                        <option value="">Không có kích thước</option>
+                                    @else
+                                        @foreach ($sizes as $size)
+                                            @if ($size !== null)
+                                                <option value="{{ $size->id }}">{{ $size->size_name }}</option>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
+
                     <!-- Action button -->
                     <div class="products__content">
                         <div class="products__content-action">
@@ -203,7 +230,8 @@
                                 </button>
                             </div>
                             <!-- add to cart  -->
-                            <button class="button button--md products__content-action-item">
+                            <button class="button button--md products__content-action-item" id="add-to-cart-btn"
+                                data-product-id="{{ $product->id }}">
                                 Thêm vào giỏ hàng
                                 <span>
                                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
@@ -230,18 +258,10 @@
                     <!-- Tags  -->
                     <div class="products__content">
                         <h5 class="products__content-category font-body--md-500">Danh mục: <a
-                                href="#">Vegetables</a></h5>
-                        <div class="products__content-tags">
-                            <h5 class="font-body--md-500">Tag :</h5>
-                            <div class="products__content-tags-item">
-                                <a href="#" class="font-body--md-400">Vegetables</a>
-                                <a href="#" class="font-body--md-400">Healthy</a>
-                                <a href="#" class="font-body--md-400">Chinese</a>
-                                <a href="#" class="font-body--md-400">Cabbage</a>
-                                <a href="#" class="font-body--md-400">Green Cabbage </a>
-                            </div>
-                        </div>
+                                href="#">{{ $product->category->name }}</a></h5>
+
                     </div>
+
                 </div>
             </div>
         </div>
@@ -287,78 +307,14 @@
                         <div class="row products-tab__description">
                             <div class="col-lg-7 order-lg-0 order-2">
                                 <p class="products-tab__description--text">
-                                    Sed commodo aliquam dui ac porta. Fusce ipsum felis, imperdiet at posuere ac, viverra at
-                                    mauris. Maecenas tincidunt ligula a sem vestibulum pharetra. Maecenas auctor tortor
-                                    lacus, nec laoreet nisi
-                                    porttitor vel. Etiam tincidunt metus vel dui interdum sollicitudin. Mauris sem ante,
-                                    vestibulum nec orci vitae, aliquam mollis lacus. Sed et condimentum arcu, id molestie
-                                    tellus. Nulla facilisi. Nam
-                                    scelerisque vitae justo a convallis. Morbi urna ipsum, placerat quis commodo quis,
-                                    egestas elementum leo. Donec convallis mollis enim. Aliquam id mi quam. Phasellus nec
-                                    fringilla elit.
-                                </p>
-                                <p class="products-tab__description--text">
-                                    Nulla mauris tellus, feugiat quis pharetra sed, gravida ac dui. Sed iaculis, metus
-                                    faucibus elementum tincidunt, turpis mi viverra velit, pellentesque tristique neque mi
-                                    eget nulla. Proin luctus
-                                    elementum neque et pharetra.
-                                </p>
-
-                                <ul class="products-tab__description--list">
-                                    <li>
-                                        <span class="icon">
-                                            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M10.4173 3.125L4.68815 8.85417L2.08398 6.25" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </span>
-                                        <p>100 g of fresh leaves provides.</p>
-                                    </li>
-                                    <li>
-                                        <span class="icon">
-                                            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M10.4173 3.125L4.68815 8.85417L2.08398 6.25" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </span>
-                                        <p>100 g of fresh leaves provides.</p>
-                                    </li>
-                                    <li>
-                                        <span class="icon">
-                                            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M10.4173 3.125L4.68815 8.85417L2.08398 6.25" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </span>
-                                        <p>100 g of fresh leaves provides.</p>
-                                    </li>
-                                    <li>
-                                        <span class="icon">
-                                            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M10.4173 3.125L4.68815 8.85417L2.08398 6.25" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </span>
-                                        <p>100 g of fresh leaves provides.</p>
-                                    </li>
-                                </ul>
-
-                                <p class="products-tab__description--text">
-                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae totam eos nostrum
-                                    suscipit molestiae dolorem maxime, reprehenderit labore praesentium repudiandae a? Minus
-                                    consequuntur ad dignissimos
-                                    error corporis tenetur ducimus odit.
+                                    {!! $product->description !!}
                                 </p>
                             </div>
                             <div class="col-lg-5 order-lg-0 order-1">
                                 <div class="products-video">
-                                    <img src="{{ asset('client/images/members/img-10.png') }}" alt="img-src" />
-                                    <a href="https://youtu.be/JkaxUblCGz0" class="play-icon venobox" data-autoplay="true"
-                                        data-vbtype="video">
+                                    <img style="width:full" src="{{ asset($imageProduct) }}" alt="img-src" />
+                                    <a href="https://youtu.be/qzyL9SJ30do?si=E5VEniUR_5ih0TID" class="play-icon venobox"
+                                        data-autoplay="true" data-vbtype="video">
                                         <span>
                                             <svg width="14" height="18" viewBox="0 0 14 18" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -367,70 +323,7 @@
                                         </span>
                                     </a>
                                 </div>
-                                <div class="products-video__card">
-                                    <div class="products-video__card-item">
-                                        <span class="icon">
-                                            <svg width="32" height="33" viewBox="0 0 32 33" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <g clip-path="url(#clip0)">
-                                                    <path
-                                                        d="M28.0671 24.7501C28.326 24.7501 28.5359 24.5402 28.5359 24.2813V13.0313C28.5359 12.4718 28.3178 11.8995 27.9219 11.4198L24.4454 7.20769C24.2633 6.987 24.0539 6.801 23.8265 6.65287C23.8405 6.50962 23.8484 6.36494 23.8484 6.21887V0.968872C23.8484 0.709997 23.6385 0.500122 23.3797 0.500122C23.1208 0.500122 22.9109 0.709997 22.9109 0.968872C22.9109 0.968872 22.91 6.26356 22.9096 6.28593C22.7762 6.26231 22.6409 6.25012 22.5047 6.25012H16.4422C16.0154 6.25012 15.597 6.36987 15.2224 6.58994C15.2062 6.59575 15.1902 6.60225 15.1744 6.60994L10.605 8.83568C10.0987 9.08962 9.69392 9.51556 9.46498 10.035C9.46248 10.0407 9.46011 10.0464 9.45786 10.0521L7.56861 14.8441C7.47367 15.085 7.59192 15.3572 7.83279 15.4522C7.88923 15.4744 7.94736 15.4849 8.00461 15.4849C8.19148 15.4849 8.36811 15.3724 8.44079 15.188L10.3264 10.4052C10.4682 10.0884 10.7161 9.82887 11.0204 9.67612L13.4347 8.50019L11.0249 11.4199C10.6641 11.857 10.4734 12.4143 10.4734 13.0314V29.2189C10.4734 29.4074 10.49 29.592 10.52 29.7719L5.68992 27.6316C4.59879 27.1482 4.10429 25.864 4.58779 24.769C4.58986 24.7642 4.59186 24.7594 4.59386 24.7547L7.64904 17.1619C7.74567 16.9217 7.62936 16.6487 7.38917 16.5521C7.14886 16.4554 6.87598 16.5718 6.77929 16.8119L3.72679 24.3976C3.04042 25.9632 3.74942 27.7971 5.31011 28.4886L10.9741 30.9984C10.981 31.0014 10.9881 31.0037 10.9951 31.0064C11.57 31.9046 12.5639 32.5001 13.6922 32.5001H25.2547C27.0333 32.5001 28.5359 30.9974 28.5359 29.2188V26.4688C28.5359 26.2099 28.326 26.0001 28.0672 26.0001C27.8083 26.0001 27.5984 26.2099 27.5984 26.4688V29.2188C27.5984 30.4893 26.5251 31.5626 25.2547 31.5626H13.6922C12.4343 31.5626 11.4109 30.5112 11.4109 29.2188V13.0313C11.4109 12.6289 11.5243 12.2875 11.748 12.0166L15.2244 7.80444C15.548 7.41244 15.9919 7.18756 16.4422 7.18756H22.5047C22.593 7.18756 22.681 7.1965 22.7679 7.21337C22.4745 8.21406 21.7476 9.04906 20.766 9.4675C20.5094 9.03819 20.0401 8.75006 19.5046 8.75006C18.6947 8.75006 18.0359 9.40894 18.0359 10.2188C18.0359 11.0287 18.6947 11.6876 19.5046 11.6876C20.2535 11.6876 20.8729 11.1239 20.962 10.3986C22.2244 9.92112 23.179 8.90937 23.6044 7.67444C23.6452 7.7155 23.6847 7.75869 23.7224 7.80444L27.1989 12.0166C27.4565 12.3287 27.5984 12.6891 27.5984 13.0314V24.2814C27.5984 24.5402 27.8082 24.7501 28.0671 24.7501ZM19.5046 10.7501C19.2117 10.7501 18.9734 10.5117 18.9734 10.2188C18.9734 9.92587 19.2117 9.68756 19.5046 9.68756C19.7975 9.68756 20.0359 9.92587 20.0359 10.2188C20.0359 10.5117 19.7975 10.7501 19.5046 10.7501Z"
-                                                        fill="#00B307" />
-                                                    <path
-                                                        d="M15.4424 25.4375C15.5623 25.4375 15.6823 25.3917 15.7738 25.3002L23.7738 17.3002C23.9569 17.1171 23.9569 16.8203 23.7738 16.6373C23.5908 16.4542 23.294 16.4542 23.111 16.6373L15.111 24.6373C14.8121 24.9159 15.0414 25.4517 15.4424 25.4375Z"
-                                                        fill="#00B307" />
-                                                    <path
-                                                        d="M16.4414 20.5C17.5614 20.5 18.4727 19.5887 18.4727 18.4687C18.4727 17.3487 17.5614 16.4375 16.4414 16.4375H16.3789C15.2589 16.4375 14.3477 17.3487 14.3477 18.4687C14.3477 19.5887 15.2589 20.5 16.3789 20.5H16.4414ZM15.2852 18.4687C15.2852 17.8657 15.7758 17.375 16.3789 17.375H16.4414C17.0445 17.375 17.5352 17.8657 17.5352 18.4687C17.5352 19.0718 17.0445 19.5625 16.4414 19.5625H16.3789C15.7758 19.5625 15.2852 19.0718 15.2852 18.4687Z"
-                                                        fill="#00B307" />
-                                                    <path
-                                                        d="M22.5039 25.4375H22.5664C23.6864 25.4375 24.5977 24.5262 24.5977 23.4062C24.5977 22.2862 23.6864 21.375 22.5664 21.375H22.5039C21.3839 21.375 20.4727 22.2862 20.4727 23.4062C20.4727 24.5262 21.3839 25.4375 22.5039 25.4375ZM22.5039 22.3125H22.5664C23.1695 22.3125 23.6602 22.8032 23.6602 23.4062C23.6602 24.0093 23.1695 24.5 22.5664 24.5H22.5039C21.9008 24.5 21.4102 24.0093 21.4102 23.4062C21.4102 22.8032 21.9008 22.3125 22.5039 22.3125Z"
-                                                        fill="#00B307" />
-                                                </g>
-                                                <defs>
-                                                    <clipPath>
-                                                        <rect width="32" height="32" fill="white"
-                                                            transform="translate(0 0.5)" />
-                                                    </clipPath>
-                                                </defs>
-                                            </svg>
-                                        </span>
-                                        <div class="text__info">
-                                            <h5>64% Discount</h5>
-                                            <p>Save your 64% money with us</p>
-                                        </div>
-                                    </div>
-                                    <div class="products-video__card-item">
-                                        <span class="icon">
-                                            <svg width="32" height="33" viewBox="0 0 32 33" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <g clip-path="url(#clip0)">
-                                                    <path
-                                                        d="M28.0671 24.7501C28.326 24.7501 28.5359 24.5402 28.5359 24.2813V13.0313C28.5359 12.4718 28.3178 11.8995 27.9219 11.4198L24.4454 7.20769C24.2633 6.987 24.0539 6.801 23.8265 6.65287C23.8405 6.50962 23.8484 6.36494 23.8484 6.21887V0.968872C23.8484 0.709997 23.6385 0.500122 23.3797 0.500122C23.1208 0.500122 22.9109 0.709997 22.9109 0.968872C22.9109 0.968872 22.91 6.26356 22.9096 6.28593C22.7762 6.26231 22.6409 6.25012 22.5047 6.25012H16.4422C16.0154 6.25012 15.597 6.36987 15.2224 6.58994C15.2062 6.59575 15.1902 6.60225 15.1744 6.60994L10.605 8.83568C10.0987 9.08962 9.69392 9.51556 9.46498 10.035C9.46248 10.0407 9.46011 10.0464 9.45786 10.0521L7.56861 14.8441C7.47367 15.085 7.59192 15.3572 7.83279 15.4522C7.88923 15.4744 7.94736 15.4849 8.00461 15.4849C8.19148 15.4849 8.36811 15.3724 8.44079 15.188L10.3264 10.4052C10.4682 10.0884 10.7161 9.82887 11.0204 9.67612L13.4347 8.50019L11.0249 11.4199C10.6641 11.857 10.4734 12.4143 10.4734 13.0314V29.2189C10.4734 29.4074 10.49 29.592 10.52 29.7719L5.68992 27.6316C4.59879 27.1482 4.10429 25.864 4.58779 24.769C4.58986 24.7642 4.59186 24.7594 4.59386 24.7547L7.64904 17.1619C7.74567 16.9217 7.62936 16.6487 7.38917 16.5521C7.14886 16.4554 6.87598 16.5718 6.77929 16.8119L3.72679 24.3976C3.04042 25.9632 3.74942 27.7971 5.31011 28.4886L10.9741 30.9984C10.981 31.0014 10.9881 31.0037 10.9951 31.0064C11.57 31.9046 12.5639 32.5001 13.6922 32.5001H25.2547C27.0333 32.5001 28.5359 30.9974 28.5359 29.2188V26.4688C28.5359 26.2099 28.326 26.0001 28.0672 26.0001C27.8083 26.0001 27.5984 26.2099 27.5984 26.4688V29.2188C27.5984 30.4893 26.5251 31.5626 25.2547 31.5626H13.6922C12.4343 31.5626 11.4109 30.5112 11.4109 29.2188V13.0313C11.4109 12.6289 11.5243 12.2875 11.748 12.0166L15.2244 7.80444C15.548 7.41244 15.9919 7.18756 16.4422 7.18756H22.5047C22.593 7.18756 22.681 7.1965 22.7679 7.21337C22.4745 8.21406 21.7476 9.04906 20.766 9.4675C20.5094 9.03819 20.0401 8.75006 19.5046 8.75006C18.6947 8.75006 18.0359 9.40894 18.0359 10.2188C18.0359 11.0287 18.6947 11.6876 19.5046 11.6876C20.2535 11.6876 20.8729 11.1239 20.962 10.3986C22.2244 9.92112 23.179 8.90937 23.6044 7.67444C23.6452 7.7155 23.6847 7.75869 23.7224 7.80444L27.1989 12.0166C27.4565 12.3287 27.5984 12.6891 27.5984 13.0314V24.2814C27.5984 24.5402 27.8082 24.7501 28.0671 24.7501ZM19.5046 10.7501C19.2117 10.7501 18.9734 10.5117 18.9734 10.2188C18.9734 9.92587 19.2117 9.68756 19.5046 9.68756C19.7975 9.68756 20.0359 9.92587 20.0359 10.2188C20.0359 10.5117 19.7975 10.7501 19.5046 10.7501Z"
-                                                        fill="#00B307" />
-                                                    <path
-                                                        d="M15.4424 25.4375C15.5623 25.4375 15.6823 25.3917 15.7738 25.3002L23.7738 17.3002C23.9569 17.1171 23.9569 16.8203 23.7738 16.6373C23.5908 16.4542 23.294 16.4542 23.111 16.6373L15.111 24.6373C14.8121 24.9159 15.0414 25.4517 15.4424 25.4375Z"
-                                                        fill="#00B307" />
-                                                    <path
-                                                        d="M16.4414 20.5C17.5614 20.5 18.4727 19.5887 18.4727 18.4687C18.4727 17.3487 17.5614 16.4375 16.4414 16.4375H16.3789C15.2589 16.4375 14.3477 17.3487 14.3477 18.4687C14.3477 19.5887 15.2589 20.5 16.3789 20.5H16.4414ZM15.2852 18.4687C15.2852 17.8657 15.7758 17.375 16.3789 17.375H16.4414C17.0445 17.375 17.5352 17.8657 17.5352 18.4687C17.5352 19.0718 17.0445 19.5625 16.4414 19.5625H16.3789C15.7758 19.5625 15.2852 19.0718 15.2852 18.4687Z"
-                                                        fill="#00B307" />
-                                                    <path
-                                                        d="M22.5039 25.4375H22.5664C23.6864 25.4375 24.5977 24.5262 24.5977 23.4062C24.5977 22.2862 23.6864 21.375 22.5664 21.375H22.5039C21.3839 21.375 20.4727 22.2862 20.4727 23.4062C20.4727 24.5262 21.3839 25.4375 22.5039 25.4375ZM22.5039 22.3125H22.5664C23.1695 22.3125 23.6602 22.8032 23.6602 23.4062C23.6602 24.0093 23.1695 24.5 22.5664 24.5H22.5039C21.9008 24.5 21.4102 24.0093 21.4102 23.4062C21.4102 22.8032 21.9008 22.3125 22.5039 22.3125Z"
-                                                        fill="#00B307" />
-                                                </g>
-                                                <defs>
-                                                    <clipPath>
-                                                        <rect width="32" height="32" fill="white"
-                                                            transform="translate(0 0.5)" />
-                                                    </clipPath>
-                                                </defs>
-                                            </svg>
-                                        </span>
-                                        <div class="text__info">
-                                            <h5>100% Organic</h5>
-                                            <p>100% Organic Vegetables</p>
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -440,46 +333,47 @@
                         <div class="row products-tab__information">
                             <div class="col-lg-7 order-lg-0 order-2">
                                 <ul class="products-tab__information-list">
+
                                     <li>
-                                        <h5 class="title">Weight:</h5>
-                                        <p class="title-description">03</p>
+                                        <h5 class="title">Màu Sắc:</h5>
+                                        <ul>
+                                            @php
+                                                $groupedProducts = [];
+                                                foreach ($productDetails as $detail) {
+                                                    // Kiểm tra xem sản phẩm có size không
+                                                    if ($detail->size) {
+                                                        $groupedProducts[$detail->color->color_name][] =
+                                                            $detail->size->size_name;
+                                                    } else {
+                                                        $groupedProducts[$detail->color->color_name][] =
+                                                            'Không có size';
+                                                    }
+                                                }
+                                            @endphp
+
+                                            @foreach ($groupedProducts as $color => $sizes)
+                                                <li>
+                                                    {{ $color }}:
+                                                    @if (in_array('Không có size', $sizes))
+                                                        Không có size
+                                                    @else
+                                                        {{ implode(', ', $sizes) }}
+                                                    @endif
+                                                </li>
+                                            @endforeach
+                                        </ul>
+
+                                    </li>
+
+                                    <li>
+                                        <h5 class="title">Danh mục:</h5>
+                                        <p class="title-description">{{ $product->category->name }}</p>
                                     </li>
                                     <li>
-                                        <h5 class="title">Color:</h5>
-                                        <p class="title-description">Green</p>
+                                        <h5 class="title">Số lượng còn lại:</h5>
+                                        <p class="title-description">{{ $product->quantity }}</p>
                                     </li>
-                                    <li>
-                                        <h5 class="title">Type:</h5>
-                                        <p class="title-description">Organic</p>
-                                    </li>
-                                    <li>
-                                        <h5 class="title">Category:</h5>
-                                        <p class="title-description">Vegetables</p>
-                                    </li>
-                                    <li>
-                                        <h5 class="title">Stock Status:</h5>
-                                        <p class="title-description">Available <span>(5,413)</span></p>
-                                    </li>
-                                    <li>
-                                        <h5 class="title">Tags:</h5>
-                                        <div class="title-description title-description__tags">
-                                            <a href="#" class="title-description__tags-item">
-                                                Vegetables,
-                                            </a>
-                                            <a href="#" class="title-description__tags-item">
-                                                Healthy,
-                                            </a>
-                                            <a href="#" class="title-description__tags-item">
-                                                Chinese,
-                                            </a>
-                                            <a href="#" class="title-description__tags-item">
-                                                Cabbage,
-                                            </a>
-                                            <a href="#" class="title-description__tags-item">
-                                                Green Cabbage,
-                                            </a>
-                                        </div>
-                                    </li>
+
                                 </ul>
                             </div>
                             <div class="col-lg-5 order-lg-0 order-1">
@@ -1538,4 +1432,63 @@
     <script src="{{ asset('client/lib/js/bvselect.js') }}"></script>
     <script src="{{ asset('client/lib/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('client/js/main.js') }}"></script>
+    <script>
+        document.getElementById('add-to-cart-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // Lấy ID sản phẩm và số lượng từ các input
+            const productId = this.getAttribute('data-product-id');
+            const quantity = document.getElementById('counter-btn-counter').value;
+
+            // Lấy giá trị màu sắc và kích thước đã chọn
+            const selectedColorId = document.getElementById('color-select').value;
+            const selectedSizeId = document.getElementById('size-select').value;
+
+            // Kiểm tra số lượng nhập vào
+            if (quantity <= 0 || isNaN(quantity)) {
+                alert('Số lượng không hợp lệ!');
+                return;
+            }
+
+            // Kiểm tra nếu sản phẩm có màu hoặc kích thước
+            const hasColor = selectedColorId !== '';
+            const hasSize = selectedSizeId !== '';
+
+            // Nếu sản phẩm có cả màu và kích thước, yêu cầu người dùng chọn ít nhất 1 trong 2
+            if (!hasColor && !hasSize) {
+                alert('Vui lòng chọn màu hoặc kích thước!');
+                return;
+            }
+
+            // Gửi dữ liệu đến server bằng Ajax
+            fetch("{{ route('cart.addjs', '') }}/" + productId, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}" // Token CSRF để bảo vệ request
+                    },
+                    body: JSON.stringify({
+                        quantity: quantity,
+                        color_id: hasColor ? selectedColorId :
+                        null, // Nếu có màu thì gửi màu, nếu không gửi null
+                        size_id: hasSize ? selectedSizeId :
+                            null // Nếu có size thì gửi size, nếu không gửi null
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message); // Thông báo khi thêm thành công
+                        // You can add additional logic here, such as updating the cart UI or redirecting
+                    } else {
+                        alert(data.message); // Thông báo lỗi
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng!');
+                });
+        });
+    </script>
+
 @endsection

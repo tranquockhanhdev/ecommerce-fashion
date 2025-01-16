@@ -69,7 +69,6 @@ class CheckoutController extends Controller
 
         // Lấy các phương thức thanh toán
         $paymentMethods = PaymentMethod::all();
-
         return view('client.cart.checkout', compact('paymentMethods', 'orderItem', 'totalItem', 'shippingCost', 'distance', 'total', 'cart'));
     }
 
@@ -132,6 +131,7 @@ class CheckoutController extends Controller
                 'price' => $item['price'], // Giá
                 'created_at' => now(),
                 'updated_at' => now(),
+                'product_detail_id' => $item['product_detail_id'],
             ]);
         }
         // Xóa toàn bộ giỏ hàng sau khi đặt hàng thành công

@@ -57,7 +57,8 @@ class AccountOrderController extends Controller
         // Tìm phương thức thanh toán của đơn hàng
         $paymentMethod = PaymentMethod::findOrFail($orders->payment_method_id);
         // Tìm các sản phẩm trong đơn hàng
-        $orderItems = OrderItem::where('order_id',  $orders->id)->get();
+$orderItems = OrderItem::with('product_detail.color', 'product_detail.size')->where('order_id', $orders->id)->get();
+
         // Format tiền theo định dạng Việt Nam Đồng
         $orders->formatted_total = number_format($orders->total, 0, ',', '.') . ' VND';
         $orders->formatted_shipping = number_format($orders->shipping_fee, 0, ',', '.') . ' VND';

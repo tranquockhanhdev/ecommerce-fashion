@@ -254,6 +254,9 @@
                                     Số lượng
                                 </th>
                                 <th scope="col" class="dashboard__order-history-table-title">
+                                    Size Và Màu Sắc
+                                </th>
+                                <th scope="col" class="dashboard__order-history-table-title">
                                     Tổng cộng
                                 </th>
                             </tr>
@@ -267,13 +270,13 @@
                       dashboard__order-history-table-item
                       align-middle
                     ">
-                                    <a href="product-details.html" class="dashboard__product-item">
+                                    <div class="dashboard__product-item">
                                         <div class="dashboard__product-item-img">
                                             <img src="{{ asset($orderItem->product->images->first()->link) }}" alt="product" />
 
                                         </div>
                                         <h5 class="font-body--md-400"> {{$orderItem->name}}</h5>
-                                    </a>
+                                    </div>
                                 </td>
                                 <!-- Price  -->
                                 <td
@@ -293,6 +296,20 @@
                     ">
                                     <p class="order-total-price"> {{$orderItem->quantity}}</p>
                                 </td>
+                               <td
+    class="
+        dashboard__order-history-table-item
+        order-total
+        align-middle
+    ">
+    <p style="white-space: nowrap;" class="order-total-price">
+        Size: {{ $orderItem->product_detail->size->size_name ?? 'Không có size' }} 
+       
+    </p>
+    <p style="white-space: nowrap;"> Màu sắc: {{ $orderItem->product_detail->color->color_name ?? 'Không có màu' }}</p>
+</td>
+
+
                                 <!-- Subtotal  -->
                                 <td class="
                       dashboard__order-history-table-item

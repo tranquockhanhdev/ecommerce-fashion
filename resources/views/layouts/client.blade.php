@@ -1229,7 +1229,7 @@
                 <span class="product-price font-body--lg-500">₫0.00</span> <!-- Tổng giá trị sẽ được cập nhật -->
             </div>
 
-            <form action="{{ route('client.cart.checkout') }}" method="get">
+            <form action="{{ route('client.cart.shopping-cart') }}" method="get">
                 <button class="button button--lg w-100" type="submit">
                     Thanh Toán
                 </button>

@@ -51,12 +51,6 @@ class CartController extends Controller
         return view('client.cart.shopping-cart', compact('cart', 'cartItems', 'total'));
     }
 
-
-
-
-
-
-
     public function addToCartJS(Request $request, $productId)
     {
         // Lấy thông tin sản phẩm từ cơ sở dữ liệu

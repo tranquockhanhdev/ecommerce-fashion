@@ -93,6 +93,15 @@
                                         {{ number_format($orderItem->product->price, 0, ',', '.') }} VNĐ
 
                                     </p>
+                                    
+                                    
+                                </div>
+                                <div>
+                                <p>
+    Size: {{ isset($orderItem->productDetails->size->size_name) ? $orderItem->productDetails->size->size_name : 'Không có size' }} 
+   || Màu sắc: {{ isset($orderItem->productDetails->color->color_name) ? $orderItem->productDetails->color->color_name : 'Không có màu' }}
+</p>
+
                                 </div>
                                 @endforeach
                             </div>
@@ -155,7 +164,7 @@
                             </div>
 
                             <button class="button button--lg w-100" type="submit">
-                                Place Order
+                                Đặt Hàng
                             </button>
                             </form>
                         </div>

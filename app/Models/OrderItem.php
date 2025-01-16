@@ -10,9 +10,14 @@ class OrderItem extends Model
     use HasFactory;
 
     protected $table = 'order_item';
-    
+
     protected $fillable = [
-        'order_id', 'product_id', 'name', 'quantity', 'price',
+        'order_id',
+        'product_id',
+        'name',
+        'quantity',
+        'price',
+        'product_detail_id',
     ];
 
     // Quan hệ với Order
@@ -26,4 +31,10 @@ class OrderItem extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    // OrderItem.php
+public function product_detail()
+{
+    return $this->belongsTo(ProductDetail::class, 'product_detail_id');
+}
+
 }

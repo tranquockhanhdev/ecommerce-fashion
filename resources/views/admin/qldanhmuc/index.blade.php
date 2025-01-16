@@ -1,5 +1,10 @@
 @extends('layouts.admin')
 @section('content')
+@if (session('success'))
+    <button class="alert alert-success" id="success-message">
+        {{ session('success') }}
+    </button>
+@endif
 <h1 class="h3 mb-0 text-gray-800">Quản lí danh mục</h1>
 <hr>
 <div class="d-flex justify-content-between">
@@ -86,4 +91,12 @@
 <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
 <script src="{{ asset('js/demo/datatables-demo.js')}}"></script>
+
+<script>
+    @if (session('success'))
+        setTimeout(function() {
+            document.getElementById('success-message').style.display = 'none';
+        }, 3000); 
+    @endif
+</script>
 @endsection

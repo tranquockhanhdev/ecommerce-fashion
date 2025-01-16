@@ -8,12 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
-
-
-
     protected $table = 'category';
-
-
     protected $fillable = [
         'parent_id',
         'name',
@@ -33,30 +28,19 @@ class Category extends Model
     {
         return $this->belongsTo(Category::class, 'parent_id');
     }
+
     public function articles()
     {
         return $this->hasMany(Article::class);
     }
 
-    // public function parent()
-    // {
-    //     return $this->belongsTo(Category::class, 'parent_id'); // Một danh mục có thể có một danh mục cha
-    // }
-
-
     // public function children()
     // {
     //     return $this->hasMany(Category::class, 'parent_id'); // Một danh mục có thể có nhiều danh mục con
     // }
-
-
-    // public function products()
-    // {
-    //     return $this->hasMany(Product::class); // Một danh mục có thể có nhiều sản phẩm
-    // }
+    // Một danh mục có thể có nhiều sản phẩm
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }
-
-    // protected $table = 'category'; 
-    // protected $fillable = [
-    //    'id','parent_id','name','slug','image','status','created_at','update_at'
-    // ];

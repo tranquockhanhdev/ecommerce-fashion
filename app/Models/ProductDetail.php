@@ -40,4 +40,9 @@ class ProductDetail extends Model
     {
         return $this->belongsTo(SizeProduct::class, 'sizeproduct_id');
     }
+    // ProductDetail.php
+    public function cartItem()
+    {
+        return $this->belongsTo(CartItem::class);
+    }
 }

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>@yield('title', 'Synergy 4.0')</title>
     <link rel="icon" type="image/png" href="{{ asset('client/images/favicon/favicon-16x16.png') }}" />
@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{ asset('client/lib/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('client/css/style.css') }}" />
     @yield('css')
+
 </head>
 
 <body>
@@ -39,7 +40,7 @@
                                         stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                             </span>
-                            Vị Trí Cửa Hàng: 65 Đ. Huỳnh Thúc Kháng, Bến Nghé, Quận 1, Hồ Chí Minh
+                            Vị Trí Cửa Hàng: {{ $websiteInfo->address }}
                         </p>
                     </div>
                     <div class="header__top-right">
@@ -142,13 +143,13 @@
                                     stroke-linejoin="round" />
                             </svg>
                         </button>
-                        <a href="{{ route('client.homepage') }}">
-                            <img src="{{ asset('client/images/logo.png') }}" alt="brand-logo" />
+                        <a href="{{ route('client.pages.homepage') }}">
+                            <img src="{{ asset('storage/logos/' . $websiteInfo->logo) }}" alt="brand-logo" />
                         </a>
                     </div>
-                    <form action="#">
+                    <form action="{{ route('search') }}" method="GET">
                         <div class="header__input-form">
-                            <input type="text" placeholder="Tìm Kiếm" />
+                            <input type="text" name="query" placeholder="Tìm Kiếm" />
                             <span class="search-icon">
                                 <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -165,9 +166,11 @@
                             </button>
                         </div>
                     </form>
+
+
                     <div class="header__cart">
                         <div class="header__cart-item">
-                            <a class="fav" href="{{ route('client.wishlist') }}">
+                            <a class="fav" href="{{ route('wishlist.index') }}">
                                 <svg width="25" height="23" viewBox="0 0 20 18" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -186,16 +189,17 @@
                                             stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                             stroke-linejoin="round" />
                                     </svg>
-                                    <span class="item-number">2</span>
+                                    <span class="item-number">0</span>
+                                    <!-- Số lượng sản phẩm sẽ được cập nhật từ API -->
                                 </button>
                                 <div class="header__cart-item-content-info">
                                     <h5>Giỏ Hàng:</h5>
-                                    <span class="price">₫57.00</span>
+                                    <span class="price">₫0.00</span> <!-- Tổng tiền sẽ được cập nhật từ API -->
                                 </div>
                             </div>
                         </div>
                         <div class="header__cart-item">
-                            <a href="{{ route('client.user-dashboard') }}" class="icon user-icon">
+                            <a href="{{ route('client.user.user-dashboard') }}" class="icon user-icon">
                                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -215,7 +219,8 @@
             <div class="container">
                 <div class="header__bottom-content">
                     <div class="header__bottom-left">
-                        @if (in_array(Route::currentRouteName(), ['client.homepage', 'client.sign-up']))
+
+                        @if (in_array(Route::currentRouteName(), ['client.pages.homepage', 'register']))
                             <ul class="header__category-content">
                                 <li class="header__category-content-item">
                                     <a>
@@ -347,24 +352,24 @@
 
                         <ul class="header__navigation-menu">
                             <li
-                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.homepage' ? 'active' : '' }}">
-                                <a href="{{ route('client.homepage') }}">Trang Chủ</a>
+                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.pages.homepage' ? 'active' : '' }}">
+                                <a href="{{ route('client.pages.homepage') }}">Trang Chủ</a>
                             </li>
                             <li
-                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.shop' ? 'active' : '' }}">
-                                <a href="{{ route('client.shop') }}">Cửa Hàng</a>
+                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.shop.shop' ? 'active' : '' }}">
+                                <a href="{{ route('client.shop.shop') }}">Cửa Hàng</a>
                             </li>
                             <li
                                 class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.blog.blog-list' ? 'active' : '' }}">
                                 <a href="{{ route('client.blog.blog-list') }}">Bài Viết</a>
                             </li>
                             <li
-                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.about' ? 'active' : '' }}">
-                                <a href="{{ route('client.about') }}">Giới Thiệu</a>
+                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.pages.about' ? 'active' : '' }}">
+                                <a href="{{ route('client.pages.about') }}">Giới Thiệu</a>
                             </li>
                             <li
-                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.contact' ? 'active' : '' }}">
-                                <a href="{{ route('client.contact') }}">Liên Hệ</a>
+                                class="header__navigation-menu-link {{ Route::currentRouteName() == 'client.pages.contact' ? 'active' : '' }}">
+                                <a href="{{ route('client.pages.contact') }}">Liên Hệ</a>
                             </li>
                         </ul>
 
@@ -387,7 +392,7 @@
                                     stroke-linejoin="round" />
                             </svg>
 
-                            (+84) 332 172 749
+                            {{ $websiteInfo->phone }}
                         </span>
                     </a>
                 </div>
@@ -423,12 +428,12 @@
                     </form>
                     <ul class="header__mobile-menu">
                         <li class="header__mobile-menu-item active">
-                            <a href="{{ route('client.homepage') }}" class="header__mobile-menu-item-link">
+                            <a href="{{ route('client.pages.homepage') }}" class="header__mobile-menu-item-link">
                                 Trang Chủ
                             </a>
                         </li>
                         <li class="header__mobile-menu-item">
-                            <a href="{{ route('client.shop') }}" class="header__mobile-menu-item-link">
+                            <a href="{{ route('client.shop.shop') }}" class="header__mobile-menu-item-link">
                                 Cửa Hàng
                             </a>
 
@@ -440,11 +445,12 @@
                             </a>
                         </li>
                         <li class="header__mobile-menu-item">
-                            <a href="{{ route('client.about') }}" class="header__mobile-menu-item-link">Giới
+                            <a href="{{ route('client.pages.about') }}" class="header__mobile-menu-item-link">Giới
                                 Thiệu</a>
                         </li>
                         <li class="header__mobile-menu-item">
-                            <a href="{{ route('client.contact') }}" class="header__mobile-menu-item-link">Liên Hệ</a>
+                            <a href="{{ route('client.pages.contact') }}" class="header__mobile-menu-item-link">Liên
+                                Hệ</a>
                         </li>
                     </ul>
                 </div>
@@ -454,20 +460,21 @@
     <!-- Header  Section start -->
     <!-- Thanh chỉ hướngt -->
     @if (in_array(Route::currentRouteName(), [
-            'client.shop',
-            'client.product-details',
+            'client.shop.shop',
+            'client.shop.product-details',
             'client.blog.blog-list',
-            'client.single-blog',
-            'client.about',
-            'client.contact',
-            'client.sign-up',
-            'client.user-dashboard',
-            'client.order-history',
-            'client.account-setting',
-            'client.order-details',
-            'client.wishlist',
-            'client.checkout',
-            'client.shopping-cart',
+            'client.blog.single-blog',
+            'client.pages.about',
+            'client.pages.contact',
+            'register',
+            'client.user.user-dashboard',
+            'client.user.order-history',
+            'client.user.account-setting',
+            'client.user.order-details',
+            'wishlist.index',
+            'client.cart.checkout',
+            'client.cart.shopping-cart',
+            'client.user.bought',
         ]))
         <!-- breedcrumb section start -->
         <div class="section breedcrumb">
@@ -476,7 +483,7 @@
                 <div class="container">
                     <ul class="breedcrumb__content">
                         <li>
-                            <a href="{{ route('client.homepage') }}">
+                            <a href="{{ route('client.pages.homepage') }}">
                                 <svg width="18" height="19" viewBox="0 0 18 19" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -488,7 +495,7 @@
                             </a>
                         </li>
 
-                        @if (Route::currentRouteName() == 'client.single-blog')
+                        @if (Route::currentRouteName() == 'client.blog.single-blog')
                             <!-- Breadcrumb for single blog post -->
                             <li>
                                 <a href="{{ route('client.blog.blog-list') }}">Bài Viết
@@ -500,60 +507,61 @@
                             <li class="active">
                                 <a href="#">Chi Tiết Bài Viết</a>
                             </li>
-                        @elseif (Route::currentRouteName() == 'client.user-dashboard')
+                        @elseif (Route::currentRouteName() == 'client.user.user-dashboard')
                             <!-- Breadcrumb for dashboard -->
                             <li>
-                                <a href="{{ route('client.user-dashboard') }}">Tài Khoản
+                                <a href="{{ route('client.user.user-dashboard') }}">Tài Khoản
                                     <span> > </span>
                                 </a>
                             </li>
                             <li class="active">
                                 <a href="#">Dashboard</a>
                             </li>
-                        @elseif (Route::currentRouteName() == 'client.order-history')
+                        @elseif (Route::currentRouteName() == 'client.user.order-history')
                             <!-- Breadcrumb for dashboard -->
                             <li>
-                                <a href="{{ route('client.user-dashboard') }}">Tài Khoản
+                                <a href="{{ route('client.user.user-dashboard') }}">Tài Khoản
                                     <span> > </span>
                                 </a>
                             </li>
                             <li class="active">
                                 <a href="#">Lịch Sử Đơn Hàng</a>
                             </li>
-                        @elseif (Route::currentRouteName() == 'client.order-details')
+                        @elseif (Route::currentRouteName() == 'client.user.order-details')
                             <!-- Breadcrumb for dashboard -->
                             <li>
-                                <a href="{{ route('client.user-dashboard') }}">Tài Khoản
+                                <a href="{{ route('client.user.user-dashboard') }}">Tài Khoản
                                     <span> > </span>
                                 </a>
                             </li>
                             <li class="active">
                                 <a href="#">Chi Tiết Đơn Hàng</a>
                             </li>
-                        @elseif (Route::currentRouteName() == 'client.account-setting')
+                        @elseif (Route::currentRouteName() == 'client.user.account-setting')
                             <!-- Breadcrumb for dashboard -->
                             <li>
-                                <a href="{{ route('client.user-dashboard') }}">Tài Khoản
+                                <a href="{{ route('client.user.user-dashboard') }}">Tài Khoản
+
                                     <span> > </span>
                                 </a>
                             </li>
                             <li class="active">
                                 <a href="#">Cài Đặt</a>
                             </li>
-                        @elseif (Route::currentRouteName() == 'client.product-details')
+                        @elseif (Route::currentRouteName() == 'client.shop.product-details')
                             <!-- Breadcrumb for dashboard -->
                             <li>
-                                <a href="{{ route('client.shop') }}">Cửa Hàng
+                                <a href="{{ route('client.shop.shop') }}">Cửa Hàng
                                     <span> > </span>
                                 </a>
                             </li>
                             <li class="active">
                                 <a href="#">Chi Tiết Sản Phẩm</a>
                             </li>
-                        @elseif (Route::currentRouteName() == 'client.checkout')
+                        @elseif (Route::currentRouteName() == 'client.cart.checkout')
                             <!-- Breadcrumb for dashboard -->
                             <li>
-                                <a href="{{ route('client.shopping-cart') }}">Giỏ Hàng
+                                <a href="{{ route('client.cart.shopping-cart') }}">Giỏ Hàng
                                     <span> > </span>
                                 </a>
                             </li>
@@ -566,13 +574,13 @@
                                 <a href="#">
                                     @php
                                         $breadcrumbTitles = [
-                                            'client.shop' => 'Cửa Hàng',
+                                            'client.shop.shop' => 'Cửa Hàng',
                                             'client.blog.blog-list' => 'Bài Viết',
-                                            'client.about' => 'Giới Thiệu',
-                                            'client.contact' => 'Liên Hệ',
-                                            'client.sign-up' => 'Đăng Ký',
-                                            'client.wishlist' => 'Danh Sách Yêu Thích',
-                                            'client.shopping-cart' => 'Giỏ Hàng',
+                                            'client.pages.about' => 'Giới Thiệu',
+                                            'client.pages.contact' => 'Liên Hệ',
+                                            'register' => 'Đăng Ký',
+                                            'wishlist.index' => 'Danh Sách Yêu Thích',
+                                            'client.cart.shopping-cart' => 'Giỏ Hàng',
                                         ];
 
                                         $routeName = Route::currentRouteName();
@@ -590,10 +598,11 @@
     @endif
     <!-- nav  -->
     @if (in_array(Route::currentRouteName(), [
-            'client.user-dashboard',
-            'client.order-history',
-            'client.account-setting',
-            'client.order-details',
+            'client.user.user-dashboard',
+            'client.user.order-history',
+            'client.user.account-setting',
+            'client.user.order-details',
+            'client.user.bought',
         ]))
         <div class="dashboard section">
             <div class="container">
@@ -606,8 +615,8 @@
                             </h5>
                             <ul class="dashboard__nav-item">
                                 <li
-                                    class="dashboard__nav-item-link {{ Route::currentRouteName() === 'client.user-dashboard' ? 'active' : '' }}">
-                                    <a href="{{ route('client.user-dashboard') }}" class="font-body--lg-400">
+                                    class="dashboard__nav-item-link {{ Route::currentRouteName() === 'client.user.user-dashboard' ? 'active' : '' }}">
+                                    <a href="{{ route('client.user.user-dashboard') }}" class="font-body--lg-400">
                                         <span class="icon">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -621,8 +630,8 @@
                                 </li>
                                 <!-- Order History -->
                                 <li
-                                    class="dashboard__nav-item-link {{ Route::currentRouteName() === 'client.order-history' ? 'active' : '' }}">
-                                    <a href="{{ route('client.order-history') }}" class="font-body--lg-400">
+                                    class="dashboard__nav-item-link {{ Route::currentRouteName() === 'client.user.order-history' ? 'active' : '' }}">
+                                    <a href="{{ route('client.user.order-history') }}" class="font-body--lg-400">
                                         <span class="icon">
                                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -636,7 +645,7 @@
                                 </li>
                                 <!-- Wishlist -->
                                 <li class="dashboard__nav-item-link">
-                                    <a href="{{ route('client.wishlist') }}" class="font-body--lg-400">
+                                    <a href="{{ route('wishlist.index') }}" class="font-body--lg-400">
                                         <span class="icon">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -648,9 +657,26 @@
                                         <span class="name"> Danh Sách Yêu Thích</span>
                                     </a>
                                 </li>
+                                <!-- Sản Phẩm Đã Mua -->
+                                <li class="dashboard__nav-item-link">
+                                    <a href="{{ route('client.user.bought') }}" class="font-body--lg-400">
+                                        <span class="icon">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M9 11.5L12 14.5L15 10.5" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path d="M4 7L7 14H17L20 7H4Z" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                        </span>
+
+                                        <span class="name"> Sản Phẩm Đã Mua </span>
+                                    </a>
+                                </li>
                                 <!-- Shopping Cart  -->
                                 <li class="dashboard__nav-item-link">
-                                    <a href="{{ route('client.shopping-cart') }}" class="font-body--lg-400">
+                                    <a href="{{ route('client.cart.shopping-cart') }}" class="font-body--lg-400">
                                         <span class="icon">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -666,8 +692,9 @@
                                 </li>
                                 <!--  Settings   -->
                                 <li
-                                    class="dashboard__nav-item-link {{ Route::currentRouteName() === 'client.account-setting' ? 'active' : '' }}">
-                                    <a href="{{ route('client.account-setting') }}" class="font-body--lg-400">
+                                    class="dashboard__nav-item-link {{ Route::currentRouteName() === 'client.user.account-setting' ? 'active' : '' }}">
+                                    <a href="{{ route('client.user.account-setting') }}" class="font-body--lg-400">
+
                                         <span class="icon">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -682,7 +709,8 @@
                                 </li>
                                 <!--  Log out    -->
                                 <li class="dashboard__nav-item-link">
-                                    <a href="#" class="font-body--lg-400">
+                                    <a href="#" class="font-body--lg-400"
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         <span class="icon">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -691,10 +719,14 @@
                                                     fill="currentColor" />
                                             </svg>
                                         </span>
-
-                                        <span class="name"> Đăng Xuất </span>
+                                        <span class="name">Đăng Xuất</span>
                                     </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        style="display: none;">
+                                        @csrf
+                                    </form>
                                 </li>
+
                             </ul>
                             <button class="filter-icon">
                                 <svg width="22" height="19" viewBox="0 0 22 19" fill="none"
@@ -728,7 +760,7 @@
     <!-- Popup đăng  nhập end  -->
 
     <!-- Brand -->
-    @if (in_array(Route::currentRouteName(), ['client.homepage', 'client.about']))
+    @if (in_array(Route::currentRouteName(), ['client.pages.homepage', 'client.pages.about']))
         <!-- brand-name Section Start -->
         <div class="brand-name section section--xl">
             <div class="container">
@@ -846,7 +878,7 @@
                     <div class="col-xl-4">
                         <div class="footer__brand-info">
                             <div class="footer__brand-info-logo">
-                                <img src="{{ asset('client/images/logo-nl-white.png') }}" alt="logo" />
+                                <img src="{{ asset('storage/logos/' . $websiteInfo->logo) }}" alt="logo" />
                             </div>
                             <p class="font-body--md-400">
                                 Sứ mệnh của chúng tôi là mang đến những sản phẩm thời trang chất lượng và hiện đại
@@ -854,13 +886,13 @@
                                 khách hàng.
                             </p>
                             <p class="font-body--md-400">
-                                Địa chỉ: 65 Đ. Huỳnh Thúc Kháng, Bến Nghé, Quận 1, Hồ Chí Minh
+                                Địa chỉ: {{ $websiteInfo->address }}
                             </p>
 
                             <p class="footer__brand-info-contact">
-                                <a href="#"><span>(+84) 332 172 749</span></a>
+                                <a href="#"><span>{{ $websiteInfo->phone }}</span></a>
                                 or
-                                <a href="#"><span>synergy40@gmail.com</span></a>
+                                <a href="#"><span>{{ $websiteInfo->email }}</span></a>
                             </p>
                             <ul class="social-icon">
                                 <li class="social-icon-link">
@@ -913,17 +945,18 @@
                                 <h2 class="font-body--lg-500">Tài Khoản</h2>
                             </li>
                             <li class="footer__navigation-link">
-                                <a href="user-dashboard.html">Tài Khoản Của Tôi</a>
+                                <a href="/user/account-setting">Tài Khoản Của Tôi</a>
                             </li>
                             <li class="footer__navigation-link">
-                                <a href="order-history.html"> Lịch Sử Đặt Hàng </a>
+                                <a href="/user/order/history"> Lịch Sử Đặt Hàng </a>
                             </li>
                             <li class="footer__navigation-link">
-                                <a href="shopping-cart.html"> Giỏ Hàng </a>
+                                <a href="/cart/shopping-cart"> Giỏ Hàng </a>
                             </li>
                             <li class="footer__navigation-link">
-                                <a href="wishlist.html"> Danh Sách Yêu Thích </a>
+                                <a href="/cart/wishlist"> Danh Sách Yêu Thích </a>
                             </li>
+
                         </ul>
                     </div>
                     <!-- Helps  -->
@@ -1008,7 +1041,7 @@
             </div>
             <div class="footer__bottom">
                 <p class="footer__copyright-text">
-                    © 2025 Synergy 4.0. All rights reserved.
+                    © 2025 {{ $websiteInfo->site_name }}. All rights reserved.
                 </p>
                 <div class="footer__partner d-flex">
                     <a href="#" class="footer__partner-item">
@@ -1170,11 +1203,12 @@
         </div>
     </footer>
     <!--Footer Section end  -->
-    <!-- Shopping Cart sidebar  start  -->
+    <!-- Shopping Cart Sidebar Start -->
     <div class="shopping-cart">
         <div class="shopping-cart-top">
             <div class="shopping-cart-header">
-                <h5 class="font-body--xxl-500">Giỏ Hàng (<span class="count">2</span>)</h5>
+                <h5 class="font-body--xxl-500">Giỏ Hàng (<span class="count">0</span>)</h5>
+                <!-- Số lượng sản phẩm trong giỏ -->
                 <button class="close">
                     <svg width="45" height="45" viewBox="0 0 45 45" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -1187,69 +1221,33 @@
                 </button>
             </div>
 
-            <div class="shopping-cart__product-content">
-                <div class="shopping-cart__product-content-item">
-                    <div class="img-wrapper">
-                        <img src="{{ asset('client/images/products/img-01.png') }}" alt="product" />
-                    </div>
-                    <div class="text-content">
-                        <h5 class="font-body--md-400">Fresh Indian Orange</h5>
-                        <p class="font-body--md-400">1kg x <span class="font-body--md-500">12.00</span></p>
-                    </div>
-                </div>
-                <button class="delete-item">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M12 23C18.0748 23 23 18.0748 23 12C23 5.92525 18.0748 1 12 1C5.92525 1 1 5.92525 1 12C1 18.0748 5.92525 23 12 23Z"
-                            stroke="#CCCCCC" stroke-miterlimit="10" />
-                        <path d="M16 8L8 16" stroke="#666666" stroke-width="1.5" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                        <path d="M16 16L8 8" stroke="#666666" stroke-width="1.5" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-                </button>
-            </div>
-
-            <div class="shopping-cart__product-content">
-                <div class="shopping-cart__product-content-item">
-                    <div class="img-wrapper">
-                        <img src="{{ asset('client/images/products/img-01.png') }}" alt="product" />
-                    </div>
-                    <div class="text-content">
-                        <h5 class="font-body--md-400">Fresh Indian Orange</h5>
-                        <p class="font-body--md-400">1kg x <span class="font-body--md-500">12.00</span></p>
-                    </div>
-                </div>
-                <button class="delete-item">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M12 23C18.0748 23 23 18.0748 23 12C23 5.92525 18.0748 1 12 1C5.92525 1 1 5.92525 1 12C1 18.0748 5.92525 23 12 23Z"
-                            stroke="#CCCCCC" stroke-miterlimit="10" />
-                        <path d="M16 8L8 16" stroke="#666666" stroke-width="1.5" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                        <path d="M16 16L8 8" stroke="#666666" stroke-width="1.5" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-                </button>
+            <div class="shopping-cart__product-content-popup">
+                <!-- Các sản phẩm sẽ được hiển thị ở đây sau khi gọi API -->
             </div>
         </div>
+
         <div class="shopping-cart-bottom">
             <div class="shopping-cart-product-info">
-                <p class="product-count font-body--lg-400">2 Sản Phẩm</p>
-                <span class="product-price font-body--lg-500">₫26.00</span>
+                <p class="product-count font-body--lg-400">0 Sản Phẩm</p> <!-- Số lượng sản phẩm sẽ được cập nhật -->
+                <span class="product-price font-body--lg-500">₫0.00</span> <!-- Tổng giá trị sẽ được cập nhật -->
             </div>
 
-            <form action="#">
-                <button class="button button--lg w-100">Thanh Toán</button>
-                <button class="button button--lg button--disable w-100">
-                    đi đến giỏ hàng
+            <form action="{{ route('client.cart.shopping-cart') }}" method="get">
+                <button class="button button--lg w-100" type="submit">
+                    Thanh Toán
                 </button>
             </form>
+
+            <form action="{{ route('client.cart.shopping-cart') }}" method="get">
+                <button class="button button--lg w-100" type="submit"
+                    style="background-color: #f5f5f5; color: #333; border: 1px solid #ccc;">
+                    Đi đến giỏ hàng
+                </button>
+            </form>
+
         </div>
     </div>
-    <!-- Shopping Cart sidebar  end -->
+    <!-- Shopping Cart Sidebar End -->
     @yield('js')
     <script src="{{ asset('client/lib/js/jquery.min.js') }}"></script>
     <script src="{{ asset('client/lib/js/countfect.min.js') }}"></script>
@@ -1295,6 +1293,9 @@
             <button>Gửi</button>
         </div>
     </div>
+    <script>
+        window.isLoggedIn = {{ Auth::check() ? 'true' : 'false' }};
+    </script>
 </body>
 
 </html>

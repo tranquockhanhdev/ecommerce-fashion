@@ -5,7 +5,7 @@
         <div class="card shadow-lg p-4">
             <h2 class="text-center text-primary mb-4">Chỉnh sửa sản phẩm</h2>
 
-            <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -14,12 +14,32 @@
                     <label for="name" class="form-label fw-bold text-dark">Tên sản phẩm</label>
                     <input type="text" name="name" id="slug" onkeyup="ChangeToSlug()"
                         class="form-control form-control-lg shadow-sm" value="{{ $product->name }}" required>
+                    @if ($errors->has('name'))
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->get('name') as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                 </div>
+
+
                 <!-- Slug -->
                 <div class="mb-4">
                     <label for="name" class="form-label fw-bold text-dark">Slug</label>
                     <input type="text" name="slug" id="convert_slug" class="form-control form-control-lg shadow-sm"
                         value="{{ $product->slug }}" required>
+                    @if ($errors->has('slug'))
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->get('slug') as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                 </div>
 
                 <!-- Danh mục -->
@@ -131,7 +151,7 @@
 
                 <div class="text-center">
                     <button type="submit" class="btn btn-success btn-lg px-5 py-3 shadow-sm">Lưu thay đổi</button>
-                    <a href="{{ route('products.index') }}"
+                    <a href="{{ route('admin.products.index') }}"
                         class="btn btn-secondary btn-lg px-5 py-3 shadow-sm ml-3">Quay lại</a>
                 </div>
             </form>

@@ -3,7 +3,7 @@
 <h1 class="h3 mb-0 text-gray-800">Quản lí liên hệ</h1>
 <hr>
 <div class="d-flex justify-content-between">
-    <a href="{{ route('admin.qllienhe.create') }}" class="btn btn-success btn-icon-split mb-3">
+    <a href="#" class="btn btn-success btn-icon-split mb-3">
         <span class="icon text-white-50">
             <i class="fas fa-plus"></i>
         </span>

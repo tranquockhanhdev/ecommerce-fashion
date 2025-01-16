@@ -43,4 +43,8 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+    public function account()
+    {
+        return $this->belongsToThrough(Account::class, OrderCustomer::class, 'order_customer_id', 'account_id');
+    }
 }

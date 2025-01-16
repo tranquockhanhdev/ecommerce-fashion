@@ -157,13 +157,17 @@ Route::prefix('shop')->group(function () {
 
 // Blog routes
 Route::prefix('blog')->group(function () {
-    Route::get('/list', function () {
-        return view('client.blog.blog-list');
-    })->name('client.blog.blog-list');
+    // Route::get('/list', function () {
+    //     return view('client.blog.blog-list');
+    // })->name('client.blog.blog-list');
 
-    Route::get('/single', function () {
-        return view('client.blog.single-blog');
-    })->name('client.blog.single-blog');
+    // Route::get('/single', function () {
+    //     return view('client.blog.single-blog');
+    // })->name('client.blog.single-blog');
+    Route::get('/list', [ArticleController::class, 'index'])->name('client.blog.blog-list');
+    Route::get('/list/{id}', [ArticleController::class, 'show'])->name('article.show');
+    Route::get('/blog/search', [ArticleController::class, 'search'])->name('client.blog.search');
+    Route::get('/category/{id}', [CategoryController::class, 'show'])->name('category.articles');
 });
 
 // Static pages

@@ -28,6 +28,9 @@ Auth::routes([
     'verify' => false,     // Tắt route xác minh email
     'confirm' => false     // Tắt route xác minh email
 ]);
+
+
+
 Route::fallback(function () {
     return response()->view('errors.404', [], 404);
 });
@@ -98,8 +101,13 @@ Route::middleware(['auth'])->group(function () {
         // Route thêm sản phẩm vào giỏ hàng
         Route::post('/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
         Route::post('/addjs/{productId}', [CartController::class, 'addToCartJS'])->name('cart.addjs');
-        Route::put('/update/{cartItemId}', [CartController::class, 'updateQuantity'])->name('cart.update');
 
+
+        Route::put('/update/{cartItemId}', [CartController::class, 'updateQuantity'])->name('cart.update');
+        Route::patch('/cart/item/update/{cartItem}', [CartController::class, 'update'])->name('cart.item.update');
+
+        Route::get('/cart-data', [CartController::class, 'getCartData'])->name('cart.data');
+        Route::delete('/cart/remove/{cartItemId}', [CartController::class, 'removeCart']);
 
         // Route xóa sản phẩm khỏi giỏ hàng
         Route::delete('/remove/{cartItemId}', [CartController::class, 'removeFromCart'])->name('cart.remove');
@@ -133,9 +141,12 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::prefix('shop')->group(function () {
     Route::get('/shop', [ShopController::class, 'index'])->name('client.shop.shop');
     Route::get('/shop/{id}', [ShopController::class, 'show'])->name('client.shop.shopdetails');
+    Route::get('/search_results', [ProductController::class, 'filterAndSearch'])->name('search');
     Route::get('/product-details', function () {
         return view('client.shop.product-details');
     })->name('client.shop.product-details');
+    // Route lọc sản phẩm
+    // Route::get('/filter', [ShopController::class, 'filter'])->name('client.shop.filter');
 });
 
 // Blog routes

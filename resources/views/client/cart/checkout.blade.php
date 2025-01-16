@@ -185,6 +185,7 @@
                                             </div>
                                         </div>
 
+<<<<<<< Updated upstream
                                         <div class="bill-card__payment-method-item">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="payment"
@@ -210,6 +211,12 @@
                                     </button>
                                 </form>
                             </div>
+=======
+                            <button class="button button--lg w-100" type="submit" target="_blank">
+                                Đặt Hàng
+                            </button>
+                            </form>
+>>>>>>> Stashed changes
                         </div>
                     </div>
                 </div>

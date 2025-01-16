@@ -61,7 +61,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-    // Trang nhân viên chỉ dành cho nhân viên và admin
+    // Trang nhân viên chỉ dành cho nhân viên và admins
     Route::middleware(['role:admin,staff'])->group(function () {
         Route::get('/staff', function () {
             return view('staff.home.index');

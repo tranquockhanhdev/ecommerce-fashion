@@ -209,4 +209,32 @@
     </div>
 </section>
 <!-- Shopping Cart Section End    -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(document).on('click', '.remove-fav', function () {
+            const productId = $(this).data('product-id');
+            const url = `/toggle-favorite/${productId}`;
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                },
+                success: function (response) {
+                    alert(response.message);
+                    location.reload(); // Refresh trang
+                },
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        alert('Bạn cần đăng nhập để sử dụng tính năng này.');
+                    } else {
+                        alert('Đã xảy ra lỗi.');
+                    }
+                },
+            });
+        });
+    });
+</script>
 @endsection

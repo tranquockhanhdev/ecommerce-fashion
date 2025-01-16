@@ -9,6 +9,7 @@
                 <h2 class="font-body--xxl-500">Chi Tiết Đơn Hàng</h2>
                 <a href="{{route('client.user.order-history')}}">quay lại</a>
             </div>
+
             @if($orders->status == 1)
             <div class="alert alert-danger " role="alert">
                 <!-- Nút hủy đơn hàng -->
@@ -19,6 +20,12 @@
                         Hủy đơn hàng
                     </button>
                 </form>
+            </div>
+            @endif
+            @if ($orders->status == 1 && $orders->status_payment == 1 && $orders->payment_method_id == 1)
+            <div class="alert alert-warning  " role="alert">
+                <p>Đơn hàng này chưa thanh toán.</p>
+                <a href="{{ $orders->url }}" class="btn btn-warning" target="_blank">Thanh toán tại đây</a>
             </div>
             @endif
 
@@ -238,16 +245,16 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="dashboard__order-history-table-title">
-                                    Product
+                                    Tên Sản phẩm
                                 </th>
                                 <th scope="col" class="dashboard__order-history-table-title">
-                                    Price
+                                    Giá
                                 </th>
                                 <th scope="col" class="dashboard__order-history-table-title">
-                                    quantity
+                                    Số lượng
                                 </th>
                                 <th scope="col" class="dashboard__order-history-table-title">
-                                    Subtotal
+                                    Tổng cộng
                                 </th>
                             </tr>
                         </thead>

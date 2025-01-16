@@ -1,220 +1,169 @@
 @extends('layouts.client')
 @section('title', 'Thanh Toán | Synergy 4.0')
 @section('content')
-    <!-- Billing Section Start  -->
-    <section class="section billing section--xl pt-0">
-        <div class="container">
-            <div class="row billing__content">
-                <div class="col-lg-8">
-                    <div class="billing__content-card">
-                        <div class="billing__content-card-header">
-                            <h2 class="font-body--xxxl-500">Thông Tin Thanh Toán</h2>
-                        </div>
-                        <div class="billing__content-card-body">
-                            <form action="#">
-                                <div class="contact-form__content">
-                                    <div class="contact-form__content-group">
-                                        <div class="contact-form-input">
-                                            <label for="fname1">First Name </label>
-                                            <input type="text" id="fname1" placeholder="Your first name" />
-                                        </div>
-                                        <div class="contact-form-input">
-                                            <label for="lname2">Last Name </label>
-                                            <input type="text" id="lname2" placeholder="Your last name" />
-                                        </div>
-                                        <div class="contact-form-input">
-                                            <label for="company">Last Name <span>(Optional)</span>
-                                            </label>
-                                            <input type="text" id="company" placeholder="Company name" />
-                                        </div>
-                                    </div>
-
+<!-- Billing Section Start  -->
+<section class="section billing section--xl pt-0">
+    <div class="container">
+        <div class="row billing__content">
+            <div class="col-lg-7">
+                <div class="billing__content-card">
+                    <div class="billing__content-card-header">
+                        <h2 class="font-body--xxxl-500">Thông Tin Thanh Toán</h2>
+                    </div>
+                    <div class="billing__content-card-body">
+                        <form action="{{route('checkout', $cart)}}" method="POST">
+                            <div class="contact-form__content">
+                                <div class="contact-form__content-group">
                                     <div class="contact-form-input">
-                                        <label for="address">Street Address </label>
-                                        <input type="text" id="address" placeholder="Your Address" />
+                                        <label for="fname1">Tên</label>
+                                        <input type="text" id="fname1" placeholder="Điền tên của bạn" name="firstname" require value="{{ Auth::user()->firstname }}" readonly />
+                                    </div>
+                                    <div class="contact-form-input">
+                                        <label for="lname2">họ và tên lót</label>
+                                        <input type="text" id="lname2" placeholder="Nhập họ và tên lót của bạn" name="lastname" require value="{{ Auth::user()->lastname }}" readonly />
                                     </div>
 
-                                    <div class="contact-form__content-group">
-                                        <!-- Country -->
-                                        <div class="contact-form-input">
-                                            <label for="country">Country / Region </label>
-                                            <select id="country" class="contact-form-input__dropdown">
-                                                <option value="01">United States</option>
-                                                <option value="02">Canada</option>
-                                                <option value="03">United Kingdom</option>
-                                                <option value="04">Bangladesh</option>
-                                            </select>
-                                        </div>
-                                        <!-- states -->
-                                        <div class="contact-form-input">
-                                            <label for="states">states </label>
-                                            <select id="states" class="contact-form-input__dropdown">
-                                                <option value="01">Washington DC</option>
-                                                <option value="02">Nova Scotia</option>
-                                                <option value="03">Alberta</option>
-                                                <option value="04">Manitoba</option>
-                                                <option value="05">Dhaka</option>
-                                            </select>
-                                        </div>
-                                        <!-- zip -->
-                                        <div class="contact-form-input">
-                                            <label for="zip">Zip Code</label>
-                                            <select id="zip" class="contact-form-input__dropdown">
-                                                <option value="01">1216</option>
-                                                <option value="02">975</option>
-                                                <option value="03">880</option>
-                                                <option value="04">95</option>
-                                            </select>
-                                        </div>
+                                </div>
+
+                                <div class="contact-form-input">
+                                    <label for="address">Địa Chỉ </label>
+                                    <input type="text" id="address" placeholder="Nhập địa chỉ của bạn" name="address" require value="{{ Auth::user()->address }}" readonly />
+                                </div>
+
+                                <div class="contact-form__content-group">
+                                    <!-- Country -->
+                                    <div class="contact-form-input">
+                                        <label for="country">Quốc Gia</label>
+                                        <select id="country" class="contact-form-input__dropdown">
+                                            <option value="01" selected>Việt Nam</option>
+
+                                        </select>
                                     </div>
-                                    <div class="contact-form__content-group">
-                                        <div class="contact-form-input">
-                                            <label for="email"> email </label>
-                                            <input type="text" id="email" placeholder="Email Address" />
+                                    <div class="contact-form-input">
+                                        <label for="email"> email </label>
+                                        <input type="text" id="email" placeholder="Nhập Địa chỉ email" value="{{ Auth::user()->email }}" require readonly />
+                                    </div>
+                                </div>
+                                <div class="contact-form__content-group">
+                                    <div class="contact-form-input">
+                                        <label for="phone"> Phone </label>
+                                        <input type="number" id="phone" placeholder="Nhập Số Điện Thoại" name="phone" value="{{ Auth::user()->phone }}" require readonly />
+                                    </div>
+                                </div>
+                                <a target="_blank" href="{{route('client.user.account-setting')}}"
+                                    class="
+                          dashboard__user-billing-editaddress
+                          font-body--lg-500
+                          
+                        ">
+                                    @csrf
+                                    <input type="text" name="account_id" value="{{Auth::user()->id}}" hidden>
+
+                                    Chỉnh Sửa Thông Tin Thanh Toán</a>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="bill-card">
+                    <div class="bill-card__content">
+                        <div class="bill-card__header">
+                            <h2 class="bill-card__header-title font-body--xxl-500">
+                                Danh Sách Sản Phẩm
+                            </h2>
+                        </div>
+                        <div class="bill-card__body">
+                            <!-- Product Info -->
+                            <div class="bill-card__product">
+                                <input type="text" name="orderItem" value="{{$orderItem}}" hidden>
+                                @foreach($orderItem as $orderItem)
+                                <div class="bill-card__product-item">
+                                    <div class="bill-card__product-item-content d-flex align-items-center">
+                                        <div class="img-wrapper mr-3">
+                                            <img src="{{ asset($orderItem['product']['images'][0]['link']) }}" alt="product-img" />
                                         </div>
-                                        <div class="contact-form-input">
-                                            <label for="phone"> Phone </label>
-                                            <input type="number" id="phone" placeholder="Phone number" />
-                                        </div>
+                                        <p class="font-body--md-400 text-truncate mb-0" style="max-width: 200px;">
+                                            {{$orderItem->product->name}}
+                                        </p>
+                                        <span class="quantity">x{{$orderItem->quantity}}</span>
                                     </div>
 
+
+                                    <p class="bill-card__product-price font-body--md-500">
+                                        {{ number_format($orderItem->product->price, 0, ',', '.') }} VNĐ
+
+                                    </p>
+                                </div>
+                                @endforeach
+                            </div>
+                            <!-- memo  -->
+                            <div class="bill-card__memo">
+                                <!-- Subtotal  -->
+                                <div class="bill-card__memo-item subtotal">
+                                    <p class="font-body--md-400">Tổng Cộng:</p>
+                                    <span class="font-body--md-500">{{ number_format($totalItem, 0, ',', '.') }} VNĐ</span>
+
+                                </div>
+                                <!-- Shipping  -->
+                                <div class="bill-card__memo-item shipping">
+                                    <p class="font-body--md-400">Phí Vận Chuyển:</p>
+                                    <span class="font-body--md-500">
+                                        {{ number_format($shippingCost, 0, ',', '.') }} VNĐ
+                                        <input type="text" name="shippingCost" value="{{$shippingCost}}" hidden>
+                                    </span>
+
+                                </div>
+                                <p style="color:red">Lưu Ý:Cước phí mỗi km là 10.000VNĐ</p>
+                                <!-- total  -->
+                                <div class="bill-card__memo-item total">
+                                    <p class="font-body--lg-400">Tổng Cộng:</p>
+                                    <span class="font-body--xl-500">{{ number_format($total, 0, ',', '.') }} VNĐ</span>
+                                    <input type="text" name="totalItem" value="{{$total}}" hidden>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bill-card__content">
+                        <div class="bill-card__header">
+                            <div class="bill-card__header">
+                                <h2 class="bill-card__header-title font-body--xxl-500">
+                                    Phương Thức Thanh Toán
+                                </h2>
+                            </div>
+                        </div>
+                        <div class="bill-card__body">
+                            <!-- Payment Methods  -->
+                            <div class="bill-card__payment-method">
+                                <div class="bill-card__payment-method-item">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="remember" />
-                                        <label class="form-check-label font-body--md-400" for="remember">
-                                            Ship to a different address
+                                        <input class="form-check-input" type="radio" name="payment" id="cash" value="2" checked />
+                                        <label class="form-check-label font-body--400" for="cash">
+                                            Thanh Toán Khi Nhận Hàng
                                         </label>
                                     </div>
                                 </div>
+
+                                <div class="bill-card__payment-method-item">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="payment" id="paypal" value="1" />
+                                        <label class="form-check-label font-body--400" for="paypal">
+                                            VNPay
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <button class="button button--lg w-100" type="submit">
+                                Place Order
+                            </button>
                             </form>
-                        </div>
-                    </div>
-                    <div class="billing__content-card">
-                        <div class="billing__content-card-header">
-                            <h2 class="font-body--xxxl-500">Additional Information</h2>
-                        </div>
-                        <div class="billing__content-card-body">
-                            <div class="contact-form-input contact-form-textarea">
-                                <label for="note">Order Notes <span>(Optional)</span> </label>
-                                <!-- <input type="text" id="fname1" placeholder="Your first name" /> -->
-                                <textarea name="notes" id="note" placeholder="Notes about your order, e.g. special notes for delivery"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="bill-card">
-                        <div class="bill-card__content">
-                            <div class="bill-card__header">
-                                <h2 class="bill-card__header-title font-body--xxl-500">
-                                    Order Summery
-                                </h2>
-                            </div>
-                            <div class="bill-card__body">
-                                <!-- Product Info -->
-                                <div class="bill-card__product">
-                                    <div class="bill-card__product-item">
-                                        <div class="bill-card__product-item-content">
-                                            <div class="img-wrapper">
-                                                <img src="{{ asset('client/images/products/img-01.png') }}"
-                                                    alt="product-img" />
-                                            </div>
-                                            <h5 class="font-body--md-400">
-                                                Green Apple <span class="quantity"> x5</span>
-                                            </h5>
-                                        </div>
-
-                                        <p class="bill-card__product-price font-body--md-500">
-                                            $70.00
-                                        </p>
-                                    </div>
-                                    <div class="bill-card__product-item">
-                                        <div class="bill-card__product-item-content">
-                                            <div class="img-wrapper">
-                                                <img src="{{ asset('client/images/products/img-02.png') }}"
-                                                    alt="product-img" />
-                                            </div>
-                                            <h5 class="font-body--md-400">
-                                                Orange <span class="quantity">x1</span>
-                                            </h5>
-                                        </div>
-
-                                        <p class="bill-card__product-price font-body--md-500">
-                                            $70.00
-                                        </p>
-                                    </div>
-                                </div>
-                                <!-- memo  -->
-                                <div class="bill-card__memo">
-                                    <!-- Subtotal  -->
-                                    <div class="bill-card__memo-item subtotal">
-                                        <p class="font-body--md-400">Subtotal:</p>
-                                        <span class="font-body--md-500">$84.00</span>
-                                    </div>
-                                    <!-- Shipping  -->
-                                    <div class="bill-card__memo-item shipping">
-                                        <p class="font-body--md-400">Shipping:</p>
-                                        <span class="font-body--md-500">Free</span>
-                                    </div>
-                                    <!-- total  -->
-                                    <div class="bill-card__memo-item total">
-                                        <p class="font-body--lg-400">Total:</p>
-                                        <span class="font-body--xl-500">$84.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bill-card__content">
-                            <div class="bill-card__header">
-                                <div class="bill-card__header">
-                                    <h2 class="bill-card__header-title font-body--xxl-500">
-                                        Payment Method
-                                    </h2>
-                                </div>
-                            </div>
-                            <div class="bill-card__body">
-                                <form action="#">
-                                    <!-- Payment Methods  -->
-                                    <div class="bill-card__payment-method">
-                                        <div class="bill-card__payment-method-item">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="payment"
-                                                    id="cash" checked />
-                                                <label class="form-check-label font-body--400" for="cash">
-                                                    cash on delivery
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <div class="bill-card__payment-method-item">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="payment"
-                                                    id="paypal" />
-                                                <label class="form-check-label font-body--400" for="paypal">
-                                                    Paypal
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="bill-card__payment-method-item">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="payment"
-                                                    id="amazon" />
-                                                <label class="form-check-label font-body--400" for="amazon">
-                                                    Amazon Pay
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <button class="button button--lg w-100" type="submit">
-                                        Place Order
-                                    </button>
-                                </form>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Billing Section  End  -->
+    </div>
+</section>
+<!-- Billing Section  End  -->
 @endsection

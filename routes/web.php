@@ -11,6 +11,7 @@ use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\ContactController;
 use App\Http\Controllers\client\ShopController;
 use App\Http\Controllers\client\CartController;
+use App\Http\Controllers\client\CheckoutController;
 use App\Http\Controllers\admin\CommentController;
 use App\Http\Controllers\admin\CategoryController;
 use Illuminate\Support\Facades\Route;
@@ -63,7 +64,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-    // Trang nhân viên chỉ dành cho nhân viên và admin
+    // Trang nhân viên chỉ dành cho nhân viên và admins
     Route::middleware(['role:admin,staff'])->group(function () {
         Route::get('/staff', function () {
             return view('staff.home.index');
@@ -91,9 +92,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/bought', [CommentClientController::class, 'index'])->name('client.user.bought');
     // Cart routes
     Route::prefix('cart')->group(function () {
-        Route::get('/checkout', function () {
-            return view('client.cart.checkout');
-        })->name('client.cart.checkout');
+        Route::get('/checkout/{id}', [CheckoutController::class, 'index'])->name('client.cart.checkout');
+        Route::post('/checkout/{cart}', [CheckoutController::class, 'processCheckout'])->name('checkout');
         Route::resource('/wishlist', wishlistController::class);
         // Route hiển thị giỏ hàng
         Route::get('/shopping-cart', [CartController::class, 'showCart'])->name('client.cart.shopping-cart');
@@ -170,3 +170,5 @@ Route::prefix('pages')->group(function () {
         return view('client.pages.contact');
     })->name('client.pages.contact');
 });
+//trang thanh toán
+Route::get('vnpay_return', [CheckoutController::class, 'vnpay_return'])->name('vnpay.return');

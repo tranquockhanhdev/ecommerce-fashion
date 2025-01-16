@@ -38,11 +38,24 @@
     </style>
 @endsection
 @section('content')
-    <!-- Shopping Cart Section Start -->
-    <section class="shoping-cart section section--xl">
-        <div class="container">
-            <div class="section__head justify-content-center">
-                <h2 class="section--title-four font-title--sm">Giỏ Hàng Của Tôi</h2>
+<!-- Shopping Cart Section Start -->
+<section class="shoping-cart section section--xl">
+    <div class="container">
+        @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+        @endif
+        <div class="section__head justify-content-center">
+            <h2 class="section--title-four font-title--sm">Giỏ Hàng Của Tôi</h2>
+        </div>
+        <div class="row shoping-cart__content">
+            @if ($cartItems->isEmpty())
+            <!-- Hiển thị thông báo nếu giỏ hàng trống -->
+            <div class="col-12 text-center">
+                <p class="font-body--lg-400">Giỏ hàng của bạn đang trống.</p>
+                <a href="{{ route('client.shop.shop') }}" class="button button--md shop">Quay lại cửa
+                    hàng</a>
             </div>
             <div class="row shoping-cart__content">
                 @if ($cartItems->isEmpty())
@@ -279,6 +292,11 @@
                                     </form>
                                 </div>
                             </div>
+                            <form action="{{ route('client.cart.checkout', $cart->id) }}">
+                                <button class="button button--lg w-100" style="margin-top: 20px" type="submit">
+                                    Đặt Hàng
+                                </button>
+                            </form>
                         </div>
                     </div>
                 @endif

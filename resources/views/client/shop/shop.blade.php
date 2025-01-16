@@ -2,6 +2,8 @@
 @section('title', 'Cửa Hàng | Synergy 4.0')
 @section('css')
     <link rel="stylesheet" href="{{ asset('client/lib/css/nouislider.min.css') }}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
 @endsection
 @section('content')
     <!-- Banner Section Start  -->
@@ -61,19 +63,31 @@
                 </div>
                 <div class="col-lg-9">
                     <div class="filter--search-result">
+                        <!-- Phần Sắp Xếp -->
                         <div class="sort-list">
                             <label for="sort">Sắp Xếp Theo:</label>
-                            <select id="sort" class="sort-list__dropmenu">
-                                <option value="01">Latest</option>
-                                <option value="02">Newest</option>
-                                <option value="03">Oldest</option>
-                            </select>
+                            <form action="{{ route('client.shop.shop') }}" method="get" class="d-inline">
+                                <select id="sort" name="sort" class="sort-list__dropmenu"
+                                    onchange="this.form.submit()">
+                                    <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Mới Nhất
+                                    </option>
+                                    <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Cũ Nhất
+                                    </option>
+                                    <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Giá
+                                        Thấp -> Cao</option>
+                                    <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Giá
+                                        Cao -> Thấp</option>
+                                </select>
+                            </form>
                         </div>
+
+                        <!-- Phần Kết Quả Tìm Thấy -->
                         <div class="result-found">
-                            <p><span class="number">52</span> Kết Quả Được Tìm Thấy</p>
+                            <p><span class="number">{{ $products->total() }}</span> Kết Quả Được Tìm Thấy</p>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -100,111 +114,112 @@
                         </button>
                         <div class="shop__sidebar-content">
                             <div class="accordion shop" id="shop">
-                                <!-- All Categories  -->
-                                <div class="accordion-item shop-item">
-                                    <h2 class="accordion-header" id="shop-item-accordion--one">
-                                        <button class="accordion-button shop-button font-body--xxl-500" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
-                                            aria-controls="collapseOne">
-                                            Tất cả Danh Mục
-                                            <span class="icon">
-                                                <svg width="14" height="8" viewBox="0 0 14 8" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M13 7L7 1L1 7" stroke="#1A1A1A" stroke-width="2"
-                                                        stroke-linecap="round" stroke-linejoin="round" />
-                                                </svg>
-                                            </span>
-                                        </button>
-                                    </h2>
-                                    <div id="collapseOne" class="accordion-collapse shop-collapse collapse show show"
-                                        aria-labelledby="shop-item-accordion--one" data-bs-parent="#shop">
-                                        <div class="accordion-body shop-body">
-                                            <div class="categories">
-                                                <div class="categories-item">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="category"
-                                                            id="fruit" />
-                                                        <label class="form-check-label" for="fruit"> Fresh Fruit (25)
-                                                            <span class="current">(134)</span> </label>
-                                                    </div>
+                                <form action="{{ route('client.shop.shop') }}" method="get">
+                                    <div class="accordion-item shop-item">
+                                        <h2 class="accordion-header" id="shop-item-accordion--one">
+                                            <button class="accordion-button shop-button font-body--xxl-500" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                                aria-expanded="true" aria-controls="collapseOne">
+                                                Tất cả Danh Mục
+                                                <span class="icon">
+                                                    <svg width="14" height="8" viewBox="0 0 14 8" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M13 7L7 1L1 7" stroke="#1A1A1A" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round" />
+                                                    </svg>
+                                                </span>
+                                            </button>
+                                        </h2>
+
+                                        <div id="collapseOne" class="accordion-collapse shop-collapse collapse show"
+                                            aria-labelledby="shop-item-accordion--one" data-bs-parent="#shop">
+                                            <div class="accordion-body shop-body">
+                                                <div class="categories">
+                                                    @foreach ($categories as $category)
+                                                        <div class="categories-item">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="category" value="{{ $category->id }}"
+                                                                    id="category-{{ $category->id }}"
+                                                                    {{ request('category') == $category->id ? 'checked' : '' }}
+                                                                    onchange="this.form.submit()" />
+                                                                <label class="form-check-label"
+                                                                    for="category-{{ $category->id }}">{{ $category->name }}</label>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
                                                 </div>
-                                                <div class="categories-item">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="category"
-                                                            id="vegetable" checked />
-                                                        <label class="form-check-label" for="vegetable"> Fresh Fruit <span
-                                                                class="current">(150)</span> </label>
-                                                    </div>
-                                                </div>
-                                                <div class="categories-item">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="category"
-                                                            id="cooking" checked />
-                                                        <label class="form-check-label" for="cooking"> Cooking <span
-                                                                class="current">(54)</span> </label>
-                                                    </div>
-                                                </div>
-                                                <div class="categories-item">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="category"
-                                                            id="snacks" checked />
-                                                        <label class="form-check-label" for="snacks"> Snacks <span
-                                                                class="current">(47)</span> </label>
-                                                    </div>
-                                                </div>
-                                                <div class="categories-item">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="category"
-                                                            id="beverage" checked />
-                                                        <label class="form-check-label" for="beverage"> Beverages <span
-                                                                class="current">(43)</span> </label>
-                                                    </div>
-                                                </div>
-                                                <div class="categories-item">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="category"
-                                                            id="health" checked />
-                                                        <label class="form-check-label" for="health"> Beauty & Health
-                                                            <span class="current">(38)</span> </label>
-                                                    </div>
-                                                </div>
-                                                <div class="categories-item">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="category"
-                                                            id="bread" checked />
-                                                        <label class="form-check-label" for="bread"> Bread &
-                                                            Bakery<span class="current">(15)</span> </label>
-                                                    </div>
+
+                                                <div class="d-flex justify-content-between mt-3">
+                                                    <!-- Nút Lọc -->
+                                                    <button type="submit" class="btn btn-primary btn-lg"
+                                                        style="border-radius: 50px; padding: 10px 20px; font-size: 16px;">
+                                                        <i class="bi bi-filter"></i> Lọc
+                                                    </button>
+
+                                                    <!-- Nút bỏ lọc -->
+                                                    <a href="{{ route('client.shop.shop') }}"
+                                                        class="btn btn-outline-secondary px-4"
+                                                        style="border-radius: 50px; padding: 10px 20px; font-size: 16px;">
+                                                        Bỏ lọc</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- Price Range -->
-                                <div class="accordion-item shop-item">
-                                    <h2 class="accordion-header" id="shop-item-accordion--two">
-                                        <button class="accordion-button shop-button font-body--xxl-500 collapsed"
-                                            type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
-                                            aria-expanded="false" aria-controls="collapseTwo">
-                                            Giá
-                                            <span class="icon">
-                                                <svg width="14" height="8" viewBox="0 0 14 8" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M13 7L7 1L1 7" stroke="#1A1A1A" stroke-width="2"
-                                                        stroke-linecap="round" stroke-linejoin="round" />
-                                                </svg>
-                                            </span>
-                                        </button>
-                                    </h2>
-                                    <div id="collapseTwo" class="accordion-collapse shop-collapse collapse show"
-                                        aria-labelledby="shop-item-accordion--two" data-bs-parent="#shop">
-                                        <div class="price-range-slider">
-                                            <div id="priceRangeSlider"></div>
+
+
+                                    <!-- Đảm bảo gửi yêu cầu GET đến route đúng -->
+                                    <!-- Price Range -->
+                                    <div class="accordion-item shop-item">
+                                        <h2 class="accordion-header" id="shop-item-accordion--two">
+                                            <button class="accordion-button shop-button font-body--xxl-500 collapsed"
+                                                type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                                aria-expanded="false" aria-controls="collapseTwo">
+                                                Giá
+                                                <span class="icon">
+                                                    <svg width="14" height="8" viewBox="0 0 14 8" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M13 7L7 1L1 7" stroke="#1A1A1A" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round" />
+                                                    </svg>
+                                                </span>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseTwo" class="accordion-collapse shop-collapse collapse show"
+                                            aria-labelledby="shop-item-accordion--two" data-bs-parent="#shop">
+                                            <div class="price-range-inputs">
+                                                <div class="mb-3">
+                                                    <label for="minPrice" class="form-label">Giá từ:</label>
+                                                    <input type="number" name="min_price" id="minPrice"
+                                                        class="form-control" value="{{ request('min_price') }}"
+                                                        placeholder="Ví dụ: 1000000">
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="maxPrice" class="form-label">Đến:</label>
+                                                    <input type="number" name="max_price" id="maxPrice"
+                                                        class="form-control" value="{{ request('max_price') }}"
+                                                        placeholder="Ví dụ: 5000000">
+                                                </div>
+
+                                                <div class="d-flex justify-content-between">
+                                                    <!-- Nút Lọc -->
+                                                    <button type="submit" class="btn btn-primary btn-lg"
+                                                        style="border-radius: 50px; padding: 10px 20px; font-size: 16px;">
+                                                        <i class="bi bi-filter"></i> Lọc
+                                                    </button>
+
+                                                    <!-- Nút bỏ lọc -->
+                                                    <a href="{{ route('client.shop.shop') }}"
+                                                        class="btn btn-outline-secondary px-4"
+                                                        style="border-radius: 50px; padding: 10px 20px; font-size: 16px;">
+                                                        Bỏ lọc</a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                             </div>
-                            <!-- Rating  -->
+                            <!-- Rating -->
                             <div class="accordion-item shop-item">
                                 <h2 class="accordion-header" id="shop-item-accordion--three">
                                     <button class="accordion-button shop-button font-body--xxl-500 collapsed"
@@ -223,299 +238,138 @@
                                 <div id="collapseThree" class="accordion-collapse shop-collapse collapse show"
                                     aria-labelledby="shop-item-accordion--three" data-bs-parent="#shop">
                                     <div class="accordion-body shop-body">
+
                                         <div class="ratings">
                                             <div class="ratings--list-item">
+                                                <!-- Lọc đánh giá 5 sao -->
                                                 <div class="form-check d-flex align-items-center">
-                                                    <input class="form-check-input" type="checkbox" name="ratings"
-                                                        id="five" />
+                                                    <input class="form-check-input" type="checkbox" name="ratings[]"
+                                                        value="5" id="five"
+                                                        @if (in_array(5, request()->input('ratings', []))) checked @endif />
                                                     <label class="form-check-label ratings-star d-flex align-items-center"
                                                         for="five">
                                                         <span>
-                                                            <svg width="18" height="19" viewBox="0 0 18 19"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M9.31008 13.9111L12.8566 16.1577C13.31 16.4446 13.8725 16.0177 13.7381 15.4884L12.7138 11.4581C12.6848 11.3458 12.6882 11.2276 12.7234 11.1172C12.7586 11.0067 12.8243 10.9085 12.9129 10.8337L16.0933 8.18711C16.5106 7.83949 16.2958 7.14593 15.7586 7.11105L11.6056 6.84105C11.4938 6.83312 11.3866 6.79359 11.2964 6.72707C11.2061 6.66055 11.1367 6.56977 11.096 6.4653L9.5469 2.56493C9.50471 2.45408 9.42984 2.35867 9.33219 2.29136C9.23455 2.22404 9.11875 2.18799 9.00015 2.18799C8.88155 2.18799 8.76574 2.22404 8.6681 2.29136C8.57046 2.35867 8.49558 2.45408 8.4534 2.56493L6.90427 6.4653C6.86372 6.56988 6.79429 6.66077 6.70406 6.7274C6.61383 6.79402 6.50652 6.83364 6.39465 6.84161L2.24171 7.11161C1.70508 7.14593 1.48908 7.83949 1.90702 8.18711L5.0874 10.8342C5.17588 10.909 5.2415 11.0072 5.27673 11.1175C5.31195 11.2278 5.31534 11.3459 5.28652 11.4581L4.33702 15.1959C4.17558 15.8309 4.85115 16.3434 5.39452 15.9986L8.69077 13.9111C8.78342 13.8522 8.89093 13.8209 9.00071 13.8209C9.11049 13.8209 9.218 13.8522 9.31065 13.9111H9.31008Z"
-                                                                    fill="#FF8A00" />
-                                                            </svg>
+                                                            @for ($i = 1; $i <= 5; $i++)
+                                                                <svg width="18" height="19" viewBox="0 0 18 19"
+                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path
+                                                                        d="M9 0L7.093 5.188H1.65L5.532 8.312L3.728 13.594L9 10.5L14.272 13.594L12.468 8.312L16.35 5.188H10.907L9 0Z"
+                                                                        fill="{{ $i <= 5 ? '#FFD700' : '#D3D3D3' }}" />
+                                                                </svg>
+                                                            @endfor
                                                         </span>
-                                                        <span>
-                                                            <svg width="18" height="19" viewBox="0 0 18 19"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M9.31008 13.9111L12.8566 16.1577C13.31 16.4446 13.8725 16.0177 13.7381 15.4884L12.7138 11.4581C12.6848 11.3458 12.6882 11.2276 12.7234 11.1172C12.7586 11.0067 12.8243 10.9085 12.9129 10.8337L16.0933 8.18711C16.5106 7.83949 16.2958 7.14593 15.7586 7.11105L11.6056 6.84105C11.4938 6.83312 11.3866 6.79359 11.2964 6.72707C11.2061 6.66055 11.1367 6.56977 11.096 6.4653L9.5469 2.56493C9.50471 2.45408 9.42984 2.35867 9.33219 2.29136C9.23455 2.22404 9.11875 2.18799 9.00015 2.18799C8.88155 2.18799 8.76574 2.22404 8.6681 2.29136C8.57046 2.35867 8.49558 2.45408 8.4534 2.56493L6.90427 6.4653C6.86372 6.56988 6.79429 6.66077 6.70406 6.7274C6.61383 6.79402 6.50652 6.83364 6.39465 6.84161L2.24171 7.11161C1.70508 7.14593 1.48908 7.83949 1.90702 8.18711L5.0874 10.8342C5.17588 10.909 5.2415 11.0072 5.27673 11.1175C5.31195 11.2278 5.31534 11.3459 5.28652 11.4581L4.33702 15.1959C4.17558 15.8309 4.85115 16.3434 5.39452 15.9986L8.69077 13.9111C8.78342 13.8522 8.89093 13.8209 9.00071 13.8209C9.11049 13.8209 9.218 13.8522 9.31065 13.9111H9.31008Z"
-                                                                    fill="#FF8A00" />
-                                                            </svg>
-                                                        </span>
-                                                        <span>
-                                                            <svg width="18" height="19" viewBox="0 0 18 19"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M9.31008 13.9111L12.8566 16.1577C13.31 16.4446 13.8725 16.0177 13.7381 15.4884L12.7138 11.4581C12.6848 11.3458 12.6882 11.2276 12.7234 11.1172C12.7586 11.0067 12.8243 10.9085 12.9129 10.8337L16.0933 8.18711C16.5106 7.83949 16.2958 7.14593 15.7586 7.11105L11.6056 6.84105C11.4938 6.83312 11.3866 6.79359 11.2964 6.72707C11.2061 6.66055 11.1367 6.56977 11.096 6.4653L9.5469 2.56493C9.50471 2.45408 9.42984 2.35867 9.33219 2.29136C9.23455 2.22404 9.11875 2.18799 9.00015 2.18799C8.88155 2.18799 8.76574 2.22404 8.6681 2.29136C8.57046 2.35867 8.49558 2.45408 8.4534 2.56493L6.90427 6.4653C6.86372 6.56988 6.79429 6.66077 6.70406 6.7274C6.61383 6.79402 6.50652 6.83364 6.39465 6.84161L2.24171 7.11161C1.70508 7.14593 1.48908 7.83949 1.90702 8.18711L5.0874 10.8342C5.17588 10.909 5.2415 11.0072 5.27673 11.1175C5.31195 11.2278 5.31534 11.3459 5.28652 11.4581L4.33702 15.1959C4.17558 15.8309 4.85115 16.3434 5.39452 15.9986L8.69077 13.9111C8.78342 13.8522 8.89093 13.8209 9.00071 13.8209C9.11049 13.8209 9.218 13.8522 9.31065 13.9111H9.31008Z"
-                                                                    fill="#FF8A00" />
-                                                            </svg>
-                                                        </span>
-                                                        <span>
-                                                            <svg width="18" height="19" viewBox="0 0 18 19"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M9.31008 13.9111L12.8566 16.1577C13.31 16.4446 13.8725 16.0177 13.7381 15.4884L12.7138 11.4581C12.6848 11.3458 12.6882 11.2276 12.7234 11.1172C12.7586 11.0067 12.8243 10.9085 12.9129 10.8337L16.0933 8.18711C16.5106 7.83949 16.2958 7.14593 15.7586 7.11105L11.6056 6.84105C11.4938 6.83312 11.3866 6.79359 11.2964 6.72707C11.2061 6.66055 11.1367 6.56977 11.096 6.4653L9.5469 2.56493C9.50471 2.45408 9.42984 2.35867 9.33219 2.29136C9.23455 2.22404 9.11875 2.18799 9.00015 2.18799C8.88155 2.18799 8.76574 2.22404 8.6681 2.29136C8.57046 2.35867 8.49558 2.45408 8.4534 2.56493L6.90427 6.4653C6.86372 6.56988 6.79429 6.66077 6.70406 6.7274C6.61383 6.79402 6.50652 6.83364 6.39465 6.84161L2.24171 7.11161C1.70508 7.14593 1.48908 7.83949 1.90702 8.18711L5.0874 10.8342C5.17588 10.909 5.2415 11.0072 5.27673 11.1175C5.31195 11.2278 5.31534 11.3459 5.28652 11.4581L4.33702 15.1959C4.17558 15.8309 4.85115 16.3434 5.39452 15.9986L8.69077 13.9111C8.78342 13.8522 8.89093 13.8209 9.00071 13.8209C9.11049 13.8209 9.218 13.8522 9.31065 13.9111H9.31008Z"
-                                                                    fill="#FF8A00" />
-                                                            </svg>
-                                                        </span>
-                                                        <span>
-                                                            <svg width="18" height="19" viewBox="0 0 18 19"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M9.31008 13.9111L12.8566 16.1577C13.31 16.4446 13.8725 16.0177 13.7381 15.4884L12.7138 11.4581C12.6848 11.3458 12.6882 11.2276 12.7234 11.1172C12.7586 11.0067 12.8243 10.9085 12.9129 10.8337L16.0933 8.18711C16.5106 7.83949 16.2958 7.14593 15.7586 7.11105L11.6056 6.84105C11.4938 6.83312 11.3866 6.79359 11.2964 6.72707C11.2061 6.66055 11.1367 6.56977 11.096 6.4653L9.5469 2.56493C9.50471 2.45408 9.42984 2.35867 9.33219 2.29136C9.23455 2.22404 9.11875 2.18799 9.00015 2.18799C8.88155 2.18799 8.76574 2.22404 8.6681 2.29136C8.57046 2.35867 8.49558 2.45408 8.4534 2.56493L6.90427 6.4653C6.86372 6.56988 6.79429 6.66077 6.70406 6.7274C6.61383 6.79402 6.50652 6.83364 6.39465 6.84161L2.24171 7.11161C1.70508 7.14593 1.48908 7.83949 1.90702 8.18711L5.0874 10.8342C5.17588 10.909 5.2415 11.0072 5.27673 11.1175C5.31195 11.2278 5.31534 11.3459 5.28652 11.4581L4.33702 15.1959C4.17558 15.8309 4.85115 16.3434 5.39452 15.9986L8.69077 13.9111C8.78342 13.8522 8.89093 13.8209 9.00071 13.8209C9.11049 13.8209 9.218 13.8522 9.31065 13.9111H9.31008Z"
-                                                                    fill="#FF8A00" />
-                                                            </svg>
-                                                        </span>
+                                                        <span>5 sao</span>
                                                     </label>
-                                                    <span class="star-num">5.0</span>
                                                 </div>
                                             </div>
                                             <div class="ratings--list-item">
+                                                <!-- Lọc đánh giá 4 sao -->
                                                 <div class="form-check d-flex align-items-center">
-                                                    <input class="form-check-input" type="checkbox" name="ratings"
-                                                        id="four" />
+                                                    <input class="form-check-input" type="checkbox" name="ratings[]"
+                                                        value="4" id="four"
+                                                        @if (in_array(4, request()->input('ratings', []))) checked @endif />
                                                     <label class="form-check-label ratings-star d-flex align-items-center"
                                                         for="four">
                                                         <span>
-                                                            <svg width="18" height="19" viewBox="0 0 18 19"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M9.31008 13.9111L12.8566 16.1577C13.31 16.4446 13.8725 16.0177 13.7381 15.4884L12.7138 11.4581C12.6848 11.3458 12.6882 11.2276 12.7234 11.1172C12.7586 11.0067 12.8243 10.9085 12.9129 10.8337L16.0933 8.18711C16.5106 7.83949 16.2958 7.14593 15.7586 7.11105L11.6056 6.84105C11.4938 6.83312 11.3866 6.79359 11.2964 6.72707C11.2061 6.66055 11.1367 6.56977 11.096 6.4653L9.5469 2.56493C9.50471 2.45408 9.42984 2.35867 9.33219 2.29136C9.23455 2.22404 9.11875 2.18799 9.00015 2.18799C8.88155 2.18799 8.76574 2.22404 8.6681 2.29136C8.57046 2.35867 8.49558 2.45408 8.4534 2.56493L6.90427 6.4653C6.86372 6.56988 6.79429 6.66077 6.70406 6.7274C6.61383 6.79402 6.50652 6.83364 6.39465 6.84161L2.24171 7.11161C1.70508 7.14593 1.48908 7.83949 1.90702 8.18711L5.0874 10.8342C5.17588 10.909 5.2415 11.0072 5.27673 11.1175C5.31195 11.2278 5.31534 11.3459 5.28652 11.4581L4.33702 15.1959C4.17558 15.8309 4.85115 16.3434 5.39452 15.9986L8.69077 13.9111C8.78342 13.8522 8.89093 13.8209 9.00071 13.8209C9.11049 13.8209 9.218 13.8522 9.31065 13.9111H9.31008Z"
-                                                                    fill="#FF8A00" />
-                                                            </svg>
+                                                            @for ($i = 1; $i <= 5; $i++)
+                                                                <svg width="18" height="19" viewBox="0 0 18 19"
+                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path
+                                                                        d="M9 0L7.093 5.188H1.65L5.532 8.312L3.728 13.594L9 10.5L14.272 13.594L12.468 8.312L16.35 5.188H10.907L9 0Z"
+                                                                        fill="{{ $i <= 4 ? '#FFD700' : '#D3D3D3' }}" />
+                                                                </svg>
+                                                            @endfor
                                                         </span>
-                                                        <span>
-                                                            <svg width="18" height="19" viewBox="0 0 18 19"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M9.31008 13.9111L12.8566 16.1577C13.31 16.4446 13.8725 16.0177 13.7381 15.4884L12.7138 11.4581C12.6848 11.3458 12.6882 11.2276 12.7234 11.1172C12.7586 11.0067 12.8243 10.9085 12.9129 10.8337L16.0933 8.18711C16.5106 7.83949 16.2958 7.14593 15.7586 7.11105L11.6056 6.84105C11.4938 6.83312 11.3866 6.79359 11.2964 6.72707C11.2061 6.66055 11.1367 6.56977 11.096 6.4653L9.5469 2.56493C9.50471 2.45408 9.42984 2.35867 9.33219 2.29136C9.23455 2.22404 9.11875 2.18799 9.00015 2.18799C8.88155 2.18799 8.76574 2.22404 8.6681 2.29136C8.57046 2.35867 8.49558 2.45408 8.4534 2.56493L6.90427 6.4653C6.86372 6.56988 6.79429 6.66077 6.70406 6.7274C6.61383 6.79402 6.50652 6.83364 6.39465 6.84161L2.24171 7.11161C1.70508 7.14593 1.48908 7.83949 1.90702 8.18711L5.0874 10.8342C5.17588 10.909 5.2415 11.0072 5.27673 11.1175C5.31195 11.2278 5.31534 11.3459 5.28652 11.4581L4.33702 15.1959C4.17558 15.8309 4.85115 16.3434 5.39452 15.9986L8.69077 13.9111C8.78342 13.8522 8.89093 13.8209 9.00071 13.8209C9.11049 13.8209 9.218 13.8522 9.31065 13.9111H9.31008Z"
-                                                                    fill="#FF8A00" />
-                                                            </svg>
-                                                        </span>
-                                                        <span>
-                                                            <svg width="18" height="19" viewBox="0 0 18 19"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M9.31008 13.9111L12.8566 16.1577C13.31 16.4446 13.8725 16.0177 13.7381 15.4884L12.7138 11.4581C12.6848 11.3458 12.6882 11.2276 12.7234 11.1172C12.7586 11.0067 12.8243 10.9085 12.9129 10.8337L16.0933 8.18711C16.5106 7.83949 16.2958 7.14593 15.7586 7.11105L11.6056 6.84105C11.4938 6.83312 11.3866 6.79359 11.2964 6.72707C11.2061 6.66055 11.1367 6.56977 11.096 6.4653L9.5469 2.56493C9.50471 2.45408 9.42984 2.35867 9.33219 2.29136C9.23455 2.22404 9.11875 2.18799 9.00015 2.18799C8.88155 2.18799 8.76574 2.22404 8.6681 2.29136C8.57046 2.35867 8.49558 2.45408 8.4534 2.56493L6.90427 6.4653C6.86372 6.56988 6.79429 6.66077 6.70406 6.7274C6.61383 6.79402 6.50652 6.83364 6.39465 6.84161L2.24171 7.11161C1.70508 7.14593 1.48908 7.83949 1.90702 8.18711L5.0874 10.8342C5.17588 10.909 5.2415 11.0072 5.27673 11.1175C5.31195 11.2278 5.31534 11.3459 5.28652 11.4581L4.33702 15.1959C4.17558 15.8309 4.85115 16.3434 5.39452 15.9986L8.69077 13.9111C8.78342 13.8522 8.89093 13.8209 9.00071 13.8209C9.11049 13.8209 9.218 13.8522 9.31065 13.9111H9.31008Z"
-                                                                    fill="#FF8A00" />
-                                                            </svg>
-                                                        </span>
-                                                        <span>
-                                                            <svg width="18" height="19" viewBox="0 0 18 19"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M9.31008 13.9111L12.8566 16.1577C13.31 16.4446 13.8725 16.0177 13.7381 15.4884L12.7138 11.4581C12.6848 11.3458 12.6882 11.2276 12.7234 11.1172C12.7586 11.0067 12.8243 10.9085 12.9129 10.8337L16.0933 8.18711C16.5106 7.83949 16.2958 7.14593 15.7586 7.11105L11.6056 6.84105C11.4938 6.83312 11.3866 6.79359 11.2964 6.72707C11.2061 6.66055 11.1367 6.56977 11.096 6.4653L9.5469 2.56493C9.50471 2.45408 9.42984 2.35867 9.33219 2.29136C9.23455 2.22404 9.11875 2.18799 9.00015 2.18799C8.88155 2.18799 8.76574 2.22404 8.6681 2.29136C8.57046 2.35867 8.49558 2.45408 8.4534 2.56493L6.90427 6.4653C6.86372 6.56988 6.79429 6.66077 6.70406 6.7274C6.61383 6.79402 6.50652 6.83364 6.39465 6.84161L2.24171 7.11161C1.70508 7.14593 1.48908 7.83949 1.90702 8.18711L5.0874 10.8342C5.17588 10.909 5.2415 11.0072 5.27673 11.1175C5.31195 11.2278 5.31534 11.3459 5.28652 11.4581L4.33702 15.1959C4.17558 15.8309 4.85115 16.3434 5.39452 15.9986L8.69077 13.9111C8.78342 13.8522 8.89093 13.8209 9.00071 13.8209C9.11049 13.8209 9.218 13.8522 9.31065 13.9111H9.31008Z"
-                                                                    fill="#FF8A00" />
-                                                            </svg>
-                                                        </span>
-                                                        <span>
-                                                            <svg width="16" height="15" viewBox="0 0 16 15"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M8.31008 11.9111L11.8566 14.1577C12.31 14.4446 12.8725 14.0177 12.7381 13.4884L11.7138 9.45805C11.6848 9.34579 11.6882 9.22764 11.7234 9.11718C11.7586 9.00673 11.8243 8.90846 11.9129 8.83368L15.0933 6.18711C15.5106 5.83949 15.2958 5.14593 14.7586 5.11105L10.6056 4.84105C10.4938 4.83312 10.3866 4.79359 10.2964 4.72707C10.2061 4.66055 10.1367 4.56977 10.096 4.4653L8.5469 0.564927C8.50471 0.454081 8.42984 0.358673 8.33219 0.291355C8.23455 0.224037 8.11875 0.187988 8.00015 0.187988C7.88155 0.187988 7.76574 0.224037 7.6681 0.291355C7.57046 0.358673 7.49558 0.454081 7.4534 0.564927L5.90427 4.4653C5.86372 4.56988 5.79429 4.66077 5.70406 4.7274C5.61383 4.79402 5.50652 4.83364 5.39465 4.84161L1.24171 5.11161C0.705084 5.14593 0.489084 5.83949 0.907022 6.18711L4.0874 8.83424C4.17588 8.90898 4.2415 9.00715 4.27673 9.11749C4.31195 9.22783 4.31534 9.34587 4.28652 9.45805L3.33702 13.1959C3.17558 13.8309 3.85115 14.3434 4.39452 13.9986L7.69077 11.9111C7.78342 11.8522 7.89093 11.8209 8.00071 11.8209C8.11049 11.8209 8.218 11.8522 8.31065 11.9111H8.31008Z"
-                                                                    fill="#CCCCCC" />
-                                                            </svg>
-                                                        </span>
+                                                        <span>4 sao</span>
                                                     </label>
-                                                    <span class="star-num">4.0 & up</span>
                                                 </div>
                                             </div>
                                             <div class="ratings--list-item">
+                                                <!-- Lọc đánh giá 3 sao -->
                                                 <div class="form-check d-flex align-items-center">
-                                                    <input class="form-check-input" type="checkbox" name="ratings"
-                                                        id="three" />
+                                                    <input class="form-check-input" type="checkbox" name="ratings[]"
+                                                        value="3" id="three"
+                                                        @if (in_array(3, request()->input('ratings', []))) checked @endif />
                                                     <label class="form-check-label ratings-star d-flex align-items-center"
                                                         for="three">
                                                         <span>
-                                                            <svg width="18" height="19" viewBox="0 0 18 19"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M9.31008 13.9111L12.8566 16.1577C13.31 16.4446 13.8725 16.0177 13.7381 15.4884L12.7138 11.4581C12.6848 11.3458 12.6882 11.2276 12.7234 11.1172C12.7586 11.0067 12.8243 10.9085 12.9129 10.8337L16.0933 8.18711C16.5106 7.83949 16.2958 7.14593 15.7586 7.11105L11.6056 6.84105C11.4938 6.83312 11.3866 6.79359 11.2964 6.72707C11.2061 6.66055 11.1367 6.56977 11.096 6.4653L9.5469 2.56493C9.50471 2.45408 9.42984 2.35867 9.33219 2.29136C9.23455 2.22404 9.11875 2.18799 9.00015 2.18799C8.88155 2.18799 8.76574 2.22404 8.6681 2.29136C8.57046 2.35867 8.49558 2.45408 8.4534 2.56493L6.90427 6.4653C6.86372 6.56988 6.79429 6.66077 6.70406 6.7274C6.61383 6.79402 6.50652 6.83364 6.39465 6.84161L2.24171 7.11161C1.70508 7.14593 1.48908 7.83949 1.90702 8.18711L5.0874 10.8342C5.17588 10.909 5.2415 11.0072 5.27673 11.1175C5.31195 11.2278 5.31534 11.3459 5.28652 11.4581L4.33702 15.1959C4.17558 15.8309 4.85115 16.3434 5.39452 15.9986L8.69077 13.9111C8.78342 13.8522 8.89093 13.8209 9.00071 13.8209C9.11049 13.8209 9.218 13.8522 9.31065 13.9111H9.31008Z"
-                                                                    fill="#FF8A00" />
-                                                            </svg>
+                                                            @for ($i = 1; $i <= 5; $i++)
+                                                                <svg width="18" height="19" viewBox="0 0 18 19"
+                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path
+                                                                        d="M9 0L7.093 5.188H1.65L5.532 8.312L3.728 13.594L9 10.5L14.272 13.594L12.468 8.312L16.35 5.188H10.907L9 0Z"
+                                                                        fill="{{ $i <= 3 ? '#FFD700' : '#D3D3D3' }}" />
+                                                                </svg>
+                                                            @endfor
                                                         </span>
-                                                        <span>
-                                                            <svg width="18" height="19" viewBox="0 0 18 19"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M9.31008 13.9111L12.8566 16.1577C13.31 16.4446 13.8725 16.0177 13.7381 15.4884L12.7138 11.4581C12.6848 11.3458 12.6882 11.2276 12.7234 11.1172C12.7586 11.0067 12.8243 10.9085 12.9129 10.8337L16.0933 8.18711C16.5106 7.83949 16.2958 7.14593 15.7586 7.11105L11.6056 6.84105C11.4938 6.83312 11.3866 6.79359 11.2964 6.72707C11.2061 6.66055 11.1367 6.56977 11.096 6.4653L9.5469 2.56493C9.50471 2.45408 9.42984 2.35867 9.33219 2.29136C9.23455 2.22404 9.11875 2.18799 9.00015 2.18799C8.88155 2.18799 8.76574 2.22404 8.6681 2.29136C8.57046 2.35867 8.49558 2.45408 8.4534 2.56493L6.90427 6.4653C6.86372 6.56988 6.79429 6.66077 6.70406 6.7274C6.61383 6.79402 6.50652 6.83364 6.39465 6.84161L2.24171 7.11161C1.70508 7.14593 1.48908 7.83949 1.90702 8.18711L5.0874 10.8342C5.17588 10.909 5.2415 11.0072 5.27673 11.1175C5.31195 11.2278 5.31534 11.3459 5.28652 11.4581L4.33702 15.1959C4.17558 15.8309 4.85115 16.3434 5.39452 15.9986L8.69077 13.9111C8.78342 13.8522 8.89093 13.8209 9.00071 13.8209C9.11049 13.8209 9.218 13.8522 9.31065 13.9111H9.31008Z"
-                                                                    fill="#FF8A00" />
-                                                            </svg>
-                                                        </span>
-                                                        <span>
-                                                            <svg width="18" height="19" viewBox="0 0 18 19"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M9.31008 13.9111L12.8566 16.1577C13.31 16.4446 13.8725 16.0177 13.7381 15.4884L12.7138 11.4581C12.6848 11.3458 12.6882 11.2276 12.7234 11.1172C12.7586 11.0067 12.8243 10.9085 12.9129 10.8337L16.0933 8.18711C16.5106 7.83949 16.2958 7.14593 15.7586 7.11105L11.6056 6.84105C11.4938 6.83312 11.3866 6.79359 11.2964 6.72707C11.2061 6.66055 11.1367 6.56977 11.096 6.4653L9.5469 2.56493C9.50471 2.45408 9.42984 2.35867 9.33219 2.29136C9.23455 2.22404 9.11875 2.18799 9.00015 2.18799C8.88155 2.18799 8.76574 2.22404 8.6681 2.29136C8.57046 2.35867 8.49558 2.45408 8.4534 2.56493L6.90427 6.4653C6.86372 6.56988 6.79429 6.66077 6.70406 6.7274C6.61383 6.79402 6.50652 6.83364 6.39465 6.84161L2.24171 7.11161C1.70508 7.14593 1.48908 7.83949 1.90702 8.18711L5.0874 10.8342C5.17588 10.909 5.2415 11.0072 5.27673 11.1175C5.31195 11.2278 5.31534 11.3459 5.28652 11.4581L4.33702 15.1959C4.17558 15.8309 4.85115 16.3434 5.39452 15.9986L8.69077 13.9111C8.78342 13.8522 8.89093 13.8209 9.00071 13.8209C9.11049 13.8209 9.218 13.8522 9.31065 13.9111H9.31008Z"
-                                                                    fill="#FF8A00" />
-                                                            </svg>
-                                                        </span>
-
-                                                        <span>
-                                                            <svg width="16" height="15" viewBox="0 0 16 15"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M8.31008 11.9111L11.8566 14.1577C12.31 14.4446 12.8725 14.0177 12.7381 13.4884L11.7138 9.45805C11.6848 9.34579 11.6882 9.22764 11.7234 9.11718C11.7586 9.00673 11.8243 8.90846 11.9129 8.83368L15.0933 6.18711C15.5106 5.83949 15.2958 5.14593 14.7586 5.11105L10.6056 4.84105C10.4938 4.83312 10.3866 4.79359 10.2964 4.72707C10.2061 4.66055 10.1367 4.56977 10.096 4.4653L8.5469 0.564927C8.50471 0.454081 8.42984 0.358673 8.33219 0.291355C8.23455 0.224037 8.11875 0.187988 8.00015 0.187988C7.88155 0.187988 7.76574 0.224037 7.6681 0.291355C7.57046 0.358673 7.49558 0.454081 7.4534 0.564927L5.90427 4.4653C5.86372 4.56988 5.79429 4.66077 5.70406 4.7274C5.61383 4.79402 5.50652 4.83364 5.39465 4.84161L1.24171 5.11161C0.705084 5.14593 0.489084 5.83949 0.907022 6.18711L4.0874 8.83424C4.17588 8.90898 4.2415 9.00715 4.27673 9.11749C4.31195 9.22783 4.31534 9.34587 4.28652 9.45805L3.33702 13.1959C3.17558 13.8309 3.85115 14.3434 4.39452 13.9986L7.69077 11.9111C7.78342 11.8522 7.89093 11.8209 8.00071 11.8209C8.11049 11.8209 8.218 11.8522 8.31065 11.9111H8.31008Z"
-                                                                    fill="#CCCCCC" />
-                                                            </svg>
-                                                        </span>
-                                                        <span>
-                                                            <svg width="16" height="15" viewBox="0 0 16 15"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M8.31008 11.9111L11.8566 14.1577C12.31 14.4446 12.8725 14.0177 12.7381 13.4884L11.7138 9.45805C11.6848 9.34579 11.6882 9.22764 11.7234 9.11718C11.7586 9.00673 11.8243 8.90846 11.9129 8.83368L15.0933 6.18711C15.5106 5.83949 15.2958 5.14593 14.7586 5.11105L10.6056 4.84105C10.4938 4.83312 10.3866 4.79359 10.2964 4.72707C10.2061 4.66055 10.1367 4.56977 10.096 4.4653L8.5469 0.564927C8.50471 0.454081 8.42984 0.358673 8.33219 0.291355C8.23455 0.224037 8.11875 0.187988 8.00015 0.187988C7.88155 0.187988 7.76574 0.224037 7.6681 0.291355C7.57046 0.358673 7.49558 0.454081 7.4534 0.564927L5.90427 4.4653C5.86372 4.56988 5.79429 4.66077 5.70406 4.7274C5.61383 4.79402 5.50652 4.83364 5.39465 4.84161L1.24171 5.11161C0.705084 5.14593 0.489084 5.83949 0.907022 6.18711L4.0874 8.83424C4.17588 8.90898 4.2415 9.00715 4.27673 9.11749C4.31195 9.22783 4.31534 9.34587 4.28652 9.45805L3.33702 13.1959C3.17558 13.8309 3.85115 14.3434 4.39452 13.9986L7.69077 11.9111C7.78342 11.8522 7.89093 11.8209 8.00071 11.8209C8.11049 11.8209 8.218 11.8522 8.31065 11.9111H8.31008Z"
-                                                                    fill="#CCCCCC" />
-                                                            </svg>
-                                                        </span>
+                                                        <span>3 sao</span>
                                                     </label>
-                                                    <span class="star-num">3.0 & up</span>
                                                 </div>
                                             </div>
                                             <div class="ratings--list-item">
+                                                <!-- Lọc đánh giá 2 sao -->
                                                 <div class="form-check d-flex align-items-center">
-                                                    <input class="form-check-input" type="checkbox" name="ratings"
-                                                        id="two" />
+                                                    <input class="form-check-input" type="checkbox" name="ratings[]"
+                                                        value="2" id="two"
+                                                        @if (in_array(2, request()->input('ratings', []))) checked @endif />
                                                     <label class="form-check-label ratings-star d-flex align-items-center"
                                                         for="two">
                                                         <span>
-                                                            <svg width="18" height="19" viewBox="0 0 18 19"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M9.31008 13.9111L12.8566 16.1577C13.31 16.4446 13.8725 16.0177 13.7381 15.4884L12.7138 11.4581C12.6848 11.3458 12.6882 11.2276 12.7234 11.1172C12.7586 11.0067 12.8243 10.9085 12.9129 10.8337L16.0933 8.18711C16.5106 7.83949 16.2958 7.14593 15.7586 7.11105L11.6056 6.84105C11.4938 6.83312 11.3866 6.79359 11.2964 6.72707C11.2061 6.66055 11.1367 6.56977 11.096 6.4653L9.5469 2.56493C9.50471 2.45408 9.42984 2.35867 9.33219 2.29136C9.23455 2.22404 9.11875 2.18799 9.00015 2.18799C8.88155 2.18799 8.76574 2.22404 8.6681 2.29136C8.57046 2.35867 8.49558 2.45408 8.4534 2.56493L6.90427 6.4653C6.86372 6.56988 6.79429 6.66077 6.70406 6.7274C6.61383 6.79402 6.50652 6.83364 6.39465 6.84161L2.24171 7.11161C1.70508 7.14593 1.48908 7.83949 1.90702 8.18711L5.0874 10.8342C5.17588 10.909 5.2415 11.0072 5.27673 11.1175C5.31195 11.2278 5.31534 11.3459 5.28652 11.4581L4.33702 15.1959C4.17558 15.8309 4.85115 16.3434 5.39452 15.9986L8.69077 13.9111C8.78342 13.8522 8.89093 13.8209 9.00071 13.8209C9.11049 13.8209 9.218 13.8522 9.31065 13.9111H9.31008Z"
-                                                                    fill="#FF8A00" />
-                                                            </svg>
+                                                            @for ($i = 1; $i <= 5; $i++)
+                                                                <svg width="18" height="19" viewBox="0 0 18 19"
+                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path
+                                                                        d="M9 0L7.093 5.188H1.65L5.532 8.312L3.728 13.594L9 10.5L14.272 13.594L12.468 8.312L16.35 5.188H10.907L9 0Z"
+                                                                        fill="{{ $i <= 2 ? '#FFD700' : '#D3D3D3' }}" />
+                                                                </svg>
+                                                            @endfor
                                                         </span>
-                                                        <span>
-                                                            <svg width="18" height="19" viewBox="0 0 18 19"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M9.31008 13.9111L12.8566 16.1577C13.31 16.4446 13.8725 16.0177 13.7381 15.4884L12.7138 11.4581C12.6848 11.3458 12.6882 11.2276 12.7234 11.1172C12.7586 11.0067 12.8243 10.9085 12.9129 10.8337L16.0933 8.18711C16.5106 7.83949 16.2958 7.14593 15.7586 7.11105L11.6056 6.84105C11.4938 6.83312 11.3866 6.79359 11.2964 6.72707C11.2061 6.66055 11.1367 6.56977 11.096 6.4653L9.5469 2.56493C9.50471 2.45408 9.42984 2.35867 9.33219 2.29136C9.23455 2.22404 9.11875 2.18799 9.00015 2.18799C8.88155 2.18799 8.76574 2.22404 8.6681 2.29136C8.57046 2.35867 8.49558 2.45408 8.4534 2.56493L6.90427 6.4653C6.86372 6.56988 6.79429 6.66077 6.70406 6.7274C6.61383 6.79402 6.50652 6.83364 6.39465 6.84161L2.24171 7.11161C1.70508 7.14593 1.48908 7.83949 1.90702 8.18711L5.0874 10.8342C5.17588 10.909 5.2415 11.0072 5.27673 11.1175C5.31195 11.2278 5.31534 11.3459 5.28652 11.4581L4.33702 15.1959C4.17558 15.8309 4.85115 16.3434 5.39452 15.9986L8.69077 13.9111C8.78342 13.8522 8.89093 13.8209 9.00071 13.8209C9.11049 13.8209 9.218 13.8522 9.31065 13.9111H9.31008Z"
-                                                                    fill="#FF8A00" />
-                                                            </svg>
-                                                        </span>
-                                                        <span>
-                                                            <svg width="16" height="15" viewBox="0 0 16 15"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M8.31008 11.9111L11.8566 14.1577C12.31 14.4446 12.8725 14.0177 12.7381 13.4884L11.7138 9.45805C11.6848 9.34579 11.6882 9.22764 11.7234 9.11718C11.7586 9.00673 11.8243 8.90846 11.9129 8.83368L15.0933 6.18711C15.5106 5.83949 15.2958 5.14593 14.7586 5.11105L10.6056 4.84105C10.4938 4.83312 10.3866 4.79359 10.2964 4.72707C10.2061 4.66055 10.1367 4.56977 10.096 4.4653L8.5469 0.564927C8.50471 0.454081 8.42984 0.358673 8.33219 0.291355C8.23455 0.224037 8.11875 0.187988 8.00015 0.187988C7.88155 0.187988 7.76574 0.224037 7.6681 0.291355C7.57046 0.358673 7.49558 0.454081 7.4534 0.564927L5.90427 4.4653C5.86372 4.56988 5.79429 4.66077 5.70406 4.7274C5.61383 4.79402 5.50652 4.83364 5.39465 4.84161L1.24171 5.11161C0.705084 5.14593 0.489084 5.83949 0.907022 6.18711L4.0874 8.83424C4.17588 8.90898 4.2415 9.00715 4.27673 9.11749C4.31195 9.22783 4.31534 9.34587 4.28652 9.45805L3.33702 13.1959C3.17558 13.8309 3.85115 14.3434 4.39452 13.9986L7.69077 11.9111C7.78342 11.8522 7.89093 11.8209 8.00071 11.8209C8.11049 11.8209 8.218 11.8522 8.31065 11.9111H8.31008Z"
-                                                                    fill="#CCCCCC" />
-                                                            </svg>
-                                                        </span>
-                                                        <span>
-                                                            <svg width="16" height="15" viewBox="0 0 16 15"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M8.31008 11.9111L11.8566 14.1577C12.31 14.4446 12.8725 14.0177 12.7381 13.4884L11.7138 9.45805C11.6848 9.34579 11.6882 9.22764 11.7234 9.11718C11.7586 9.00673 11.8243 8.90846 11.9129 8.83368L15.0933 6.18711C15.5106 5.83949 15.2958 5.14593 14.7586 5.11105L10.6056 4.84105C10.4938 4.83312 10.3866 4.79359 10.2964 4.72707C10.2061 4.66055 10.1367 4.56977 10.096 4.4653L8.5469 0.564927C8.50471 0.454081 8.42984 0.358673 8.33219 0.291355C8.23455 0.224037 8.11875 0.187988 8.00015 0.187988C7.88155 0.187988 7.76574 0.224037 7.6681 0.291355C7.57046 0.358673 7.49558 0.454081 7.4534 0.564927L5.90427 4.4653C5.86372 4.56988 5.79429 4.66077 5.70406 4.7274C5.61383 4.79402 5.50652 4.83364 5.39465 4.84161L1.24171 5.11161C0.705084 5.14593 0.489084 5.83949 0.907022 6.18711L4.0874 8.83424C4.17588 8.90898 4.2415 9.00715 4.27673 9.11749C4.31195 9.22783 4.31534 9.34587 4.28652 9.45805L3.33702 13.1959C3.17558 13.8309 3.85115 14.3434 4.39452 13.9986L7.69077 11.9111C7.78342 11.8522 7.89093 11.8209 8.00071 11.8209C8.11049 11.8209 8.218 11.8522 8.31065 11.9111H8.31008Z"
-                                                                    fill="#CCCCCC" />
-                                                            </svg>
-                                                        </span>
-                                                        <span>
-                                                            <svg width="16" height="15" viewBox="0 0 16 15"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M8.31008 11.9111L11.8566 14.1577C12.31 14.4446 12.8725 14.0177 12.7381 13.4884L11.7138 9.45805C11.6848 9.34579 11.6882 9.22764 11.7234 9.11718C11.7586 9.00673 11.8243 8.90846 11.9129 8.83368L15.0933 6.18711C15.5106 5.83949 15.2958 5.14593 14.7586 5.11105L10.6056 4.84105C10.4938 4.83312 10.3866 4.79359 10.2964 4.72707C10.2061 4.66055 10.1367 4.56977 10.096 4.4653L8.5469 0.564927C8.50471 0.454081 8.42984 0.358673 8.33219 0.291355C8.23455 0.224037 8.11875 0.187988 8.00015 0.187988C7.88155 0.187988 7.76574 0.224037 7.6681 0.291355C7.57046 0.358673 7.49558 0.454081 7.4534 0.564927L5.90427 4.4653C5.86372 4.56988 5.79429 4.66077 5.70406 4.7274C5.61383 4.79402 5.50652 4.83364 5.39465 4.84161L1.24171 5.11161C0.705084 5.14593 0.489084 5.83949 0.907022 6.18711L4.0874 8.83424C4.17588 8.90898 4.2415 9.00715 4.27673 9.11749C4.31195 9.22783 4.31534 9.34587 4.28652 9.45805L3.33702 13.1959C3.17558 13.8309 3.85115 14.3434 4.39452 13.9986L7.69077 11.9111C7.78342 11.8522 7.89093 11.8209 8.00071 11.8209C8.11049 11.8209 8.218 11.8522 8.31065 11.9111H8.31008Z"
-                                                                    fill="#CCCCCC" />
-                                                            </svg>
-                                                        </span>
+                                                        <span>2 sao</span>
                                                     </label>
-                                                    <span class="star-num">2.0 & up</span>
                                                 </div>
                                             </div>
                                             <div class="ratings--list-item">
+                                                <!-- Lọc đánh giá 1 sao -->
                                                 <div class="form-check d-flex align-items-center">
-                                                    <input class="form-check-input" type="checkbox" name="ratings"
-                                                        id="one" />
+                                                    <input class="form-check-input" type="checkbox" name="ratings[]"
+                                                        value="1" id="one"
+                                                        @if (in_array(1, request()->input('ratings', []))) checked @endif />
                                                     <label class="form-check-label ratings-star d-flex align-items-center"
                                                         for="one">
                                                         <span>
-                                                            <svg width="18" height="19" viewBox="0 0 18 19"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M9.31008 13.9111L12.8566 16.1577C13.31 16.4446 13.8725 16.0177 13.7381 15.4884L12.7138 11.4581C12.6848 11.3458 12.6882 11.2276 12.7234 11.1172C12.7586 11.0067 12.8243 10.9085 12.9129 10.8337L16.0933 8.18711C16.5106 7.83949 16.2958 7.14593 15.7586 7.11105L11.6056 6.84105C11.4938 6.83312 11.3866 6.79359 11.2964 6.72707C11.2061 6.66055 11.1367 6.56977 11.096 6.4653L9.5469 2.56493C9.50471 2.45408 9.42984 2.35867 9.33219 2.29136C9.23455 2.22404 9.11875 2.18799 9.00015 2.18799C8.88155 2.18799 8.76574 2.22404 8.6681 2.29136C8.57046 2.35867 8.49558 2.45408 8.4534 2.56493L6.90427 6.4653C6.86372 6.56988 6.79429 6.66077 6.70406 6.7274C6.61383 6.79402 6.50652 6.83364 6.39465 6.84161L2.24171 7.11161C1.70508 7.14593 1.48908 7.83949 1.90702 8.18711L5.0874 10.8342C5.17588 10.909 5.2415 11.0072 5.27673 11.1175C5.31195 11.2278 5.31534 11.3459 5.28652 11.4581L4.33702 15.1959C4.17558 15.8309 4.85115 16.3434 5.39452 15.9986L8.69077 13.9111C8.78342 13.8522 8.89093 13.8209 9.00071 13.8209C9.11049 13.8209 9.218 13.8522 9.31065 13.9111H9.31008Z"
-                                                                    fill="#FF8A00" />
-                                                            </svg>
+                                                            @for ($i = 1; $i <= 5; $i++)
+                                                                <svg width="18" height="19" viewBox="0 0 18 19"
+                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path
+                                                                        d="M9 0L7.093 5.188H1.65L5.532 8.312L3.728 13.594L9 10.5L14.272 13.594L12.468 8.312L16.35 5.188H10.907L9 0Z"
+                                                                        fill="{{ $i <= 1 ? '#FFD700' : '#D3D3D3' }}" />
+                                                                </svg>
+                                                            @endfor
                                                         </span>
-                                                        <span>
-                                                            <svg width="16" height="15" viewBox="0 0 16 15"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M8.31008 11.9111L11.8566 14.1577C12.31 14.4446 12.8725 14.0177 12.7381 13.4884L11.7138 9.45805C11.6848 9.34579 11.6882 9.22764 11.7234 9.11718C11.7586 9.00673 11.8243 8.90846 11.9129 8.83368L15.0933 6.18711C15.5106 5.83949 15.2958 5.14593 14.7586 5.11105L10.6056 4.84105C10.4938 4.83312 10.3866 4.79359 10.2964 4.72707C10.2061 4.66055 10.1367 4.56977 10.096 4.4653L8.5469 0.564927C8.50471 0.454081 8.42984 0.358673 8.33219 0.291355C8.23455 0.224037 8.11875 0.187988 8.00015 0.187988C7.88155 0.187988 7.76574 0.224037 7.6681 0.291355C7.57046 0.358673 7.49558 0.454081 7.4534 0.564927L5.90427 4.4653C5.86372 4.56988 5.79429 4.66077 5.70406 4.7274C5.61383 4.79402 5.50652 4.83364 5.39465 4.84161L1.24171 5.11161C0.705084 5.14593 0.489084 5.83949 0.907022 6.18711L4.0874 8.83424C4.17588 8.90898 4.2415 9.00715 4.27673 9.11749C4.31195 9.22783 4.31534 9.34587 4.28652 9.45805L3.33702 13.1959C3.17558 13.8309 3.85115 14.3434 4.39452 13.9986L7.69077 11.9111C7.78342 11.8522 7.89093 11.8209 8.00071 11.8209C8.11049 11.8209 8.218 11.8522 8.31065 11.9111H8.31008Z"
-                                                                    fill="#CCCCCC" />
-                                                            </svg>
-                                                        </span>
-                                                        <span>
-                                                            <svg width="16" height="15" viewBox="0 0 16 15"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M8.31008 11.9111L11.8566 14.1577C12.31 14.4446 12.8725 14.0177 12.7381 13.4884L11.7138 9.45805C11.6848 9.34579 11.6882 9.22764 11.7234 9.11718C11.7586 9.00673 11.8243 8.90846 11.9129 8.83368L15.0933 6.18711C15.5106 5.83949 15.2958 5.14593 14.7586 5.11105L10.6056 4.84105C10.4938 4.83312 10.3866 4.79359 10.2964 4.72707C10.2061 4.66055 10.1367 4.56977 10.096 4.4653L8.5469 0.564927C8.50471 0.454081 8.42984 0.358673 8.33219 0.291355C8.23455 0.224037 8.11875 0.187988 8.00015 0.187988C7.88155 0.187988 7.76574 0.224037 7.6681 0.291355C7.57046 0.358673 7.49558 0.454081 7.4534 0.564927L5.90427 4.4653C5.86372 4.56988 5.79429 4.66077 5.70406 4.7274C5.61383 4.79402 5.50652 4.83364 5.39465 4.84161L1.24171 5.11161C0.705084 5.14593 0.489084 5.83949 0.907022 6.18711L4.0874 8.83424C4.17588 8.90898 4.2415 9.00715 4.27673 9.11749C4.31195 9.22783 4.31534 9.34587 4.28652 9.45805L3.33702 13.1959C3.17558 13.8309 3.85115 14.3434 4.39452 13.9986L7.69077 11.9111C7.78342 11.8522 7.89093 11.8209 8.00071 11.8209C8.11049 11.8209 8.218 11.8522 8.31065 11.9111H8.31008Z"
-                                                                    fill="#CCCCCC" />
-                                                            </svg>
-                                                        </span>
-                                                        <span>
-                                                            <svg width="16" height="15" viewBox="0 0 16 15"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M8.31008 11.9111L11.8566 14.1577C12.31 14.4446 12.8725 14.0177 12.7381 13.4884L11.7138 9.45805C11.6848 9.34579 11.6882 9.22764 11.7234 9.11718C11.7586 9.00673 11.8243 8.90846 11.9129 8.83368L15.0933 6.18711C15.5106 5.83949 15.2958 5.14593 14.7586 5.11105L10.6056 4.84105C10.4938 4.83312 10.3866 4.79359 10.2964 4.72707C10.2061 4.66055 10.1367 4.56977 10.096 4.4653L8.5469 0.564927C8.50471 0.454081 8.42984 0.358673 8.33219 0.291355C8.23455 0.224037 8.11875 0.187988 8.00015 0.187988C7.88155 0.187988 7.76574 0.224037 7.6681 0.291355C7.57046 0.358673 7.49558 0.454081 7.4534 0.564927L5.90427 4.4653C5.86372 4.56988 5.79429 4.66077 5.70406 4.7274C5.61383 4.79402 5.50652 4.83364 5.39465 4.84161L1.24171 5.11161C0.705084 5.14593 0.489084 5.83949 0.907022 6.18711L4.0874 8.83424C4.17588 8.90898 4.2415 9.00715 4.27673 9.11749C4.31195 9.22783 4.31534 9.34587 4.28652 9.45805L3.33702 13.1959C3.17558 13.8309 3.85115 14.3434 4.39452 13.9986L7.69077 11.9111C7.78342 11.8522 7.89093 11.8209 8.00071 11.8209C8.11049 11.8209 8.218 11.8522 8.31065 11.9111H8.31008Z"
-                                                                    fill="#CCCCCC" />
-                                                            </svg>
-                                                        </span>
-                                                        <span>
-                                                            <svg width="16" height="15" viewBox="0 0 16 15"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M8.31008 11.9111L11.8566 14.1577C12.31 14.4446 12.8725 14.0177 12.7381 13.4884L11.7138 9.45805C11.6848 9.34579 11.6882 9.22764 11.7234 9.11718C11.7586 9.00673 11.8243 8.90846 11.9129 8.83368L15.0933 6.18711C15.5106 5.83949 15.2958 5.14593 14.7586 5.11105L10.6056 4.84105C10.4938 4.83312 10.3866 4.79359 10.2964 4.72707C10.2061 4.66055 10.1367 4.56977 10.096 4.4653L8.5469 0.564927C8.50471 0.454081 8.42984 0.358673 8.33219 0.291355C8.23455 0.224037 8.11875 0.187988 8.00015 0.187988C7.88155 0.187988 7.76574 0.224037 7.6681 0.291355C7.57046 0.358673 7.49558 0.454081 7.4534 0.564927L5.90427 4.4653C5.86372 4.56988 5.79429 4.66077 5.70406 4.7274C5.61383 4.79402 5.50652 4.83364 5.39465 4.84161L1.24171 5.11161C0.705084 5.14593 0.489084 5.83949 0.907022 6.18711L4.0874 8.83424C4.17588 8.90898 4.2415 9.00715 4.27673 9.11749C4.31195 9.22783 4.31534 9.34587 4.28652 9.45805L3.33702 13.1959C3.17558 13.8309 3.85115 14.3434 4.39452 13.9986L7.69077 11.9111C7.78342 11.8522 7.89093 11.8209 8.00071 11.8209C8.11049 11.8209 8.218 11.8522 8.31065 11.9111H8.31008Z"
-                                                                    fill="#CCCCCC" />
-                                                            </svg>
-                                                        </span>
+                                                        <span>1 sao</span>
                                                     </label>
-                                                    <span class="star-num">1.0 & up</span>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Popular Tag -->
-                            <div class="accordion-item shop-item">
-                                <h2 class="accordion-header" id="shop-item-accordion--four">
-                                    <button class="accordion-button shop-button font-body--xxl-500 collapsed"
-                                        type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour"
-                                        aria-expanded="false" aria-controls="collapseFour">
-                                        Tag Phổ Biến
-                                        <span class="icon">
-                                            <svg width="14" height="8" viewBox="0 0 14 8" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M13 7L7 1L1 7" stroke="#1A1A1A" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </span>
-                                    </button>
-                                </h2>
-                                <div id="collapseFour" class="accordion-collapse shop-collapse collapse show"
-                                    aria-labelledby="shop-item-accordion--four" data-bs-parent="#shop">
-                                    <div class="accordion-body shop-body">
-                                        <div class="popular-tags">
-                                            <a href="#" class="tag-btn">Healthy</a>
-                                            <a href="#" class="tag-btn active">Low Fat </a>
-                                            <a href="#" class="tag-btn">Vegetarian</a>
-                                            <a href="#" class="tag-btn">Kid Foods </a>
-                                            <a href="#" class="tag-btn">Vitamins</a>
-                                            <a href="#" class="tag-btn">Bread</a>
-                                            <a href="#" class="tag-btn">Meat</a>
-                                            <a href="#" class="tag-btn">Snacks</a>
-                                            <a href="#" class="tag-btn">Tiffin</a>
-                                            <a href="#" class="tag-btn">Launch</a>
-                                            <a href="#" class="tag-btn">Dinner</a>
-                                            <a href="#" class="tag-btn">breakfast</a>
-                                            <a href="#" class="tag-btn">Fruit</a>
+                                        <div class="d-flex justify-content-between">
+                                            <!-- Nút Lọc -->
+                                            <button type="submit" class="btn btn-primary btn-lg"
+                                                style="border-radius: 50px; padding: 10px 20px; font-size: 16px;">
+                                                <i class="bi bi-filter"></i> Lọc
+                                            </button>
+
+                                            <!-- Nút bỏ lọc -->
+                                            <a href="{{ route('client.shop.shop') }}"
+                                                class="btn btn-outline-secondary px-4"
+                                                style="border-radius: 50px; padding: 10px 20px; font-size: 16px;">
+                                                Bỏ lọc</a>
                                         </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
+
+
                             <!-- banner  -->
                             <div class="shop-item">
                                 <div class="shop-img-banner">
@@ -539,182 +393,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Sales Products  -->
-                            <div class="shop-item">
-                                <h2 class="font-body--xxl-500" style="margin-bottom: 12px;">Sản Phẩm Giảm Giá</h2>
-                                <a href="product-details.html" class="shop-sale-product-item">
-                                    <div class="product-img">
-                                        <img src="{{ asset('client/images/products/img-01.png') }}" alt="products" />
-                                    </div>
-                                    <div class="product-info">
-                                        <h5 class="font-body--md-400">Red Capsicum</h5>
-                                        <div class="price">
-                                            <span class="current">$32.00</span>
-                                            <del class="prev">$20.99</del>
-                                        </div>
-                                        <ul class="rating">
-                                            <li>
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M6.20672 8.94078L8.5711 10.4385C8.87335 10.6298 9.24835 10.3452 9.15872 9.99228L8.47585 7.30541C8.45656 7.23057 8.45878 7.1518 8.48227 7.07816C8.50575 7.00453 8.54954 6.93902 8.6086 6.88916L10.7288 5.12478C11.0071 4.89303 10.8638 4.43066 10.5057 4.40741L7.7371 4.22741C7.66255 4.22212 7.59105 4.19577 7.5309 4.15142C7.47075 4.10707 7.42444 4.04656 7.39735 3.97691L6.3646 1.37666C6.33648 1.30276 6.28656 1.23916 6.22146 1.19428C6.15636 1.1494 6.07916 1.12537 6.0001 1.12537C5.92103 1.12537 5.84383 1.1494 5.77873 1.19428C5.71364 1.23916 5.66372 1.30276 5.6356 1.37666L4.60285 3.97691C4.57581 4.04663 4.52952 4.10722 4.46937 4.15164C4.40922 4.19606 4.33768 4.22246 4.2631 4.22778L1.49447 4.40778C1.13672 4.43066 0.992723 4.89303 1.27135 5.12478L3.3916 6.88953C3.45059 6.93936 3.49434 7.00481 3.51782 7.07837C3.5413 7.15193 3.54356 7.23062 3.52435 7.30541L2.89135 9.79728C2.78372 10.2207 3.2341 10.5623 3.59635 10.3324L5.79385 8.94078C5.85561 8.90152 5.92728 8.88066 6.00047 8.88066C6.07366 8.88066 6.14533 8.90152 6.2071 8.94078H6.20672Z"
-                                                        fill="#FF8A00" />
-                                                </svg>
-                                            </li>
-                                            <li>
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M6.20672 8.94078L8.5711 10.4385C8.87335 10.6298 9.24835 10.3452 9.15872 9.99228L8.47585 7.30541C8.45656 7.23057 8.45878 7.1518 8.48227 7.07816C8.50575 7.00453 8.54954 6.93902 8.6086 6.88916L10.7288 5.12478C11.0071 4.89303 10.8638 4.43066 10.5057 4.40741L7.7371 4.22741C7.66255 4.22212 7.59105 4.19577 7.5309 4.15142C7.47075 4.10707 7.42444 4.04656 7.39735 3.97691L6.3646 1.37666C6.33648 1.30276 6.28656 1.23916 6.22146 1.19428C6.15636 1.1494 6.07916 1.12537 6.0001 1.12537C5.92103 1.12537 5.84383 1.1494 5.77873 1.19428C5.71364 1.23916 5.66372 1.30276 5.6356 1.37666L4.60285 3.97691C4.57581 4.04663 4.52952 4.10722 4.46937 4.15164C4.40922 4.19606 4.33768 4.22246 4.2631 4.22778L1.49447 4.40778C1.13672 4.43066 0.992723 4.89303 1.27135 5.12478L3.3916 6.88953C3.45059 6.93936 3.49434 7.00481 3.51782 7.07837C3.5413 7.15193 3.54356 7.23062 3.52435 7.30541L2.89135 9.79728C2.78372 10.2207 3.2341 10.5623 3.59635 10.3324L5.79385 8.94078C5.85561 8.90152 5.92728 8.88066 6.00047 8.88066C6.07366 8.88066 6.14533 8.90152 6.2071 8.94078H6.20672Z"
-                                                        fill="#FF8A00" />
-                                                </svg>
-                                            </li>
-                                            <li>
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M6.20672 8.94078L8.5711 10.4385C8.87335 10.6298 9.24835 10.3452 9.15872 9.99228L8.47585 7.30541C8.45656 7.23057 8.45878 7.1518 8.48227 7.07816C8.50575 7.00453 8.54954 6.93902 8.6086 6.88916L10.7288 5.12478C11.0071 4.89303 10.8638 4.43066 10.5057 4.40741L7.7371 4.22741C7.66255 4.22212 7.59105 4.19577 7.5309 4.15142C7.47075 4.10707 7.42444 4.04656 7.39735 3.97691L6.3646 1.37666C6.33648 1.30276 6.28656 1.23916 6.22146 1.19428C6.15636 1.1494 6.07916 1.12537 6.0001 1.12537C5.92103 1.12537 5.84383 1.1494 5.77873 1.19428C5.71364 1.23916 5.66372 1.30276 5.6356 1.37666L4.60285 3.97691C4.57581 4.04663 4.52952 4.10722 4.46937 4.15164C4.40922 4.19606 4.33768 4.22246 4.2631 4.22778L1.49447 4.40778C1.13672 4.43066 0.992723 4.89303 1.27135 5.12478L3.3916 6.88953C3.45059 6.93936 3.49434 7.00481 3.51782 7.07837C3.5413 7.15193 3.54356 7.23062 3.52435 7.30541L2.89135 9.79728C2.78372 10.2207 3.2341 10.5623 3.59635 10.3324L5.79385 8.94078C5.85561 8.90152 5.92728 8.88066 6.00047 8.88066C6.07366 8.88066 6.14533 8.90152 6.2071 8.94078H6.20672Z"
-                                                        fill="#FF8A00" />
-                                                </svg>
-                                            </li>
-                                            <li>
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M6.20672 8.94078L8.5711 10.4385C8.87335 10.6298 9.24835 10.3452 9.15872 9.99228L8.47585 7.30541C8.45656 7.23057 8.45878 7.1518 8.48227 7.07816C8.50575 7.00453 8.54954 6.93902 8.6086 6.88916L10.7288 5.12478C11.0071 4.89303 10.8638 4.43066 10.5057 4.40741L7.7371 4.22741C7.66255 4.22212 7.59105 4.19577 7.5309 4.15142C7.47075 4.10707 7.42444 4.04656 7.39735 3.97691L6.3646 1.37666C6.33648 1.30276 6.28656 1.23916 6.22146 1.19428C6.15636 1.1494 6.07916 1.12537 6.0001 1.12537C5.92103 1.12537 5.84383 1.1494 5.77873 1.19428C5.71364 1.23916 5.66372 1.30276 5.6356 1.37666L4.60285 3.97691C4.57581 4.04663 4.52952 4.10722 4.46937 4.15164C4.40922 4.19606 4.33768 4.22246 4.2631 4.22778L1.49447 4.40778C1.13672 4.43066 0.992723 4.89303 1.27135 5.12478L3.3916 6.88953C3.45059 6.93936 3.49434 7.00481 3.51782 7.07837C3.5413 7.15193 3.54356 7.23062 3.52435 7.30541L2.89135 9.79728C2.78372 10.2207 3.2341 10.5623 3.59635 10.3324L5.79385 8.94078C5.85561 8.90152 5.92728 8.88066 6.00047 8.88066C6.07366 8.88066 6.14533 8.90152 6.2071 8.94078H6.20672Z"
-                                                        fill="#FF8A00" />
-                                                </svg>
-                                            </li>
-                                            <li>
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M6.20672 8.94078L8.5711 10.4385C8.87335 10.6298 9.24835 10.3452 9.15872 9.99228L8.47585 7.30541C8.45656 7.23057 8.45878 7.1518 8.48227 7.07816C8.50575 7.00453 8.54954 6.93902 8.6086 6.88916L10.7288 5.12478C11.0071 4.89303 10.8638 4.43066 10.5057 4.40741L7.7371 4.22741C7.66255 4.22212 7.59105 4.19577 7.5309 4.15142C7.47075 4.10707 7.42444 4.04656 7.39735 3.97691L6.3646 1.37666C6.33648 1.30276 6.28656 1.23916 6.22146 1.19428C6.15636 1.1494 6.07916 1.12537 6.0001 1.12537C5.92103 1.12537 5.84383 1.1494 5.77873 1.19428C5.71364 1.23916 5.66372 1.30276 5.6356 1.37666L4.60285 3.97691C4.57581 4.04663 4.52952 4.10722 4.46937 4.15164C4.40922 4.19606 4.33768 4.22246 4.2631 4.22778L1.49447 4.40778C1.13672 4.43066 0.992723 4.89303 1.27135 5.12478L3.3916 6.88953C3.45059 6.93936 3.49434 7.00481 3.51782 7.07837C3.5413 7.15193 3.54356 7.23062 3.52435 7.30541L2.89135 9.79728C2.78372 10.2207 3.2341 10.5623 3.59635 10.3324L5.79385 8.94078C5.85561 8.90152 5.92728 8.88066 6.00047 8.88066C6.07366 8.88066 6.14533 8.90152 6.2071 8.94078H6.20672Z"
-                                                        fill="#cccccc" />
-                                                </svg>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </a>
-                                <a href="product-details.html" class="shop-sale-product-item">
-                                    <div class="product-img">
-                                        <img src="{{ asset('client/images/products/img-02.png') }}" alt="products" />
-                                    </div>
-                                    <div class="product-info">
-                                        <h5 class="font-body--md-400">Red Capsicum</h5>
-                                        <div class="price">
-                                            <span class="current">$32.00</span>
-                                            <del class="prev">$20.99</del>
-                                        </div>
-                                        <ul class="rating">
-                                            <li>
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M6.20672 8.94078L8.5711 10.4385C8.87335 10.6298 9.24835 10.3452 9.15872 9.99228L8.47585 7.30541C8.45656 7.23057 8.45878 7.1518 8.48227 7.07816C8.50575 7.00453 8.54954 6.93902 8.6086 6.88916L10.7288 5.12478C11.0071 4.89303 10.8638 4.43066 10.5057 4.40741L7.7371 4.22741C7.66255 4.22212 7.59105 4.19577 7.5309 4.15142C7.47075 4.10707 7.42444 4.04656 7.39735 3.97691L6.3646 1.37666C6.33648 1.30276 6.28656 1.23916 6.22146 1.19428C6.15636 1.1494 6.07916 1.12537 6.0001 1.12537C5.92103 1.12537 5.84383 1.1494 5.77873 1.19428C5.71364 1.23916 5.66372 1.30276 5.6356 1.37666L4.60285 3.97691C4.57581 4.04663 4.52952 4.10722 4.46937 4.15164C4.40922 4.19606 4.33768 4.22246 4.2631 4.22778L1.49447 4.40778C1.13672 4.43066 0.992723 4.89303 1.27135 5.12478L3.3916 6.88953C3.45059 6.93936 3.49434 7.00481 3.51782 7.07837C3.5413 7.15193 3.54356 7.23062 3.52435 7.30541L2.89135 9.79728C2.78372 10.2207 3.2341 10.5623 3.59635 10.3324L5.79385 8.94078C5.85561 8.90152 5.92728 8.88066 6.00047 8.88066C6.07366 8.88066 6.14533 8.90152 6.2071 8.94078H6.20672Z"
-                                                        fill="#FF8A00" />
-                                                </svg>
-                                            </li>
-                                            <li>
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M6.20672 8.94078L8.5711 10.4385C8.87335 10.6298 9.24835 10.3452 9.15872 9.99228L8.47585 7.30541C8.45656 7.23057 8.45878 7.1518 8.48227 7.07816C8.50575 7.00453 8.54954 6.93902 8.6086 6.88916L10.7288 5.12478C11.0071 4.89303 10.8638 4.43066 10.5057 4.40741L7.7371 4.22741C7.66255 4.22212 7.59105 4.19577 7.5309 4.15142C7.47075 4.10707 7.42444 4.04656 7.39735 3.97691L6.3646 1.37666C6.33648 1.30276 6.28656 1.23916 6.22146 1.19428C6.15636 1.1494 6.07916 1.12537 6.0001 1.12537C5.92103 1.12537 5.84383 1.1494 5.77873 1.19428C5.71364 1.23916 5.66372 1.30276 5.6356 1.37666L4.60285 3.97691C4.57581 4.04663 4.52952 4.10722 4.46937 4.15164C4.40922 4.19606 4.33768 4.22246 4.2631 4.22778L1.49447 4.40778C1.13672 4.43066 0.992723 4.89303 1.27135 5.12478L3.3916 6.88953C3.45059 6.93936 3.49434 7.00481 3.51782 7.07837C3.5413 7.15193 3.54356 7.23062 3.52435 7.30541L2.89135 9.79728C2.78372 10.2207 3.2341 10.5623 3.59635 10.3324L5.79385 8.94078C5.85561 8.90152 5.92728 8.88066 6.00047 8.88066C6.07366 8.88066 6.14533 8.90152 6.2071 8.94078H6.20672Z"
-                                                        fill="#FF8A00" />
-                                                </svg>
-                                            </li>
-                                            <li>
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M6.20672 8.94078L8.5711 10.4385C8.87335 10.6298 9.24835 10.3452 9.15872 9.99228L8.47585 7.30541C8.45656 7.23057 8.45878 7.1518 8.48227 7.07816C8.50575 7.00453 8.54954 6.93902 8.6086 6.88916L10.7288 5.12478C11.0071 4.89303 10.8638 4.43066 10.5057 4.40741L7.7371 4.22741C7.66255 4.22212 7.59105 4.19577 7.5309 4.15142C7.47075 4.10707 7.42444 4.04656 7.39735 3.97691L6.3646 1.37666C6.33648 1.30276 6.28656 1.23916 6.22146 1.19428C6.15636 1.1494 6.07916 1.12537 6.0001 1.12537C5.92103 1.12537 5.84383 1.1494 5.77873 1.19428C5.71364 1.23916 5.66372 1.30276 5.6356 1.37666L4.60285 3.97691C4.57581 4.04663 4.52952 4.10722 4.46937 4.15164C4.40922 4.19606 4.33768 4.22246 4.2631 4.22778L1.49447 4.40778C1.13672 4.43066 0.992723 4.89303 1.27135 5.12478L3.3916 6.88953C3.45059 6.93936 3.49434 7.00481 3.51782 7.07837C3.5413 7.15193 3.54356 7.23062 3.52435 7.30541L2.89135 9.79728C2.78372 10.2207 3.2341 10.5623 3.59635 10.3324L5.79385 8.94078C5.85561 8.90152 5.92728 8.88066 6.00047 8.88066C6.07366 8.88066 6.14533 8.90152 6.2071 8.94078H6.20672Z"
-                                                        fill="#FF8A00" />
-                                                </svg>
-                                            </li>
-                                            <li>
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M6.20672 8.94078L8.5711 10.4385C8.87335 10.6298 9.24835 10.3452 9.15872 9.99228L8.47585 7.30541C8.45656 7.23057 8.45878 7.1518 8.48227 7.07816C8.50575 7.00453 8.54954 6.93902 8.6086 6.88916L10.7288 5.12478C11.0071 4.89303 10.8638 4.43066 10.5057 4.40741L7.7371 4.22741C7.66255 4.22212 7.59105 4.19577 7.5309 4.15142C7.47075 4.10707 7.42444 4.04656 7.39735 3.97691L6.3646 1.37666C6.33648 1.30276 6.28656 1.23916 6.22146 1.19428C6.15636 1.1494 6.07916 1.12537 6.0001 1.12537C5.92103 1.12537 5.84383 1.1494 5.77873 1.19428C5.71364 1.23916 5.66372 1.30276 5.6356 1.37666L4.60285 3.97691C4.57581 4.04663 4.52952 4.10722 4.46937 4.15164C4.40922 4.19606 4.33768 4.22246 4.2631 4.22778L1.49447 4.40778C1.13672 4.43066 0.992723 4.89303 1.27135 5.12478L3.3916 6.88953C3.45059 6.93936 3.49434 7.00481 3.51782 7.07837C3.5413 7.15193 3.54356 7.23062 3.52435 7.30541L2.89135 9.79728C2.78372 10.2207 3.2341 10.5623 3.59635 10.3324L5.79385 8.94078C5.85561 8.90152 5.92728 8.88066 6.00047 8.88066C6.07366 8.88066 6.14533 8.90152 6.2071 8.94078H6.20672Z"
-                                                        fill="#FF8A00" />
-                                                </svg>
-                                            </li>
-                                            <li>
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M6.20672 8.94078L8.5711 10.4385C8.87335 10.6298 9.24835 10.3452 9.15872 9.99228L8.47585 7.30541C8.45656 7.23057 8.45878 7.1518 8.48227 7.07816C8.50575 7.00453 8.54954 6.93902 8.6086 6.88916L10.7288 5.12478C11.0071 4.89303 10.8638 4.43066 10.5057 4.40741L7.7371 4.22741C7.66255 4.22212 7.59105 4.19577 7.5309 4.15142C7.47075 4.10707 7.42444 4.04656 7.39735 3.97691L6.3646 1.37666C6.33648 1.30276 6.28656 1.23916 6.22146 1.19428C6.15636 1.1494 6.07916 1.12537 6.0001 1.12537C5.92103 1.12537 5.84383 1.1494 5.77873 1.19428C5.71364 1.23916 5.66372 1.30276 5.6356 1.37666L4.60285 3.97691C4.57581 4.04663 4.52952 4.10722 4.46937 4.15164C4.40922 4.19606 4.33768 4.22246 4.2631 4.22778L1.49447 4.40778C1.13672 4.43066 0.992723 4.89303 1.27135 5.12478L3.3916 6.88953C3.45059 6.93936 3.49434 7.00481 3.51782 7.07837C3.5413 7.15193 3.54356 7.23062 3.52435 7.30541L2.89135 9.79728C2.78372 10.2207 3.2341 10.5623 3.59635 10.3324L5.79385 8.94078C5.85561 8.90152 5.92728 8.88066 6.00047 8.88066C6.07366 8.88066 6.14533 8.90152 6.2071 8.94078H6.20672Z"
-                                                        fill="#cccccc" />
-                                                </svg>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </a>
-                                <a href="product-details.html" class="shop-sale-product-item">
-                                    <div class="product-img">
-                                        <img src="{{ asset('client/images/products/img-03.png') }}" alt="products" />
-                                    </div>
-                                    <div class="product-info">
-                                        <h5 class="font-body--md-400">Red Capsicum</h5>
-                                        <div class="price">
-                                            <span class="current">$32.00</span>
-                                            <del class="prev">$20.99</del>
-                                        </div>
-                                        <ul class="rating">
-                                            <li>
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M6.20672 8.94078L8.5711 10.4385C8.87335 10.6298 9.24835 10.3452 9.15872 9.99228L8.47585 7.30541C8.45656 7.23057 8.45878 7.1518 8.48227 7.07816C8.50575 7.00453 8.54954 6.93902 8.6086 6.88916L10.7288 5.12478C11.0071 4.89303 10.8638 4.43066 10.5057 4.40741L7.7371 4.22741C7.66255 4.22212 7.59105 4.19577 7.5309 4.15142C7.47075 4.10707 7.42444 4.04656 7.39735 3.97691L6.3646 1.37666C6.33648 1.30276 6.28656 1.23916 6.22146 1.19428C6.15636 1.1494 6.07916 1.12537 6.0001 1.12537C5.92103 1.12537 5.84383 1.1494 5.77873 1.19428C5.71364 1.23916 5.66372 1.30276 5.6356 1.37666L4.60285 3.97691C4.57581 4.04663 4.52952 4.10722 4.46937 4.15164C4.40922 4.19606 4.33768 4.22246 4.2631 4.22778L1.49447 4.40778C1.13672 4.43066 0.992723 4.89303 1.27135 5.12478L3.3916 6.88953C3.45059 6.93936 3.49434 7.00481 3.51782 7.07837C3.5413 7.15193 3.54356 7.23062 3.52435 7.30541L2.89135 9.79728C2.78372 10.2207 3.2341 10.5623 3.59635 10.3324L5.79385 8.94078C5.85561 8.90152 5.92728 8.88066 6.00047 8.88066C6.07366 8.88066 6.14533 8.90152 6.2071 8.94078H6.20672Z"
-                                                        fill="#FF8A00" />
-                                                </svg>
-                                            </li>
-                                            <li>
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M6.20672 8.94078L8.5711 10.4385C8.87335 10.6298 9.24835 10.3452 9.15872 9.99228L8.47585 7.30541C8.45656 7.23057 8.45878 7.1518 8.48227 7.07816C8.50575 7.00453 8.54954 6.93902 8.6086 6.88916L10.7288 5.12478C11.0071 4.89303 10.8638 4.43066 10.5057 4.40741L7.7371 4.22741C7.66255 4.22212 7.59105 4.19577 7.5309 4.15142C7.47075 4.10707 7.42444 4.04656 7.39735 3.97691L6.3646 1.37666C6.33648 1.30276 6.28656 1.23916 6.22146 1.19428C6.15636 1.1494 6.07916 1.12537 6.0001 1.12537C5.92103 1.12537 5.84383 1.1494 5.77873 1.19428C5.71364 1.23916 5.66372 1.30276 5.6356 1.37666L4.60285 3.97691C4.57581 4.04663 4.52952 4.10722 4.46937 4.15164C4.40922 4.19606 4.33768 4.22246 4.2631 4.22778L1.49447 4.40778C1.13672 4.43066 0.992723 4.89303 1.27135 5.12478L3.3916 6.88953C3.45059 6.93936 3.49434 7.00481 3.51782 7.07837C3.5413 7.15193 3.54356 7.23062 3.52435 7.30541L2.89135 9.79728C2.78372 10.2207 3.2341 10.5623 3.59635 10.3324L5.79385 8.94078C5.85561 8.90152 5.92728 8.88066 6.00047 8.88066C6.07366 8.88066 6.14533 8.90152 6.2071 8.94078H6.20672Z"
-                                                        fill="#FF8A00" />
-                                                </svg>
-                                            </li>
-                                            <li>
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M6.20672 8.94078L8.5711 10.4385C8.87335 10.6298 9.24835 10.3452 9.15872 9.99228L8.47585 7.30541C8.45656 7.23057 8.45878 7.1518 8.48227 7.07816C8.50575 7.00453 8.54954 6.93902 8.6086 6.88916L10.7288 5.12478C11.0071 4.89303 10.8638 4.43066 10.5057 4.40741L7.7371 4.22741C7.66255 4.22212 7.59105 4.19577 7.5309 4.15142C7.47075 4.10707 7.42444 4.04656 7.39735 3.97691L6.3646 1.37666C6.33648 1.30276 6.28656 1.23916 6.22146 1.19428C6.15636 1.1494 6.07916 1.12537 6.0001 1.12537C5.92103 1.12537 5.84383 1.1494 5.77873 1.19428C5.71364 1.23916 5.66372 1.30276 5.6356 1.37666L4.60285 3.97691C4.57581 4.04663 4.52952 4.10722 4.46937 4.15164C4.40922 4.19606 4.33768 4.22246 4.2631 4.22778L1.49447 4.40778C1.13672 4.43066 0.992723 4.89303 1.27135 5.12478L3.3916 6.88953C3.45059 6.93936 3.49434 7.00481 3.51782 7.07837C3.5413 7.15193 3.54356 7.23062 3.52435 7.30541L2.89135 9.79728C2.78372 10.2207 3.2341 10.5623 3.59635 10.3324L5.79385 8.94078C5.85561 8.90152 5.92728 8.88066 6.00047 8.88066C6.07366 8.88066 6.14533 8.90152 6.2071 8.94078H6.20672Z"
-                                                        fill="#FF8A00" />
-                                                </svg>
-                                            </li>
-                                            <li>
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M6.20672 8.94078L8.5711 10.4385C8.87335 10.6298 9.24835 10.3452 9.15872 9.99228L8.47585 7.30541C8.45656 7.23057 8.45878 7.1518 8.48227 7.07816C8.50575 7.00453 8.54954 6.93902 8.6086 6.88916L10.7288 5.12478C11.0071 4.89303 10.8638 4.43066 10.5057 4.40741L7.7371 4.22741C7.66255 4.22212 7.59105 4.19577 7.5309 4.15142C7.47075 4.10707 7.42444 4.04656 7.39735 3.97691L6.3646 1.37666C6.33648 1.30276 6.28656 1.23916 6.22146 1.19428C6.15636 1.1494 6.07916 1.12537 6.0001 1.12537C5.92103 1.12537 5.84383 1.1494 5.77873 1.19428C5.71364 1.23916 5.66372 1.30276 5.6356 1.37666L4.60285 3.97691C4.57581 4.04663 4.52952 4.10722 4.46937 4.15164C4.40922 4.19606 4.33768 4.22246 4.2631 4.22778L1.49447 4.40778C1.13672 4.43066 0.992723 4.89303 1.27135 5.12478L3.3916 6.88953C3.45059 6.93936 3.49434 7.00481 3.51782 7.07837C3.5413 7.15193 3.54356 7.23062 3.52435 7.30541L2.89135 9.79728C2.78372 10.2207 3.2341 10.5623 3.59635 10.3324L5.79385 8.94078C5.85561 8.90152 5.92728 8.88066 6.00047 8.88066C6.07366 8.88066 6.14533 8.90152 6.2071 8.94078H6.20672Z"
-                                                        fill="#FF8A00" />
-                                                </svg>
-                                            </li>
-                                            <li>
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M6.20672 8.94078L8.5711 10.4385C8.87335 10.6298 9.24835 10.3452 9.15872 9.99228L8.47585 7.30541C8.45656 7.23057 8.45878 7.1518 8.48227 7.07816C8.50575 7.00453 8.54954 6.93902 8.6086 6.88916L10.7288 5.12478C11.0071 4.89303 10.8638 4.43066 10.5057 4.40741L7.7371 4.22741C7.66255 4.22212 7.59105 4.19577 7.5309 4.15142C7.47075 4.10707 7.42444 4.04656 7.39735 3.97691L6.3646 1.37666C6.33648 1.30276 6.28656 1.23916 6.22146 1.19428C6.15636 1.1494 6.07916 1.12537 6.0001 1.12537C5.92103 1.12537 5.84383 1.1494 5.77873 1.19428C5.71364 1.23916 5.66372 1.30276 5.6356 1.37666L4.60285 3.97691C4.57581 4.04663 4.52952 4.10722 4.46937 4.15164C4.40922 4.19606 4.33768 4.22246 4.2631 4.22778L1.49447 4.40778C1.13672 4.43066 0.992723 4.89303 1.27135 5.12478L3.3916 6.88953C3.45059 6.93936 3.49434 7.00481 3.51782 7.07837C3.5413 7.15193 3.54356 7.23062 3.52435 7.30541L2.89135 9.79728C2.78372 10.2207 3.2341 10.5623 3.59635 10.3324L5.79385 8.94078C5.85561 8.90152 5.92728 8.88066 6.00047 8.88066C6.07366 8.88066 6.14533 8.90152 6.2071 8.94078H6.20672Z"
-                                                        fill="#cccccc" />
-                                                </svg>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </a>
-                            </div>
+
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-9">
                     <!-- Desktop Version  -->
-                    @if (session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
+
                     <div class="row shop__product-items">
                         @foreach ($productData as $product)
                             <div class="col-xl-4 col-md-6">
@@ -759,8 +444,7 @@
                                         <a href="{{ route('client.shop.shopdetails', $product['slug']) }}"
                                             class="cards-md__info-left">
                                             <h6 class="font-body--md-400">
-                                                {{ \Illuminate\Support\Str::limit($product['name'], 50, '...') }}
-                                            </h6>
+                                                {{ \Illuminate\Support\Str::limit($product['name'], 50, '...') }}</h6>
                                             <div class="cards-md__info-price">
                                                 <p>Giá: {{ number_format($product['price'], 0, ',', '.') }} VND</p>
                                             </div>
@@ -781,7 +465,25 @@
                                             </ul>
 
                                         </a>
+                                        <div class="cards-md__info-right">
+                                            <span class="action-btn">
+                                                <!-- Button thêm vào giỏ hàng -->
 
+                                                <form action="{{ route('cart.add', $product['id']) }}" method="POST">
+                                                    @csrf
+
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <svg width="20" height="21" viewBox="0 0 20 21"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.66667 8.83333H4.16667L2.5 18H17.5L15.8333 8.83333H13.3333M6.66667 8.83333V6.33333C6.66667 4.49239 8.15905 3 10 3V3C11.8409 3 13.3333 4.49238 13.3333 6.33333V8.83333M6.66667 8.83333H13.3333M6.66667 8.83333V11.3333M13.3333 8.83333V11.3333"
+                                                                stroke="currentColor" stroke-width="1.3"
+                                                                stroke-linecap="round" stroke-linejoin="round"></path>
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -800,13 +502,11 @@
                 </div>
             </div>
         </div>
+
     </section>
     <!-- Shop list Section End   -->
 @endsection
 @section('js')
-
     <script src="{{ asset('client/lib/js/nouislider.min.js') }}"></script>
-
-
 
 @endsection

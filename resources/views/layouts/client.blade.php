@@ -147,9 +147,9 @@
                             <img src="{{ asset('storage/logos/' . $websiteInfo->logo) }}" alt="brand-logo" />
                         </a>
                     </div>
-                    <form action="#">
+                    <form action="{{ route('search') }}" method="GET">
                         <div class="header__input-form">
-                            <input type="text" placeholder="Tìm Kiếm" />
+                            <input type="text" name="query" placeholder="Tìm Kiếm" />
                             <span class="search-icon">
                                 <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -166,6 +166,8 @@
                             </button>
                         </div>
                     </form>
+
+
                     <div class="header__cart">
                         <div class="header__cart-item">
                             <a class="fav" href="{{ route('wishlist.index') }}">
@@ -187,11 +189,12 @@
                                             stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                             stroke-linejoin="round" />
                                     </svg>
-                                    <span class="item-number">2</span>
+                                    <span class="item-number">0</span>
+                                    <!-- Số lượng sản phẩm sẽ được cập nhật từ API -->
                                 </button>
                                 <div class="header__cart-item-content-info">
                                     <h5>Giỏ Hàng:</h5>
-                                    <span class="price">₫57.00</span>
+                                    <span class="price">₫0.00</span> <!-- Tổng tiền sẽ được cập nhật từ API -->
                                 </div>
                             </div>
                         </div>
@@ -1197,11 +1200,12 @@
         </div>
     </footer>
     <!--Footer Section end  -->
-    <!-- Shopping Cart sidebar  start  -->
+    <!-- Shopping Cart Sidebar Start -->
     <div class="shopping-cart">
         <div class="shopping-cart-top">
             <div class="shopping-cart-header">
-                <h5 class="font-body--xxl-500">Giỏ Hàng (<span class="count">2</span>)</h5>
+                <h5 class="font-body--xxl-500">Giỏ Hàng (<span class="count">0</span>)</h5>
+                <!-- Số lượng sản phẩm trong giỏ -->
                 <button class="close">
                     <svg width="45" height="45" viewBox="0 0 45 45" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -1214,69 +1218,26 @@
                 </button>
             </div>
 
-            <div class="shopping-cart__product-content">
-                <div class="shopping-cart__product-content-item">
-                    <div class="img-wrapper">
-                        <img src="{{ asset('client/images/products/img-01.png') }}" alt="product" />
-                    </div>
-                    <div class="text-content">
-                        <h5 class="font-body--md-400">Fresh Indian Orange</h5>
-                        <p class="font-body--md-400">1kg x <span class="font-body--md-500">12.00</span></p>
-                    </div>
-                </div>
-                <button class="delete-item">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M12 23C18.0748 23 23 18.0748 23 12C23 5.92525 18.0748 1 12 1C5.92525 1 1 5.92525 1 12C1 18.0748 5.92525 23 12 23Z"
-                            stroke="#CCCCCC" stroke-miterlimit="10" />
-                        <path d="M16 8L8 16" stroke="#666666" stroke-width="1.5" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                        <path d="M16 16L8 8" stroke="#666666" stroke-width="1.5" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-                </button>
-            </div>
-
-            <div class="shopping-cart__product-content">
-                <div class="shopping-cart__product-content-item">
-                    <div class="img-wrapper">
-                        <img src="{{ asset('client/images/products/img-01.png') }}" alt="product" />
-                    </div>
-                    <div class="text-content">
-                        <h5 class="font-body--md-400">Fresh Indian Orange</h5>
-                        <p class="font-body--md-400">1kg x <span class="font-body--md-500">12.00</span></p>
-                    </div>
-                </div>
-                <button class="delete-item">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M12 23C18.0748 23 23 18.0748 23 12C23 5.92525 18.0748 1 12 1C5.92525 1 1 5.92525 1 12C1 18.0748 5.92525 23 12 23Z"
-                            stroke="#CCCCCC" stroke-miterlimit="10" />
-                        <path d="M16 8L8 16" stroke="#666666" stroke-width="1.5" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                        <path d="M16 16L8 8" stroke="#666666" stroke-width="1.5" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-                </button>
+            <div class="shopping-cart__product-content-popup">
+                <!-- Các sản phẩm sẽ được hiển thị ở đây sau khi gọi API -->
             </div>
         </div>
+
         <div class="shopping-cart-bottom">
             <div class="shopping-cart-product-info">
-                <p class="product-count font-body--lg-400">2 Sản Phẩm</p>
-                <span class="product-price font-body--lg-500">₫26.00</span>
+                <p class="product-count font-body--lg-400">0 Sản Phẩm</p> <!-- Số lượng sản phẩm sẽ được cập nhật -->
+                <span class="product-price font-body--lg-500">₫0.00</span> <!-- Tổng giá trị sẽ được cập nhật -->
             </div>
 
             <form action="#">
                 <button class="button button--lg w-100">Thanh Toán</button>
                 <button class="button button--lg button--disable w-100">
-                    đi đến giỏ hàng
+                    Đi đến giỏ hàng
                 </button>
             </form>
         </div>
     </div>
-    <!-- Shopping Cart sidebar  end -->
+    <!-- Shopping Cart Sidebar End -->
     @yield('js')
     <script src="{{ asset('client/lib/js/jquery.min.js') }}"></script>
     <script src="{{ asset('client/lib/js/countfect.min.js') }}"></script>
@@ -1322,7 +1283,9 @@
             <button>Gửi</button>
         </div>
     </div>
-
+    <script>
+        window.isLoggedIn = {{ Auth::check() ? 'true' : 'false' }};
+    </script>
 </body>
 
 </html>

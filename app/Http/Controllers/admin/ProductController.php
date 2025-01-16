@@ -306,4 +306,53 @@ class ProductController extends Controller
         // Trả về thông báo thành công
         return redirect()->route('admin.qlsanpham.index')->with('success', 'Sản phẩm đã được xóa thành công!');
     }
+    public function filterAndSearch(Request $request)
+    {
+        $query = $request->input('query'); // Từ khóa tìm kiếm
+        $categoryFilter = $request->input('category'); // Lọc theo danh mục
+        $minPrice = $request->input('min_price'); // Lọc theo giá từ
+        $maxPrice = $request->input('max_price'); // Lọc theo giá đến
+        $ratings = $request->input('ratings', []); // Lọc theo đánh giá (mảng các sao)
+
+        // Loại bỏ tất cả ký tự đặc biệt khỏi từ khóa tìm kiếm
+        if ($query) {
+            $query = preg_replace('/[^a-zA-Z0-9\s]/', '', $query); // Chỉ giữ lại chữ cái, số và khoảng trắng
+        }
+
+        // Truy vấn sản phẩm kết hợp tìm kiếm, lọc theo danh mục, lọc theo giá và lọc theo đánh giá
+        $products = Product::with(['images', 'comments'])
+            ->when($query, function ($queryBuilder) use ($query) {
+                return $queryBuilder->where('name', 'like', '%' . $query . '%')
+                    ->orWhere('description', 'like', '%' . $query . '%'); // Tìm kiếm theo từ khóa
+            })
+            ->when($categoryFilter, function ($queryBuilder) use ($categoryFilter) {
+                return $queryBuilder->where('category_id', $categoryFilter); // Lọc theo danh mục
+            })
+            ->when($minPrice, function ($queryBuilder) use ($minPrice) {
+                return $queryBuilder->where('price', '>=', $minPrice); // Lọc theo giá từ
+            })
+            ->when($maxPrice, function ($queryBuilder) use ($maxPrice) {
+                return $queryBuilder->where('price', '<=', $maxPrice); // Lọc theo giá đến
+            })
+            ->when($ratings, function ($queryBuilder) use ($ratings) {
+                return $queryBuilder->whereHas('comments', function ($query) use ($ratings) {
+                    return $query->whereIn('rating', $ratings); // Lọc theo đánh giá sao
+                });
+            })
+            ->paginate(12); // Phân trang
+
+        // Lấy tất cả danh mục
+        $categories = Category::all();
+
+        // Trả về view với các sản phẩm đã lọc
+        return view('client.shop.search_results', [
+            'products' => $products,
+            'categories' => $categories,
+            'query' => $request->input('query'), // Truyền từ khóa gốc để hiển thị lại
+            'categoryFilter' => $categoryFilter, // Truyền danh mục đã chọn
+            'minPrice' => $minPrice, // Truyền giá từ
+            'maxPrice' => $maxPrice, // Truyền giá đến
+            'ratings' => $ratings, // Truyền các đánh giá đã chọn
+        ]);
+    }
 }

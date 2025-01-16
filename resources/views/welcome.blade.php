@@ -175,7 +175,7 @@
                                                 Áo Quần
                                             </a>
                                         </li>
-                                    
+
                                         <!-- Giày Dép -->
                                         <li>
                                             <a href="#">
@@ -188,7 +188,7 @@
                                                 Giày Dép
                                             </a>
                                         </li>
-                                    
+
                                         <!-- Phụ Kiện -->
                                         <li>
                                             <a href="#">
@@ -201,7 +201,7 @@
                                                 Phụ Kiện
                                             </a>
                                         </li>
-                                    
+
                                         <!-- Đồng Hồ -->
                                         <li>
                                             <a href="#">
@@ -214,7 +214,7 @@
                                                 Đồng Hồ
                                             </a>
                                         </li>
-                                    
+
                                         <!-- Túi Xách -->
                                         <li>
                                             <a href="#">
@@ -227,7 +227,7 @@
                                                 Túi Xách
                                             </a>
                                         </li>
-                                    
+
                                         <!-- Kính Mắt -->
                                         <li>
                                             <a href="#">
@@ -241,7 +241,7 @@
                                                 Kính Mắt
                                             </a>
                                         </li>
-                                    
+
                                         <!-- Mũ Nón -->
                                         <li>
                                             <a href="#">
@@ -263,10 +263,10 @@
                                 </li>
                                 <li class="header__navigation-menu-link">
                                     <a href="shop-01.html">
-                                        Cửa Hàng 
+                                        Cửa Hàng
                                     </a>
                                 </li>
-                     
+
                                 <li class="header__navigation-menu-link">
                                     <a href="blog-list.html">
                                         Bài Viết
@@ -342,9 +342,9 @@
                                 <a href="shop-01.html" class="header__mobile-menu-item-link">
                                     Cửa Hàng
                                 </a>
-                             
+
                             </li>
-                            
+
                             <li class="header__mobile-menu-item">
                                 <a href="single-blog.html" class="header__mobile-menu-item-link">
                                     Bài Viết
@@ -366,7 +366,7 @@
 <div id="loginPopup" class="popup-overlay">
     <div class="popup-container">
         <button class="popup-close" onclick="closeLoginPopup()">&times;</button>
-        
+
         <div class="popup-content">
             <h2 class="popup-title">Đăng nhập</h2>
             <form action="#">
@@ -401,7 +401,7 @@
                       </svg>
                     </button>
                   </div>
-                  
+
                 <div class="form-options">
                     <label class="remember-me">
                         <input type="checkbox" id="remember" />
@@ -418,7 +418,7 @@
     </div>
 </div>
   <!-- Popup đăng  nhập end  -->
-  
+
         <!-- Banner  Section Start  -->
         <section class="banner banner--04">
             <div class="container">
@@ -478,7 +478,6 @@
                                         <h2 class="font-title--xxxl">
                                             Vẻ đẹp vượt thời gian, phong cách dẫn đầu!
                                         </h2>
-
                                         <p class="font-body--md-400">
                                             Sẵn sàng làm mới tủ đồ của bạn với New Collection!
                                         </p>
@@ -1002,9 +1001,11 @@
                                     </span>
                                 </div>
                                 <div class="cards-ship__item-process-info">
-                                    <h2 class="font-body--lg-600">Miễn Phí Vận Chuyển</h2>
+                                    <h2 class="font-body--lg-600">Vận Chuyển</h2>
                                     <p class="font-body--md-400">
-                                        Miễn phí vận chuyển cho tất cả các đơn hàng của bạn
+                                        Chúng tôi cung cấp dịch vụ vận chuyển nhanh chóng, đảm bảo an toàn cho sản phẩm của bạn.
+                                        Thời gian giao hàng: 2-3 ngày.
+                                        Giao hàng khu vực TP Hồ Chí Minh
                                     </p>
                                 </div>
                             </div>
@@ -1921,8 +1922,12 @@
                                     </span>
                                 </span>
                                 <div class="cards-ship__item-process-info">
-                                    <h2 class="font-body--lg-600">100% Thanh Toán An Toàn</h2>
-                                    <p class="font-body--md-400">Chúng tôi đảm bảo tiền của bạn sẽ được tiết kiệm</p>
+                                    <h2 class="font-body--lg-600">Thanh Toán An Toàn</h2>
+                                    <p class="font-body--md-400">
+                                        Chúng tôi đảm bảo tiền của bạn sẽ được tiết kiệm
+                                        Thanh toán khi nhận hàng (COD).
+                                        Thanh toán qua ví điện tử.
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -2377,8 +2382,12 @@
                                     </span>
                                 </span>
                                 <div class="cards-ship__item-process-info">
-                                    <h2 class="font-body--lg-600">Đảm Bảo Hoàn Tiền</h2>
-                                    <p class="font-body--md-400">Đảm bảo hoàn tiền trong 30 ngày</p>
+                                    <h2 class="font-body--lg-600">Chính sách đổi trả</h2>
+                                    <p class="font-body--md-400">
+                                        Chúng tôi bảo vệ quyền lợi khách hàng với chính sách đổi trả dễ dàng:
+                                        Hàng hóa cần còn nguyên vẹn, không bị hư hỏng.
+                                        Khách hàng chỉ cần liên hệ với chúng tôi để được hướng dẫn đổi trả.
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -7626,7 +7635,7 @@
                                 <p class="font-body--md-400">
                                     Địa chỉ: 65 Đ. Huỳnh Thúc Kháng, Bến Nghé, Quận 1, Hồ Chí Minh
                                 </p>
-                              
+
                                 <p class="footer__brand-info-contact">
                                     <a href="#"><span>(+84) 332 172 749</span></a>
                                     or
@@ -8017,7 +8026,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     <h5 class="font-title--xl">Đăng ký nhận bản tin ngay</h5>
                                     <p class="font-body--lg">
-                                        Đăng ký nhận bản tin của chúng tôi và Tiết kiệm  
+                                        Đăng ký nhận bản tin của chúng tôi và Tiết kiệm
                                         <span>20% tiền </span> của bạn với mã giảm giá ngay hôm nay.
                                     </p>
 
@@ -8395,7 +8404,7 @@
         <script src="{{ asset('client/lib/js/jquery.syotimer.min.js') }}"></script>
         <script src="{{ asset('client/js/main.js') }}"></script>
         <script src="{{ asset('client/js/home5.js') }}"></script>
-        
+
 <!-- Overlay to cover the background -->
 <div class="overlay" onclick="closeChat()"></div>
 

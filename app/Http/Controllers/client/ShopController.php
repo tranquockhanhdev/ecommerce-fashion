@@ -28,6 +28,7 @@ class ShopController extends Controller
 
         // Lọc sản phẩm theo danh mục, giá, đánh giá và sắp xếp (nếu có)
         $products = Product::with(['images', 'comments'])
+            ->where('status', 1) // Chỉ hiển thị sản phẩm có status = 1
             ->when($categoryFilter, function ($query) use ($categoryFilter) {
                 return $query->where('category_id', $categoryFilter); // Lọc theo danh mục
             })

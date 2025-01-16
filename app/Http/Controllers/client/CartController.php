@@ -254,29 +254,36 @@ class CartController extends Controller
             return response()->json(['success' => false, 'message' => 'Giỏ hàng trống']);
         }
 
-        // Lấy các sản phẩm trong giỏ hàng và nạp thông tin về sản phẩm và hình ảnh
-        $cartItems = $cart->cartItems()->with(['product.images' => function ($query) {
-            $query->limit(1); // Lấy 1 hình ảnh đầu tiên
+        // Lấy các sản phẩm trong giỏ hàng và nạp thông tin về sản phẩm và hình ảnh (chỉ hiển thị sản phẩm có status = 1)
+        $cartItems = $cart->cartItems()->with(['product' => function ($query) {
+            $query->where('status', 1)->with(['images' => function ($query) {
+                $query->limit(1); // Lấy 1 hình ảnh đầu tiên
+            }]);
         }])->get();
 
-        // Tính tổng giá trị giỏ hàng
+        // Tính tổng giá trị giỏ hàng (chỉ tính sản phẩm có status = 1)
         $total = $cartItems->sum(function ($item) {
-            return $item->product->price * $item->quantity;
+            return $item->product && $item->product->status == 1
+                ? $item->product->price * $item->quantity
+                : 0;
         });
 
         // Cập nhật đường dẫn hình ảnh từ thư mục 'storage'
         foreach ($cartItems as $item) {
-            if ($item->product->images->isNotEmpty()) {
+            if ($item->product && $item->product->images->isNotEmpty()) {
                 $item->product->images[0]->url = asset('' . $item->product->images[0]->link);
             }
         }
 
         return response()->json([
             'success' => true,
-            'cartItems' => $cartItems,
+            'cartItems' => $cartItems->filter(function ($item) {
+                return $item->product && $item->product->status == 1; // Chỉ trả về sản phẩm có status = 1
+            }),
             'total' => $total,
         ]);
     }
+
     public function removeCart($cartItemId)
     {
         // Lấy sản phẩm và xóa khỏi giỏ hàng

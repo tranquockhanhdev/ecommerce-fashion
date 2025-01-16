@@ -40,7 +40,7 @@ class OrderController extends Controller
     {
         // Validate dữ liệu
         $request->validate([
-            'order_customer_id' => 'required|exists:order_customer,id',
+            'ordercustomer_id' => 'required|exists:order_customer,id',
             'status' => 'required|string',
             'status_payment' => 'required|string',
             'shipping_fee' => 'required|numeric|min:0',
@@ -87,14 +87,14 @@ class OrderController extends Controller
     {
         // Validate dữ liệu
         $request->validate([
-            'order_customer_id' => 'required|exists:order_customer,id',
+            'ordercustomer_id' => 'required|exists:order_customer,id',
             'payment_method_id' => 'required|exists:payment_method,id',
-            'status' => 'required|in:Đang xử lý,Đã giao,Đã hủy',
-            'status_payment' => 'required|in:Thanh toán thành công,Thanh toán thất bại',
+            'status' => 'required|in:Đã nhận đơn,Đang vận chuyển,Đã giao,Đã hủy',
+            'status_payment' => 'required|in:Thành công,Thất bại,Đang xử lí',
             'shipping_fee' => 'required|numeric|min:0|max:999999999999999.99',
             'total' => 'required|numeric|min:0|max:999999999999999.99',
-            'address' => 'required|string',
-            'phone' => 'required|string',
+            'address' => 'required|string|max:255',
+            'phone' => 'required|string|max:15',
         ]);
 
         // Lấy đơn hàng cần cập nhật
@@ -107,32 +107,31 @@ class OrderController extends Controller
             'address' => $request->address,
             'phone' => $request->phone,
         ]);
-        // Ánh xạ giá trị status sang số (0, 1, 2)
+        // Ánh xạ giá trị status sang số (0, 1, 2, 3)
         $statusMap = [
-            'Đang xử lý' => 0,
-            'Đã giao' => 1,
-            'Đã hủy' => 2
+            'Đã nhận đơn' => 1,
+            'Đang vận chuyển' => 2,
+            'Đã giao' => 3,
+            'Đã hủy' => 0
         ];
 
-        // Ánh xạ giá trị status_payment sang số (0, 1)
+        // Ánh xạ giá trị status_payment sang số (0, 1, 2)
         $statusPaymentMap = [
-            'Thanh toán thành công' => 0,
-            'Thanh toán thất bại' => 1
+            'Đang xử lí' => 1,
+            'Thành công' => 2,
+            'Thất bại' => 0
         ];
 
         // Cập nhật giá trị trực tiếp
-        $order->ordercustomer_id = $request->order_customer_id;
+        $order->ordercustomer_id = $request->ordercustomer_id;
         $order->payment_method_id = $request->payment_method_id;
         $order->status = $statusMap[$request->status] ?? null;
         $order->status_payment = $statusPaymentMap[$request->status_payment] ?? null;
         $order->shipping_fee = $request->input('shipping_fee');
         $order->total = $request->input('total');
 
-
-
         // Lưu lại thay đổi
         $order->save();
-
 
         return redirect()->route('admin.qldonhang.index')->with('success', 'Đơn hàng đã được cập nhật!');
     }
@@ -145,12 +144,15 @@ class OrderController extends Controller
         // Tìm đơn hàng
         $order = Order::findOrFail($id);
 
-        // Xóa tất cả các sản phẩm liên quan trong order_item
-        $order->orderItems()->delete();
+        // Kiểm tra trạng thái đơn hàng có được phép xóa hay không (chỉ xóa đơn hàng đã hủy)
+        if (!in_array($order->status, [0])) {
+            return redirect()->route('admin.qldonhang.index')->with('error', 'Đơn hàng không thể xóa vì chưa hoàn thành".');
+        }
 
-        // Xóa đơn hàng
+        // Xóa tất cả các sản phẩm liên quan trong order_item và sau đó xóa đơn hàng
+        $order->orderItems()->delete();
         $order->delete();
 
-        return redirect()->route('admin.qldonhang.index')->with('success', 'Đơn hàng đã bị xóa!');
+        return redirect()->route('admin.qldonhang.index')->with('success', 'Đơn hàng đã bị xóa thành công!');
     }
 }

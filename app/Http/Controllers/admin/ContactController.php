@@ -95,7 +95,7 @@ class ContactController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect()->route('admin.qllienhe.index')->with('success', 'Contact updated successfully');
+        return redirect()->route('admin.qllienhe.index')->with('success', 'Cập nhật liên hệ thành công');
     }
 
 
@@ -107,6 +107,6 @@ class ContactController extends Controller
         $contact = Contact::findOrFail($id); // Lấy liên hệ cần xóa
         $contact->delete(); // Xóa liên hệ
 
-        return redirect()->route('admin.qllienhe.index')->with('success', 'Contact deleted successfully');
+        return redirect()->route('admin.qllienhe.index')->with('success', 'Xóa liên hệ thành công');
     }
 }

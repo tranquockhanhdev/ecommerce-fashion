@@ -171,13 +171,22 @@ class CartController extends Controller
             // Lấy thông tin sản phẩm trong giỏ hàng
             $cartItem = CartItem::findOrFail($id);
 
-            // Kiểm tra chi tiết sản phẩm (màu và kích cỡ) có tồn tại
-            $productDetail = ProductDetail::where('product_id', $cartItem->product_id)
-                ->where('colorproduct_id', $request->color_id)
-                ->where('sizeproduct_id', $request->size_id)
-                ->first();
+            // Kiểm tra nếu có thay đổi màu sắc
+            if ($request->has('color_id') && $request->color_id != $cartItem->productDetails->color_id) {
+                $productDetail = ProductDetail::where('product_id', $cartItem->product_id)
+                    ->where('colorproduct_id', $request->color_id)
+                    ->first();
+            }
 
-            if (!$productDetail) {
+            // Kiểm tra nếu có thay đổi kích cỡ
+            if ($request->has('size_id') && $request->size_id != $cartItem->productDetails->size_id) {
+                $productDetail = ProductDetail::where('product_id', $cartItem->product_id)
+                    ->where('sizeproduct_id', $request->size_id)
+                    ->first();
+            }
+
+            // Kiểm tra nếu có thay đổi màu hoặc kích cỡ
+            if (!isset($productDetail)) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Không tìm thấy chi tiết sản phẩm phù hợp.',
@@ -193,7 +202,6 @@ class CartController extends Controller
                 'message' => 'Cập nhật thành công!',
             ], 200);
         } catch (\Exception $e) {
-            // Xử lý lỗi và phản hồi lỗi về client
             return response()->json([
                 'success' => false,
                 'message' => 'Đã xảy ra lỗi khi cập nhật sản phẩm trong giỏ hàng.',
@@ -201,6 +209,7 @@ class CartController extends Controller
             ], 500);
         }
     }
+
 
     public function removeFromCart($cartItemId)
     {

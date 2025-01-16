@@ -195,11 +195,9 @@ class ProductController extends Controller
             'size_ids' => 'nullable|array',
             'size_ids.*' => 'exists:size_product,id',
         ], [
-            // Custom error messages for specific fields
             'name.unique' => 'Tên sản phẩm này đã tồn tại, vui lòng chọn tên khác.',
             'slug.unique' => 'Slug sản phẩm này đã tồn tại, vui lòng chọn slug khác.',
         ]);
-
 
         // Lấy sản phẩm cần cập nhật
         $product = Product::findOrFail($id);
@@ -232,20 +230,26 @@ class ProductController extends Controller
 
         // Cập nhật các kết hợp màu sắc và kích thước
         if ($request->has('color_ids') || $request->has('size_ids')) {
-            $colorIds = $request->has('color_ids') ? array_unique($request->color_ids) : [null];
-            $sizeIds = $request->has('size_ids') ? array_unique($request->size_ids) : [null];
+            $colorIds = $request->has('color_ids') ? array_unique($request->color_ids) : [];
+            $sizeIds = $request->has('size_ids') ? array_unique($request->size_ids) : [];
 
-            // // Xóa các chi tiết cũ không thuộc lựa chọn mới
-            // ProductDetail::where('product_id', $product->id)->delete();
-
-            // Thêm các kết hợp mới
+            // Duyệt qua các kết hợp màu và kích thước
             foreach ($colorIds as $colorId) {
                 foreach ($sizeIds as $sizeId) {
-                    ProductDetail::create([
-                        'product_id' => $product->id,
-                        'colorproduct_id' => $colorId,
-                        'sizeproduct_id' => $sizeId,
-                    ]);
+                    // Kiểm tra kết hợp màu và kích thước đã tồn tại chưa
+                    $existingProductDetail = ProductDetail::where('product_id', $product->id)
+                        ->where('colorproduct_id', $colorId)
+                        ->where('sizeproduct_id', $sizeId)
+                        ->first();
+
+                    // Nếu kết hợp chưa tồn tại, tạo mới
+                    if (!$existingProductDetail) {
+                        ProductDetail::create([
+                            'product_id' => $product->id,
+                            'colorproduct_id' => $colorId,
+                            'sizeproduct_id' => $sizeId,
+                        ]);
+                    }
                 }
             }
         }
@@ -253,6 +257,7 @@ class ProductController extends Controller
         // Trả về trang danh sách sản phẩm với thông báo thành công
         return redirect()->route('admin.qlsanpham.index')->with('success', 'Sản phẩm đã được cập nhật thành công!');
     }
+
 
 
     /**

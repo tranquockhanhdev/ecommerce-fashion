@@ -94,10 +94,12 @@
                                                     {{ number_format($cartItem->product->price, 0, ',', '.') }} VNĐ
                                                 </td>
 
+
                                                 <!-- Quantity -->
                                                 <td class="cart-table-item align-middle">
                                                     <form id="cart-form-{{ $cartItem->id }}" method="POST"
-                                                        action="{{ route('cart.update', $cartItem->id) }}">
+                                                        action="{{ route('cart.update', $cartItem->id) }}"
+                                                        onsubmit="return handleSubmit(event, {{ $cartItem->id }})">
                                                         @csrf
                                                         @method('PUT')
                                                         <div class="counter-btn-wrapper">
@@ -107,7 +109,8 @@
                                                             </button>
                                                             <input type="number" name="quantity"
                                                                 class="counter-btn-counter" min="1"
-                                                                value="{{ $cartItem->quantity }}" />
+                                                                value="{{ $cartItem->quantity }}"
+                                                                onkeydown="handleKeyDown(event, {{ $cartItem->id }}, {{ $cartItem->product->quantity }})" />
                                                             <button type="button" class="counter-btn-inc counter-btn"
                                                                 onclick="updateQuantity(this, 1, {{ $cartItem->id }}, {{ $cartItem->product->quantity }})">
                                                                 +
@@ -115,7 +118,6 @@
                                                         </div>
                                                     </form>
                                                 </td>
-
                                                 <td class="cart-table-item align-middle">
                                                     <form method="POST" id="updateCartForm_{{ $cartItem->id }}"
                                                         action="{{ route('cart.item.update', $cartItem->id) }}">
@@ -185,6 +187,7 @@
                                                         @endif
                                                     </form>
                                                 </td>
+
 
 
 
@@ -290,6 +293,7 @@
             const form = document.getElementById(`updateCartForm_${cartItemId}`);
             const formData = new FormData(form);
 
+            // Gửi yêu cầu cập nhật
             fetch(form.action, {
                     method: 'POST',
                     body: formData,
@@ -299,8 +303,8 @@
                 })
                 .then(response => response.json())
                 .then(data => {
+                    // Cập nhật giao diện ngay lập tức
                     if (data.success) {
-                        // Cập nhật giao diện ngay lập tức
                         alert(data.message || "Cập nhật thành công!");
                         location.reload(); // Reload lại trang để hiển thị dữ liệu mới
                     } else {
@@ -314,39 +318,51 @@
         }
     </script>
     <script>
-        function updateQuantity(button, change, cartItemId, maxQuantity) {
-            // Lấy input số lượng liên quan đến button
-            const inputField = button.closest('.counter-btn-wrapper').querySelector('input[name="quantity"]');
+        function handleKeyDown(event, cartItemId, maxQuantity) {
+            // Kiểm tra nếu phím nhấn là Enter
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Ngừng gửi form mặc định
+                const inputField = event.target;
+                const newQuantity = parseInt(inputField.value);
 
-            // Lấy giá trị hiện tại và tính giá trị mới
+                // Kiểm tra số lượng hợp lệ và cập nhật
+                if (newQuantity >= 1 && newQuantity <= maxQuantity) {
+                    updateQuantity(inputField.closest('.counter-btn-wrapper').querySelector('button'), 0, cartItemId,
+                        maxQuantity);
+                } else if (newQuantity > maxQuantity) {
+                    alert('Số lượng bạn chọn vượt quá tồn kho.');
+                }
+            }
+        }
+
+        function updateQuantity(button, change, cartItemId, maxQuantity) {
+            const inputField = button.closest('.counter-btn-wrapper').querySelector('input[name="quantity"]');
             let currentQuantity = parseInt(inputField.value);
             const newQuantity = currentQuantity + change;
 
-            // Đảm bảo số lượng mới không nhỏ hơn 1 và không vượt quá tồn kho
             if (newQuantity >= 1 && newQuantity <= maxQuantity) {
                 inputField.value = newQuantity;
 
-                // Lấy form liên quan đến cart item
                 const form = document.getElementById('cart-form-' + cartItemId);
                 const formData = new FormData(form);
 
-                // Gửi yêu cầu AJAX
                 fetch(form.action, {
                         method: 'POST',
                         body: formData,
                         headers: {
-                            'X-Requested-With': 'XMLHttpRequest', // Xác định đây là yêu cầu AJAX
+                            'X-Requested-With': 'XMLHttpRequest',
                         },
                     })
-                    .then(response => response.json()) // Parse JSON từ server
+                    .then(response => response.json())
                     .then(data => {
                         if (data.success) {
                             console.log('Quantity updated');
                             alert('Cập nhật số lượng thành công!');
-                            // Bạn có thể cập nhật lại tổng tiền giỏ hàng nếu cần
+                            // Cập nhật trực tiếp trong UI mà không cần reload trang
+                            updateCartItemUI(cartItemId, newQuantity); // Hàm này cập nhật giao diện người dùng
                         } else if (data.error) {
                             console.error('Error: ' + data.error);
-                            alert(data.error); // Hiển thị thông báo lỗi từ server
+                            alert(data.error);
                         }
                     })
                     .catch(error => {
@@ -354,9 +370,57 @@
                         alert('Có lỗi xảy ra khi cập nhật. Vui lòng thử lại.');
                     });
             } else if (newQuantity > maxQuantity) {
-                // Nếu số lượng vượt quá tồn kho, hiển thị thông báo lỗi
                 alert('Số lượng bạn chọn vượt quá tồn kho.');
             }
+        }
+
+        function updateCartItemUI(cartItemId, newQuantity) {
+            // Cập nhật số lượng giỏ hàng trong giao diện
+            const cartItemQuantityElement = document.querySelector(`#cart-item-${cartItemId} .quantity`);
+            if (cartItemQuantityElement) {
+                cartItemQuantityElement.textContent = newQuantity;
+            }
+
+            // Cập nhật lại tổng giỏ hàng nếu cần
+            const totalQuantityElement = document.querySelector('#total-quantity');
+            if (totalQuantityElement) {
+                let totalQuantity = parseInt(totalQuantityElement.textContent);
+                totalQuantity += newQuantity;
+                totalQuantityElement.textContent = totalQuantity;
+            }
+        }
+
+        function handleSubmit(event, cartItemId) {
+            event.preventDefault(); // Ngừng gửi form mặc định
+            const form = event.target;
+            const formData = new FormData(form);
+
+            // Gửi yêu cầu AJAX để cập nhật giỏ hàng
+            fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Quantity updated');
+                        alert('Cập nhật số lượng thành công!');
+                        // Cập nhật trực tiếp trong UI
+                        updateCartItemUI(cartItemId, parseInt(formData.get('quantity')));
+                    } else if (data.error) {
+                        console.error('Error: ' + data.error);
+                        alert(data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi cập nhật. Vui lòng thử lại.');
+                });
+
+            return false; // Ngừng hành vi gửi form mặc định
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

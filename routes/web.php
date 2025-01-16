@@ -5,9 +5,10 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\BinhluanController;
-use App\Http\Controllers\DanhmucController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Auth\SecretController;
 use App\Http\Controllers\OrderController;
@@ -53,9 +54,9 @@ Route::middleware(['auth'])->group(function () {
         //     return view('admin.qldanhmuc.index');
         // })->name('admin.qldanhmuc.index');
 
-Route::prefix('admin')->name('admin.')->group(function() {
-    Route::resource('qldanhmuc', DanhmucController::class);
-});
+        Route::prefix('admin')->name('admin.')->group(function () {
+            Route::resource('qldanhmuc', CategoryController::class);
+        });
 
 
         Route::get('/admin/qllienhe', function () {
@@ -138,12 +139,16 @@ Route::get('/', function () {
 Route::get('/shop', function () {
     return view('client.shop');
 })->name('client.shop');
-Route::get('/blog-list', function () {
-    return view('client.blog-list');
-})->name('client.blog-list');
-Route::get('/single-blog', function () {
-    return view('client.single-blog');
-})->name('client.single-blog');
+
+
+Route::prefix('blog')->group(function () {
+    Route::get('/list', [ArticleController::class, 'index'])->name('client.blog.blog-list');
+    Route::get('/list/{id}', [ArticleController::class, 'show'])->name('article.show');
+    Route::get('/blog/search', [ArticleController::class, 'search'])->name('client.blog.search');
+    Route::get('/category/{id}', [CategoryController::class, 'show'])->name('category.articles');
+});
+
+
 Route::get('/about', function () {
     return view('client.about');
 })->name('client.about');
@@ -154,7 +159,7 @@ Route::get('/product-details', function () {
     return view('client.product-details');
 })->name('client.product-details');
 
-Route::prefix('admin')->name('admin.')->group(function() {
+Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('qlbinhluan', BinhluanController::class);
 });
 

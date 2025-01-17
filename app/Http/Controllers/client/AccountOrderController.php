@@ -179,7 +179,7 @@ class AccountOrderController extends Controller
             'status' => 0
         ]);
 
-        return redirect()->route('client.user.product_details', ['slug' => $slug])
+        return redirect()->route('client.shop.shopdetails', ['slug' => $slug])
             ->with([
                 'success' => 'Bình luận của bạn đã được gửi thành công!',
                 'product' => $product,

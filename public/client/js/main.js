@@ -1450,7 +1450,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         cartProductInfoPriceElem.innerText = `₫${formattedTotal}`;
                     }
                 } else {
-                    alert(data.message);
+                    // alert(data.message);
                 }
             })
             .catch((error) => console.error("Lỗi khi lấy giỏ hàng:", error));

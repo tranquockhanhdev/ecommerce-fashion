@@ -89,6 +89,7 @@ class CategoryController extends Controller
                     }
                 }
             ]
+
         ],[
             'name.unique' => 'Tên danh mục đã tồn tại',
         ]);

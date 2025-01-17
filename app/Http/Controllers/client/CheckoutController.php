@@ -136,9 +136,7 @@ class CheckoutController extends Controller
         }
         // Xóa toàn bộ giỏ hàng sau khi đặt hàng thành công
         $cart = Cart::where('account_id', $account_id)->first(); // Lấy giỏ hàng của người dùng
-        if ($cart) {
-            CartItem::where('cart_id', $cart->id)->delete(); // Xóa các mục trong giỏ hàng
-        }
+
 
         // Kiểm tra phương thức thanh toán và xử lý
         if ($payment_method_id == 1) {

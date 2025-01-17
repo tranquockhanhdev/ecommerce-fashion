@@ -101,7 +101,7 @@ class AccountOrderController extends Controller
         'orderCustomer' => $orderCustomer,
         'paymentMethod' => $paymentMethod,
         'orderItems' => $orderItems,
-        'productData' => $productData
+        'productData' => $productData,
     ]);
     }
     public function cancelOrder(string $id)
@@ -122,6 +122,8 @@ class AccountOrderController extends Controller
 
         public function product_details($slug)
     {
+        $productSlug = $slug;
+        $relatedProducts = Product::relatedProducts($slug);
         $product = Product::where('slug', $slug)->firstOrFail();
         $imageProduct = $product->images->pluck('link');
         $productDetail = ProductDetail::where('product_id', $product->id)->get();
@@ -135,7 +137,7 @@ class AccountOrderController extends Controller
             $query->where('product_id', $product->id);
         })
         ->exists();
-        return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetail', 'hasPurchased'));
+        return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetail', 'hasPurchased','relatedProducts','productSlug'));
     }
 
     public function comment(Request $request, $slug)

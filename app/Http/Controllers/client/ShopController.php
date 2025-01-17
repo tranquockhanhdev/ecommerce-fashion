@@ -43,10 +43,11 @@ class ShopController extends Controller
     }
     public function show($id)
     {
+        $productSlug = $id;
         $product = Product::where('slug', $id)->firstOrFail();
+        $relatedProducts = Product::relatedProducts($id);
         $imageProduct = $product->images->pluck('link');
         $productDetail = ProductDetail::where('product_id', $product->id)->get();
-        
         $accountId = Auth::id();
         $hasPurchased = Order::whereHas('orderCustomer', function ($query) use ($accountId) {
             $query->where('account_id', $accountId);
@@ -55,8 +56,8 @@ class ShopController extends Controller
         ->whereHas('orderItems', function ($query) use ($product) {
             $query->where('product_id', $product->id);
         })
-        ->exists();
-        return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetail','hasPurchased'));
+        ->exists(); 
+        return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetail', 'relatedProducts','hasPurchased','productSlug'));
     }
     public function getProductQuantity($slug)
     {

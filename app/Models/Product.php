@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 
 class Product extends Model
 {
@@ -62,4 +64,25 @@ class Product extends Model
         return $this->hasMany(CartItem::class, 'product_id');
     }
 
+    public static function getTopProducts()
+    {
+        return self::select('order_item.name', 'product.price', 'product.quantity', 'product.description', DB::raw('SUM(order_item.quantity) AS total_quantity'), 'image_product.link AS image_link')
+    ->join('order_item', 'order_item.product_id', '=', 'product.id')
+    ->join('order', 'order.id', '=', 'order_item.order_id')
+    ->joinSub(
+        DB::table('image_product')
+            ->select('product_id', DB::raw('MIN(id) AS min_image_id'))
+            ->groupBy('product_id'),
+        'img_min',
+        'img_min.product_id',
+        '=',
+        'product.id'
+    )
+    ->join('image_product', 'image_product.id', '=', 'img_min.min_image_id')
+    ->where('order.status_payment', 2)
+    ->groupBy('product.id','order_item.name', 'product.price', 'product.quantity', 'product.description','image_link')
+    ->orderByDesc('total_quantity')
+    ->limit(5)
+    ->get();
+    }
 }

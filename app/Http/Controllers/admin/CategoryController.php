@@ -111,10 +111,13 @@ class CategoryController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
-        $category = Category::findOrFail($id);
-        $category->delete();
+{
+    $category = Category::findOrFail($id);
+    
+    $category->products()->delete();  
 
-        return redirect()->route('admin.qldanhmuc.index')->with('success', 'Danh mục đã được xóa thành công.');
-    }
+    $category->delete();
+
+    return redirect()->route('admin.qldanhmuc.index')->with('success', 'Danh mục và tất cả sản phẩm đã được xóa thành công.');
+}
 }

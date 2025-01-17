@@ -329,9 +329,10 @@
                       align-middle
                     "
                                     style="text-align: left">
-                                    
-                                    <a href="{{ route('client.shop.shopdetails', $orderItem->product->slug) }}">Chi tiết</a>
-                                    </td>
+                                    @foreach ($productData as $product)
+                                    <a href="{{ route('client.shop.shopdetails', $product['slug']) }}">Chi tiết</a>
+                                    @endforeach
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>

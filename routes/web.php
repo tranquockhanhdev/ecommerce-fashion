@@ -91,8 +91,10 @@ Route::middleware(['auth'])->group(function () {
         });
         Route::prefix('order')->group(function () {
             Route::get('/history', [AccountOrderController::class, 'index'])->name('client.user.order-history');
-            Route::get('/{id}', [AccountOrderController::class, 'details'])->name('client.user.order-details');
+            Route::get('/details/{id}', [AccountOrderController::class, 'details'])->name('client.user.order-details');
             Route::put('/{id}', [AccountOrderController::class, 'cancelOrder'])->name('client.user.cancel-order');
+            Route::get('/product/{slug}', [AccountOrderController::class, 'product_details'])->name('client.user.product_details');
+            Route::post('/product/{slug}/comment', [AccountOrderController::class, 'comment'])->name('product.comment');
         });
     });
     Route::get('/bought', [CommentClientController::class, 'index'])->name('client.user.bought');
@@ -158,7 +160,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::prefix('shop')->group(function () {
     Route::get('/shop', [ShopController::class, 'index'])->name('client.shop.shop');
 
-    Route::get('/shop/{id}', [ShopController::class, 'show'])->name('client.shop.shopdetails');
+    Route::get('/shop/{slug}', [ShopController::class, 'show'])->name('client.shop.shopdetails');
 
     Route::get('/search_results', [ProductController::class, 'filterAndSearch'])->name('search');
     Route::get('/product-details', function () {

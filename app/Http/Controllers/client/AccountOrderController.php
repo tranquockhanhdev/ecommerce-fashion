@@ -176,7 +176,7 @@ class AccountOrderController extends Controller
             'product_id' => $product->id,
             'rating' => $validated['rating'],
             'content' => $validated['content'],
-            'status' => 0
+            'status' => 1
         ]);
 
         return redirect()->route('client.shop.shopdetails', ['slug' => $slug])

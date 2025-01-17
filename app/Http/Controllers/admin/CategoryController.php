@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -34,6 +35,8 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'unique:category',
             'slug' => 'unique:category',
+        ],[
+            'name.unique' => 'Tên danh mục đã tồn tại',
         ]);
 
         $imagePath = null;
@@ -86,6 +89,8 @@ class CategoryController extends Controller
                     }
                 }
             ]
+        ],[
+            'name.unique' => 'Tên danh mục đã tồn tại',
         ]);
 
         $category = Category::findOrFail($id);
@@ -112,11 +117,13 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
 {
-    $category = Category::findOrFail($id);
-    
-    $category->products()->delete();  
+    DB::transaction(function () use ($id) {
+        $category = Category::findOrFail($id);
 
-    $category->delete();
+        $category->products()->delete();
+
+        $category->delete();
+    });
 
     return redirect()->route('admin.qldanhmuc.index')->with('success', 'Danh mục và tất cả sản phẩm đã được xóa thành công.');
 }

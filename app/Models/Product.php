@@ -110,4 +110,9 @@ class Product extends Model
     ->limit(5)
     ->get();
     }
+
+    public function productDetails()
+    {
+        return $this->hasMany(ProductDetail::class, 'product_id', 'id');
+    }
 }

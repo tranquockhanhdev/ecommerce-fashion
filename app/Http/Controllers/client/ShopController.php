@@ -102,13 +102,13 @@ class ShopController extends Controller
     public function show($id)
     {
         // Lấy thông tin sản phẩm theo slug
-        $product = Product::with('images')->where('slug', $id)->firstOrFail();
+        $product = Product::with(['images', 'comments.account'])->where('slug', $id)->firstOrFail();
 
         // Lấy danh sách hình ảnh sản phẩm
         $imageProduct = $product->images->pluck('link');
 
         // Lấy thông tin chi tiết sản phẩm
-        $productDetails = ProductDetail::with('color', 'size')
+        $productDetails = ProductDetail::with(['color', 'size'])
             ->where('product_id', $product->id)
             ->get();
 
@@ -116,7 +116,42 @@ class ShopController extends Controller
         $colors = $productDetails->unique('colorproduct_id')->pluck('color');
         $sizes = $productDetails->unique('sizeproduct_id')->pluck('size');
 
-        return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetails', 'colors', 'sizes'));
+        // Đếm số lượt bình luận
+        $commentCount = $product->comments()->count();
+
+        // Tăng số lượt xem sản phẩm lên 1
+        $product->increment('view');
+
+        // Tính rating trung bình
+        $rating = $product->comments()->avg('rating');
+
+        // Lấy danh sách 5 bình luận mới nhất
+        $comments = $product->comments()
+            ->join('account', 'comment.account_id', '=', 'account.id')
+            ->select('comment.*', 'account.lastname', 'account.firstname')
+            ->orderBy('comment.created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        // Kiểm tra xem sản phẩm có được yêu thích hay không
+        $isFavourite = false;
+        if (Auth::check()) {
+            $isFavourite = FavoriteProduct::where('account_id', Auth::id())
+                ->where('product_id', $product->id)
+                ->exists();
+        }
+
+        return view('client.shop.product-details', compact(
+            'product',
+            'imageProduct',
+            'productDetails',
+            'colors',
+            'sizes',
+            'rating',
+            'commentCount',
+            'comments',
+            'isFavourite'
+        ));
     }
 
 
@@ -140,31 +175,31 @@ class ShopController extends Controller
         return view('client.shop.shop', compact('categories', 'products'));
     }
     //DŨng
-    public function showCommet($id)
-    {
-        $product = Product::where('slug', $id)->firstOrFail();
-        $imageProduct = $product->images->pluck('link');
-        $productDetail = ProductDetail::where('product_id', $product->id)->get();
+    // public function showCommet($id)
+    // {
+    //     $product = Product::where('slug', $id)->firstOrFail();
+    //     $imageProduct = $product->images->pluck('link');
+    //     $productDetail = ProductDetail::where('product_id', $product->id)->get();
 
-        $commentCount = $product->comments()->count(); // Đếm số lượt bình luận trong bảng comment
-        $product->increment('view'); // Tăng số lượt xem lên 1
-        $rating = $product->comments()->avg('rating'); // Lấy rating trung bình từ bảng comment
-        $comments = $product->comments()
-            ->join('account', 'comment.account_id', '=', 'account.id') // Kết nối bảng 'account'
-            ->select('comment.*', 'account.lastname', 'account.firstname') // Chọn các cột cần thiết
-            ->orderBy('comment.created_at', 'desc') // Sắp xếp theo thời gian mới nhất
-            ->take(5) // Lấy 5 bình luận
-            ->get();
-        $isFavourite = false;
-        if (Auth::check()) {
-            $isFavourite = FavoriteProduct::where('account_id', Auth::id())
-                ->where('product_id', $product->id)
-                ->exists();
-        }
+    //     $commentCount = $product->comments()->count(); // Đếm số lượt bình luận trong bảng comment
+    //     $product->increment('view'); // Tăng số lượt xem lên 1
+    //     $rating = $product->comments()->avg('rating'); // Lấy rating trung bình từ bảng comment
+    //     $comments = $product->comments()
+    //         ->join('account', 'comment.account_id', '=', 'account.id') // Kết nối bảng 'account'
+    //         ->select('comment.*', 'account.lastname', 'account.firstname') // Chọn các cột cần thiết
+    //         ->orderBy('comment.created_at', 'desc') // Sắp xếp theo thời gian mới nhất
+    //         ->take(5) // Lấy 5 bình luận
+    //         ->get();
+    //     $isFavourite = false;
+    //     if (Auth::check()) {
+    //         $isFavourite = FavoriteProduct::where('account_id', Auth::id())
+    //             ->where('product_id', $product->id)
+    //             ->exists();
+    //     }
 
-        // dd($comments);
-        return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetail', 'rating', 'commentCount', 'comments', 'isFavourite'));
-    }
+    //     // dd($comments);
+    //     return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetail', 'rating', 'commentCount', 'comments', 'isFavourite'));
+    // }
     public function getViews($id)
     {
         $product = Product::findOrFail($id);

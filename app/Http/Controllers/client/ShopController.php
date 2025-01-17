@@ -141,6 +141,25 @@ class ShopController extends Controller
                 ->exists();
         }
 
+        // Lấy danh sách sản phẩm liên quan
+        $relatedProducts = Product::relatedProducts($id);
+        // Kiểm tra xem người dùng đã mua sản phẩm chưa
+        $hasPurchased = false;
+        if (Auth::check()) {
+            $accountId = Auth::id();
+            $hasPurchased = Order::whereHas('orderCustomer', function ($query) use ($accountId) {
+                $query->where('account_id', $accountId);
+            })
+                ->where('status_payment', 2)
+                ->whereHas('orderItems', function ($query) use ($product) {
+                    $query->where('product_id', $product->id);
+                })
+                ->exists();
+        }
+
+        // Lấy slug sản phẩm
+        $productSlug = $id;
+
         return view('client.shop.product-details', compact(
             'product',
             'imageProduct',
@@ -150,7 +169,10 @@ class ShopController extends Controller
             'rating',
             'commentCount',
             'comments',
-            'isFavourite'
+            'isFavourite',
+            'relatedProducts',
+            'hasPurchased',
+            'productSlug'
         ));
     }
 
@@ -200,34 +222,37 @@ class ShopController extends Controller
     //     // dd($comments);
     //     return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetail', 'rating', 'commentCount', 'comments', 'isFavourite'));
     // }
-    public function getViews($id)
-    {
-        // $product = Product::findOrFail($id);
-        // return response()->json(['view' => $product->view]);
 
-        $productSlug = $id;
-        $product = Product::where('slug', $id)->firstOrFail();
-        $relatedProducts = Product::relatedProducts($id);
-        $imageProduct = $product->images->pluck('link');
-        $productDetail = ProductDetail::where('product_id', $product->id)->get();
-        $accountId = Auth::id();
-        $hasPurchased = Order::whereHas('orderCustomer', function ($query) use ($accountId) {
-            $query->where('account_id', $accountId);
-        })
-        ->where('status_payment', 2)
-        ->whereHas('orderItems', function ($query) use ($product) {
-            $query->where('product_id', $product->id);
-        })
-        ->exists(); 
-        return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetail', 'relatedProducts','hasPurchased','productSlug'));
-    }
+
+    //Duy
+    // public function getViews($id)
+    // {
+    //     // $product = Product::findOrFail($id);
+    //     // return response()->json(['view' => $product->view]);
+
+    //     $productSlug = $id;
+    //     $product = Product::where('slug', $id)->firstOrFail();
+    //     $relatedProducts = Product::relatedProducts($id);
+    //     $imageProduct = $product->images->pluck('link');
+    //     $productDetail = ProductDetail::where('product_id', $product->id)->get();
+    //     $accountId = Auth::id();
+    //     $hasPurchased = Order::whereHas('orderCustomer', function ($query) use ($accountId) {
+    //         $query->where('account_id', $accountId);
+    //     })
+    //         ->where('status_payment', 2)
+    //         ->whereHas('orderItems', function ($query) use ($product) {
+    //             $query->where('product_id', $product->id);
+    //         })
+    //         ->exists();
+
+    //     return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetail', 'relatedProducts', 'hasPurchased', 'productSlug'));
+    // }
     public function getProductQuantity($slug)
     {
         // Tìm sản phẩm theo slug thay vì id
         $product = Product::where('slug', $slug)->firstOrFail();
-    
+
         // Trả về số lượng sản phẩm dưới dạng JSON
         return response()->json(['quantity' => $product->quantity]);
-
     }
 }

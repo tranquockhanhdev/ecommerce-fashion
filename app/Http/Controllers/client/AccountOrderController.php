@@ -95,7 +95,6 @@ class AccountOrderController extends Controller
         foreach ($orderItems as $orderItem) {
             $orderItem->formatted_price = number_format($orderItem->price, 0, ',', '.') . ' VND';
         }
-
         // Trả về view với các dữ liệu cần thiết
         return view('client.user.order-details', [
             'orders' => $orders,
@@ -124,6 +123,8 @@ class AccountOrderController extends Controller
 
     public function product_details($slug)
     {
+        $productSlug = $slug;
+        $relatedProducts = Product::relatedProducts($slug);
         $product = Product::where('slug', $slug)->firstOrFail();
         $imageProduct = $product->images->pluck('link');
         $productDetail = ProductDetail::where('product_id', $product->id)->get();
@@ -132,6 +133,7 @@ class AccountOrderController extends Controller
         $hasPurchased = Order::whereHas('orderCustomer', function ($query) use ($accountId) {
             $query->where('account_id', $accountId);
         })
+
             ->where('status_payment', 2)
             ->whereHas('orderItems', function ($query) use ($product) {
                 $query->where('product_id', $product->id);

@@ -202,7 +202,32 @@ class ShopController extends Controller
     // }
     public function getViews($id)
     {
-        $product = Product::findOrFail($id);
-        return response()->json(['view' => $product->view]);
+        // $product = Product::findOrFail($id);
+        // return response()->json(['view' => $product->view]);
+
+        $productSlug = $id;
+        $product = Product::where('slug', $id)->firstOrFail();
+        $relatedProducts = Product::relatedProducts($id);
+        $imageProduct = $product->images->pluck('link');
+        $productDetail = ProductDetail::where('product_id', $product->id)->get();
+        $accountId = Auth::id();
+        $hasPurchased = Order::whereHas('orderCustomer', function ($query) use ($accountId) {
+            $query->where('account_id', $accountId);
+        })
+        ->where('status_payment', 2)
+        ->whereHas('orderItems', function ($query) use ($product) {
+            $query->where('product_id', $product->id);
+        })
+        ->exists(); 
+        return view('client.shop.product-details', compact('product', 'imageProduct', 'productDetail', 'relatedProducts','hasPurchased','productSlug'));
+    }
+    public function getProductQuantity($slug)
+    {
+        // Tìm sản phẩm theo slug thay vì id
+        $product = Product::where('slug', $slug)->firstOrFail();
+    
+        // Trả về số lượng sản phẩm dưới dạng JSON
+        return response()->json(['quantity' => $product->quantity]);
+
     }
 }

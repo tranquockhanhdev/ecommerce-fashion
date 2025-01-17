@@ -157,6 +157,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::prefix('shop')->group(function () {
     Route::get('/shop', [ShopController::class, 'index'])->name('client.shop.shop');
+ 
     Route::get('/shop/{id}', [ShopController::class, 'show'])->name('client.shop.shopdetails');
 
     Route::get('/search_results', [ProductController::class, 'filterAndSearch'])->name('search');
@@ -165,7 +166,11 @@ Route::prefix('shop')->group(function () {
     })->name('client.shop.product-details');
     // Route lọc sản phẩm
     // Route::get('/filter', [ShopController::class, 'filter'])->name('client.shop.filter');
-
+    Route::get('/{id}', [ShopController::class, 'show'])->name('client.shop.shopdetails');
+    Route::get('/{slug}/quantity', [ShopController::class, 'getProductQuantity']);
+    // Route::get('/product-details', function () {
+    //     return view('client.shop.product-details');
+    // })->name('client.shop.product-details');
 });
 
 // Blog routes

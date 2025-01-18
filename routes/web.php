@@ -69,7 +69,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
 
-
+    
     // Trang nhân viên chỉ dành cho nhân viên và admins
     Route::middleware(['role:admin,staff'])->group(function () {
         Route::get('/staff', function () {
@@ -105,6 +105,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('/wishlist', wishlistController::class);
         // Route hiển thị giỏ hàng
         Route::get('/shopping-cart', [CartController::class, 'showCart'])->name('client.cart.shopping-cart');
+        Route::post('/toggle-favorite/{productId}', [wishlistController::class, 'toggleFavorite'])->name('wishlist.toggle-favorite');
 
         // Route thêm sản phẩm vào giỏ hàng
         Route::post('/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
@@ -140,6 +141,7 @@ Route::prefix('auth')->name('auth.')->group(function () {
     // Route xử lý việc thay đổi mật khẩu (POST)
     Route::post('/confirmpassword', [App\Http\Controllers\Auth\ResetPasswordController::class, 'updatePassword'])->name('updatePassword');
 });
+
 // Public routes
 
 // Route::get('/', function () {

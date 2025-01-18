@@ -8,7 +8,7 @@
         <!-- Chọn tài khoản -->
         <div class="form-group">
             <label for="order_customer_id">Tài Khoản</label>
-            <input type="text" class="form-control" value="{{ $order->orderCustomer->lastname }} {{ $order->orderCustomer->firstname }}"readonly>
+            <input type="text" class="form-control" value="{{ $order->orderCustomer->lastname }} {{ $order->orderCustomer->firstname }}" readonly>
         </div>
         <input type="hidden" name="ordercustomer_id" value="{{ $order->ordercustomer_id }}">
 
@@ -16,28 +16,24 @@
         <div class="form-group">
             <label for="address">Địa chỉ (Address)</label>
             <input type="text" id="address" name="address" class="form-control"
-                   value="{{ old('address', $order->orderCustomer->address) }}" required>
+                   value="{{ old('address', $order->orderCustomer->address) }}" required readonly>
         </div>
 
         <!-- Số điện thoại -->
         <div class="form-group">
             <label for="phone">Số điện thoại (Phone)</label>
             <input type="text" id="phone" name="phone" class="form-control"
-                   value="{{ old('phone', $order->orderCustomer->phone) }}" required>
+                   value="{{ old('phone', $order->orderCustomer->phone) }}" required readonly>
         </div>
 
-        <!-- Phương thức thanh toán -->
-        <div class="form-group">
-            <label for="payment_method_id">Phương Thức Thanh Toán</label>
-            <select class="form-control" name="payment_method_id" required>
-                @foreach ($paymentMethods as $paymentMethod)
-                    <option value="{{ $paymentMethod->id }}"
-                        {{ $order->payment_method_id == $paymentMethod->id ? 'selected' : '' }}>
-                        {{ $paymentMethod->method }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
+           <!-- Phương thức thanh toán -->
+    <div class="form-group">
+        <label for="payment_method_id">Phương Thức Thanh Toán</label>
+        <input type="text" class="form-control"
+            value="{{ $order->paymentMethod ? $order->paymentMethod->method : 'Thất bại' }}"
+            readonly>
+    </div>
+    <input type="hidden" name="payment_method_id" value="{{ $order->payment_method_id }}">
 
         <!-- Trạng thái đơn hàng -->
         <div class="form-group">
@@ -64,7 +60,7 @@
         <div class="form-group">
             <label for="shipping_fee">Phí Vận Chuyển</label>
             <input type="number" step="0.01" name="shipping_fee" class="form-control"
-                value="{{ old('shipping_fee', $order->shipping_fee) }}" required>
+                value="{{ old('shipping_fee', $order->shipping_fee) }}" required readonly>
         </div>
 
         <!-- Tổng -->

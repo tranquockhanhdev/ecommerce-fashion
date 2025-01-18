@@ -52,7 +52,7 @@ class ContactController extends Controller
             'status' => 0,
         ]);
 
-        return redirect()->back()->withInput();
+        return redirect()->back()->withInput()->with('success', 'Gửi liên hệ thành công');
     }
 
     /**

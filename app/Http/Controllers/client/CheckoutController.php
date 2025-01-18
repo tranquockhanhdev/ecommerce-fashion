@@ -13,6 +13,7 @@ use App\Models\Cart;
 use App\Models\PaymentMethod;
 use App\Models\OrderItem;
 use App\Models\WebsiteInfo;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
@@ -49,7 +50,6 @@ class CheckoutController extends Controller
         if ($orderItem->isEmpty()) {
             return redirect()->route('client.cart.shopping-cart')->with('error', 'Giỏ hàng của bạn hiện không có sản phẩm.');
         }
-
         // Tính tổng giá trị các sản phẩm trong giỏ hàng
         $totalItem = $orderItem->sum(function ($item) {
             return $item->product->price * $item->quantity;
@@ -133,13 +133,21 @@ class CheckoutController extends Controller
                 'updated_at' => now(),
                 'product_detail_id' => $item['product_detail_id'],
             ]);
+             // Trừ số lượng sản phẩm trong kho
+    $product = Product::find($item['product_id']); // Tìm sản phẩm theo ID
+    if ($product) {
+        $newStock = $product->quantity - $item['quantity']; // Tính số lượng còn lại
+        if ($newStock < 0) {
+            return redirect()->back()->withErrors(['error' => 'Số lượng sản phẩm không đủ trong kho'])->withInput();
+        }
+        $product->update(['quantity' => $newStock]); // Cập nhật số lượng
+    }
         }
         // Xóa toàn bộ giỏ hàng sau khi đặt hàng thành công
         $cart = Cart::where('account_id', $account_id)->first(); // Lấy giỏ hàng của người dùng
         if ($cart) {
             CartItem::where('cart_id', $cart->id)->delete(); // Xóa các mục trong giỏ hàng
         }
-
         // Kiểm tra phương thức thanh toán và xử lý
         if ($payment_method_id == 1) {
             // Thanh toán VNPay: Chuyển hướng tới cổng thanh toán VNPay

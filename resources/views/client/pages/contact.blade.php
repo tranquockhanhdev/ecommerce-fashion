@@ -72,6 +72,11 @@
             </div>
             <div class="col-lg-9">
                 <div class="contact-form-card">
+                @if (session('success'))
+                    <button class="alert alert-success" id="success-message">
+                        {{ session('success') }}
+                    </button>
+                @endif
                     <h2>Chào Bạn!</h2>
                     <p>
                         Chúng tôi luôn sẵn sàng hỗ trợ bạn trong mọi thắc mắc và yêu cầu liên quan đến các sản phẩm thời
@@ -131,4 +136,11 @@
     </div>
 </section>
 <!-- ifram Section  end   -->
+<script>
+    @if (session('success'))
+        setTimeout(function() {
+            document.getElementById('success-message').style.display = 'none';
+        }, 3000); 
+    @endif
+</script>
 @endsection

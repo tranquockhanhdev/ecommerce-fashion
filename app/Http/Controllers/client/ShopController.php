@@ -127,6 +127,7 @@ class ShopController extends Controller
 
         // Lấy danh sách 5 bình luận mới nhất
         $comments = $product->comments()
+             ->where('comment.status', 1) 
             ->join('account', 'comment.account_id', '=', 'account.id')
             ->select('comment.*', 'account.lastname', 'account.firstname')
             ->orderBy('comment.created_at', 'desc')

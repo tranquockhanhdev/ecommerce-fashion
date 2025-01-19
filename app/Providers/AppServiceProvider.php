@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Models\WebsiteInfo;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $websiteInfo = WebsiteInfo::findOrFail(1); // Lấy dữ liệu từ CSDL
+        view()->share('websiteInfo', $websiteInfo);
+
+        Paginator::useBootstrap(); // Kích hoạt giao diện Bootstrap
+
     }
 }
